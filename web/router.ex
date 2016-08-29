@@ -19,6 +19,16 @@ defmodule Zizhixi.Router do
     get "/", PageController, :index
   end
 
+  scope "/accounts", Zizhixi do
+    pipe_through :browser
+
+    get "/signup", AccountController, :signup_page
+    post "/signup", AccountController, :signup
+
+    get "/signin", AccountController, :signin_page
+    post "/signin", AccountController, :signin
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", Zizhixi do
   #   pipe_through :api
