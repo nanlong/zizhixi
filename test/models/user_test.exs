@@ -34,7 +34,7 @@ defmodule Zizhixi.UserTest do
   end
 
   test "user signin" do
-    changeset = User.changeset(:signup, %User{},  @signup_valid_attrs)
+    changeset = User.changeset(:signup, %User{}, @signup_valid_attrs)
     Repo.insert(changeset)
 
     changeset = User.changeset(:signin, %User{}, @signin_username_valid_attrs)

@@ -24,6 +24,9 @@ defmodule Zizhixi.User do
 
   def changeset(action, struct, params \\ %{})
 
+  @doc """
+  用户注册
+  """
   def changeset(:signup, struct, params) do
     struct
     |> cast(params, [:username, :email, :password])
@@ -37,14 +40,20 @@ defmodule Zizhixi.User do
     |> put_password_hash(:password, :password_hash)
   end
 
+  @doc """
+  用户登录
+  """
   def changeset(:signin, struct, params) do
     struct
     |> cast(params, [:account, :password])
     |> validate_required([:account, :password])
-    |> get_password_hash(:account)
+    |> load_user(:account)
     |> validate_password(:password)
   end
 
+  @doc """
+  为用户设置头像
+  """
   def put_avatar(%Changeset{valid?: true} = changeset, email_field, avatar_field) do
     email = get_field(changeset, email_field)
     |> String.trim
@@ -62,6 +71,9 @@ defmodule Zizhixi.User do
     changeset
   end
 
+  @doc """
+  为用户加密密码
+  """
   def put_password_hash(%Changeset{valid?: true} = changeset, password_field, password_hash_field) do
     password_hash = changeset
     |> get_field(password_field)
@@ -74,10 +86,16 @@ defmodule Zizhixi.User do
     changeset
   end
 
+  @doc """
+  验证密码
+  """
   def verify_password?(password, password_hash) do
     Comeonin.Bcrypt.checkpw(password, password_hash)
   end
 
+  @doc """
+  验证密码
+  """
   def validate_password(%Changeset{valid?: true} = changeset, password_field) do
     password = get_field(changeset, password_field)
 
@@ -91,6 +109,9 @@ defmodule Zizhixi.User do
     changeset
   end
 
+  @doc """
+  通过账号获取用户，支持用户名，邮箱，手机号
+  """
   def get_by_account(account) do
     cond do
       String.match?(account, @regex_email) ->
@@ -102,14 +123,17 @@ defmodule Zizhixi.User do
     end
   end
 
-  def get_password_hash(%Changeset{valid?: true} = changeset, field) do
+  @doc """
+  加载用户
+  """
+  def load_user(%Changeset{valid?: true} = changeset, field) do
     case changeset |> get_field(field) |> get_by_account do
       nil -> changeset |> add_error(field, "用户不存在")
       user -> %{changeset | data: user}
     end
   end
 
-  def get_password_hash(%Changeset{valid?: false} = changeset, _field) do
+  def load_user(%Changeset{valid?: false} = changeset, _field) do
     changeset
   end
 end
