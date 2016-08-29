@@ -29,6 +29,13 @@ config :phoenix, :generators,
 config :comeonin, :bcrypt_log_rounds, 4
 config :comeonin, :pbkdf2_rounds, 1
 
+config :guardian, Guardian,
+  issuer: "Zizhixi.#{Mix.env}",
+  ttl: {30, :days},
+  verify_issuer: true,
+  secret_key: to_string(Mix.env),
+  serializer: Zizhixi.GuardianSerializer
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
