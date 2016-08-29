@@ -1,25 +1,39 @@
-<h2>用户登录</h2>
+<div class="columns" style="margin-top: 1px;">
+  <div class="column is-4 is-offset-4">
+    <div class="card is-fullwidth">
+      <header class="card-header">
+        <p class="card-header-title title">
+          用户登录
+        </p>
+      </header>
+      <div class="card-content">
+        <div class="content">
+          <%= form_for @changeset, account_path(@conn, :signin), fn f -> %>
+            <%= if @changeset.action do %>
+              <div class="alert alert-danger">
+                <p>Oops, something went wrong! Please check the errors below.</p>
+              </div>
+            <% end %>
 
-<%= form_for @changeset, account_path(@conn, :signin), fn f -> %>
-  <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+            <%= label f, :account, "账号", class: "label" %>
+            <p class="control">
+              <%= text_input f, :account, class: "input" %>
+              <%= error_tag f, :account %>
+            </p>
+
+            <%= label f, :password, "密码", class: "label" %>
+            <p class="control">
+              <%= password_input f, :password, class: "input" %>
+              <%= error_tag f, :password %>
+            </p>
+
+            <p class="control">
+              <button class="button is-primary">登录</button>
+              <button class="button is-link">取消</button>
+            </p>
+          <% end %>
+        </div>
+      </div>
     </div>
-  <% end %>
-
-  <div class="form-group">
-    <%= label f, :account, "账号", class: "control-label" %>
-    <%= text_input f, :account, class: "form-control" %>
-    <%= error_tag f, :account %>
   </div>
-
-  <div class="form-group">
-    <%= label f, :password, "密码", class: "control-label" %>
-    <%= text_input f, :password, class: "form-control" %>
-    <%= error_tag f, :password %>
-  </div>
-
-  <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
-  </div>
-<% end %>
+</div>

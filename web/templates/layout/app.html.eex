@@ -12,24 +12,45 @@
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
-        </nav>
-        <span class="logo"></span>
-      </header>
+    <section class="hero is-info is-large">
+      <!-- Hero header: will stick at the top -->
+      <div class="hero-head">
+        <header class="nav">
+          <div class="container is-fluid">
+            <div class="nav-left">
+              <%= link "自制系", to: page_path(@conn, :index), class: "nav-item is-brand is-active" %>
+            </div>
+            <span class="nav-toggle">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+            <div class="nav-right nav-menu">
+              <%= link "登录", to: account_path(@conn, :signin_page), class: "nav-item" %>
+              <%= link "注册", to: account_path(@conn, :signup_page), class: "nav-item" %>
+            </div>
+          </div>
+        </header>
+      </div>
+    </section>
+      <!-- Hero content: will be in the middle -->
+      <div class="">
+        <div class="container is-fluid">
+          <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+          <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+          <main role="main">
+            <%= render @view_module, @view_template, assigns %>
+          </main>
+        </div>
+      </div>
 
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
+      <!-- Hero footer: will stick at the bottom -->
+      <div class="hero-foot">
 
-    </div> <!-- /container -->
+      </div>
+
+
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
