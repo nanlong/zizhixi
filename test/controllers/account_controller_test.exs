@@ -53,4 +53,9 @@ defmodule Zizhixi.AccountControllerTest do
     conn = post conn, account_path(conn, :signin), user: @invalid_attrs
     assert html_response(conn, 200) =~ "can&#39;t be blank"
   end
+
+  test "signout", %{conn: conn} do
+    conn = get conn, account_path(conn, :signout)
+    assert conn.status == 302
+  end
 end

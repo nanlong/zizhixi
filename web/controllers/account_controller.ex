@@ -40,4 +40,10 @@ defmodule Zizhixi.AccountController do
     end
   end
 
+  def signout(conn, _params) do
+    Guardian.Plug.sign_out(conn)
+    |> put_flash(:info, "已退出登录")
+    |> redirect(to: page_path(conn, :index))
+  end
+
 end
