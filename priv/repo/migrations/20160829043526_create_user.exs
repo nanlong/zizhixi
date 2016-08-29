@@ -17,6 +17,6 @@ defmodule Zizhixi.Repo.Migrations.CreateUser do
     create unique_index(:users, [:username])
     create unique_index(:users, [:email])
     create unique_index(:users, [:mobile])
-
+    create index(:users, [:address])
   end
 end
