@@ -3,6 +3,30 @@ defmodule Zizhixi.PostController do
 
   alias Zizhixi.Post
 
+  plug :is_owner! when action in [:show]
+
+  def call(conn, options) do
+    try do
+      super(conn, options)
+    catch
+      :throw, {:unauthorized, conn} ->
+        conn
+        |> put_status(401)
+        |> text("401 Unauthorized")
+    end
+  end
+
+  def is_owner!(conn, _options) do
+    current_user = Guardian.Plug.current_resource(conn)
+    resource = Post |> Repo.get!(conn.params["id"])
+
+    if current_user && current_user.id != resource.user_id do
+      throw {:unauthorized, conn}
+    end
+
+    conn
+  end
+
   def index(conn, _params) do
     posts = Post |> where(is_deleted: false) |> Repo.all
     render(conn, "index.html", posts: posts)
@@ -52,8 +76,8 @@ defmodule Zizhixi.PostController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    post = Post |> where(is_deleted: false) |> Repo.get!(id)
+  def delete(conn, %{"id" => _id}) do
+    # post = Post |> where(is_deleted: false) |> Repo.get!(id)
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
