@@ -1,8 +1,7 @@
 defmodule Zizhixi.UserTest do
   use Zizhixi.ModelCase
 
-  alias Zizhixi.User
-  alias Zizhixi.Repo
+  alias Zizhixi.{Repo, User}
 
   @signup_valid_attrs %{
     username: "Test",
@@ -25,17 +24,17 @@ defmodule Zizhixi.UserTest do
   test "user signup" do
     changeset = User.changeset(:signup, %User{},  @signup_valid_attrs)
     assert changeset.valid?
-    Repo.insert(changeset)
+    {:ok, _} = Repo.insert(changeset)
   end
 
   test "user signup error" do
     changeset = User.changeset(:signup, %User{}, @invalid_attrs)
-    assert changeset.valid? == false
+    refute changeset.valid?
   end
 
   test "user signin" do
     changeset = User.changeset(:signup, %User{}, @signup_valid_attrs)
-    Repo.insert(changeset)
+    {:ok, _} = Repo.insert(changeset)
 
     changeset = User.changeset(:signin, %User{}, @signin_username_valid_attrs)
     assert changeset.valid?
@@ -44,15 +43,15 @@ defmodule Zizhixi.UserTest do
     assert changeset.valid?
 
     changeset = User.changeset(:signin, %User{}, %{@signin_username_valid_attrs | password: "123456"})
-    assert changeset.valid? == false
+    refute changeset.valid?
 
     changeset = User.changeset(:signin, %User{}, %{@signin_email_valid_attrs | password: "123456"})
-    assert changeset.valid? == false
+    refute changeset.valid?
   end
 
   test "user signin error" do
     changeset = User.changeset(:signin, %User{}, @invalid_attrs)
-    assert changeset.valid? == false
+    refute changeset.valid?
   end
 
 end

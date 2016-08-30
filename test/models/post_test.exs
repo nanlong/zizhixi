@@ -1,18 +1,47 @@
 defmodule Zizhixi.PostTest do
   use Zizhixi.ModelCase
 
-  alias Zizhixi.Post
+  alias Zizhixi.{Repo, Post, User}
 
-  @valid_attrs %{collect_count: 42, comment_count: 42, content: "some content", is_approved: true, is_deleted: true, praise_count: 42, title: "some content", view_count: 42}
+  @post_create_valid_attrs %{
+    title: "some content",
+    content: "some content",
+    user_id: ""
+  }
+
+  @post_editor_valid_attrs %{
+    title: "some content",
+    content: "some content",
+  }
+
   @invalid_attrs %{}
 
-  test "changeset with valid attributes" do
-    changeset = Post.changeset(%Post{}, @valid_attrs)
+  @user_params %{
+    username: "Test",
+    email: "test@zizhixi.com",
+    password: "testpassword",
+  }
+
+  test "post create success and edit success" do
+    changeset = User.changeset(:signup, %User{},  @user_params)
+    {:ok, user} = Repo.insert(changeset)
+
+    changeset = Post.changeset(:create, %Post{}, %{@post_create_valid_attrs | user_id: user.id})
     assert changeset.valid?
+    {:ok, post} = Repo.insert(changeset)
+
+    changeset = Post.changeset(:edit, post, @post_editor_valid_attrs)
+    assert changeset.valid?
+    {:ok, _} = Repo.update(changeset)
   end
 
-  test "changeset with invalid attributes" do
-    changeset = Post.changeset(%Post{}, @invalid_attrs)
+  test "post create error" do
+    changeset = Post.changeset(:create, %Post{}, @invalid_attrs)
+    refute changeset.valid?
+  end
+
+  test "post edit error" do
+    changeset = Post.changeset(:edit, %Post{}, @invalid_attrs)
     refute changeset.valid?
   end
 end
