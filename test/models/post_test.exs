@@ -22,7 +22,7 @@ defmodule Zizhixi.PostTest do
     password: "testpassword",
   }
 
-  test "post create success and edit success" do
+  test "post create success and update success" do
     changeset = User.changeset(:signup, %User{},  @user_params)
     {:ok, user} = Repo.insert(changeset)
 
@@ -30,7 +30,7 @@ defmodule Zizhixi.PostTest do
     assert changeset.valid?
     {:ok, post} = Repo.insert(changeset)
 
-    changeset = Post.changeset(:edit, post, @post_editor_valid_attrs)
+    changeset = Post.changeset(:update, post, @post_editor_valid_attrs)
     assert changeset.valid?
     {:ok, _} = Repo.update(changeset)
   end
@@ -40,8 +40,18 @@ defmodule Zizhixi.PostTest do
     refute changeset.valid?
   end
 
-  test "post edit error" do
-    changeset = Post.changeset(:edit, %Post{}, @invalid_attrs)
+  test "post update error" do
+    changeset = Post.changeset(:update, %Post{}, @invalid_attrs)
+    refute changeset.valid?
+
+    changeset = User.changeset(:signup, %User{},  @user_params)
+    {:ok, user} = Repo.insert(changeset)
+
+    changeset = Post.changeset(:create, %Post{}, %{@post_create_valid_attrs | user_id: user.id})
+    assert changeset.valid?
+    {:ok, post} = Repo.insert(changeset)
+
+    changeset = Post.changeset(:update, post, %{title: "", content: ""})
     refute changeset.valid?
   end
 end

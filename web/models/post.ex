@@ -25,7 +25,7 @@ defmodule Zizhixi.Post do
     |> validate_length(:content, min: 1)
   end
 
-  def changeset(:edit, struct, params) do
+  def changeset(:update, struct, params) do
     struct
     |> cast(params, [:title, :content])
     |> validate_required([:title, :content])

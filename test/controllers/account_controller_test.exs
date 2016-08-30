@@ -1,6 +1,8 @@
 defmodule Zizhixi.AccountControllerTest do
   use Zizhixi.ConnCase
 
+  alias Zizhixi.User
+
   @signup_valid_attrs %{
     username: "Test",
     email: "test@zizhixi.com",
@@ -17,7 +19,11 @@ defmodule Zizhixi.AccountControllerTest do
     password: "testpassword",
   }
 
-  @invalid_attrs %{}
+  @invalid_attrs %{
+    username: "",
+    email: "",
+    password: ""
+  }
 
   test "get signup page", %{conn: conn} do
     conn = get conn, account_path(conn, :signup_page)
@@ -27,6 +33,7 @@ defmodule Zizhixi.AccountControllerTest do
   test "post signup success", %{conn: conn} do
     conn = post conn, account_path(conn, :signup), user: @signup_valid_attrs
     assert conn.status == 302
+    assert User |> Repo.get_by(@signup_valid_attrs |> Map.delete(:password))
   end
 
   test "post signup error", %{conn: conn} do
