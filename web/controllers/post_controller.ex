@@ -3,29 +3,31 @@ defmodule Zizhixi.PostController do
 
   alias Zizhixi.Post
 
-  plug :is_owner! when action in [:show]
+  plug Zizhixi.VerifyRequest, [model: Post, action: "is_owner"] when action in [:show]
 
-  def call(conn, options) do
-    try do
-      super(conn, options)
-    catch
-      :throw, {:unauthorized, conn} ->
-        conn
-        |> put_status(401)
-        |> text("401 Unauthorized")
-    end
-  end
-
-  def is_owner!(conn, _options) do
-    current_user = Guardian.Plug.current_resource(conn)
-    resource = Post |> Repo.get!(conn.params["id"])
-
-    if current_user && current_user.id != resource.user_id do
-      throw {:unauthorized, conn}
-    end
-
-    conn
-  end
+  # plug :is_owner! when action in [:edit, :update, :delete]
+  #
+  # def call(conn, options) do
+  #   try do
+  #     super(conn, options)
+  #   catch
+  #     :throw, {:unauthorized, conn} ->
+  #       conn
+  #       |> put_status(401)
+  #       |> text("401 Unauthorized")
+  #   end
+  # end
+  #
+  # def is_owner!(conn, _options) do
+  #   current_user = Guardian.Plug.current_resource(conn)
+  #   resource = Post |> Repo.get!(conn.params["id"])
+  #
+  #   if current_user && current_user.id != resource.user_id do
+  #     throw {:unauthorized, conn}
+  #   end
+  #
+  #   conn
+  # end
 
   def index(conn, _params) do
     posts = Post |> where(is_deleted: false) |> Repo.all
@@ -39,7 +41,8 @@ defmodule Zizhixi.PostController do
 
   def create(conn, %{"post" => post_params}) do
     current_user = Guardian.Plug.current_resource(conn)
-    changeset = Post.changeset(:create, %Post{}, post_params |> Map.put_new("user_id", current_user.id))
+    post_params = Map.put_new(post_params, "user_id", current_user.id)
+    changeset = Post.changeset(:create, %Post{}, post_params)
 
     case Repo.insert(changeset) do
       {:ok, _post} ->
