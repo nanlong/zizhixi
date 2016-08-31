@@ -3,31 +3,7 @@ defmodule Zizhixi.PostController do
 
   alias Zizhixi.Post
 
-  plug Zizhixi.VerifyRequest, [model: Post, action: "is_owner"] when action in [:show]
-
-  # plug :is_owner! when action in [:edit, :update, :delete]
-  #
-  # def call(conn, options) do
-  #   try do
-  #     super(conn, options)
-  #   catch
-  #     :throw, {:unauthorized, conn} ->
-  #       conn
-  #       |> put_status(401)
-  #       |> text("401 Unauthorized")
-  #   end
-  # end
-  #
-  # def is_owner!(conn, _options) do
-  #   current_user = Guardian.Plug.current_resource(conn)
-  #   resource = Post |> Repo.get!(conn.params["id"])
-  #
-  #   if current_user && current_user.id != resource.user_id do
-  #     throw {:unauthorized, conn}
-  #   end
-  #
-  #   conn
-  # end
+  plug Zizhixi.VerifyRequest, [model: Post, action: "is_owner"] when action in [:edit, :update, :delete]
 
   def index(conn, _params) do
     posts = Post |> where(is_deleted: false) |> Repo.all
