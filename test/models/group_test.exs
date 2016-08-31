@@ -32,4 +32,11 @@ defmodule Zizhixi.GroupTest do
     Repo.insert(changeset)
     assert Repo.get_by(Group, params)
   end
+
+  def insert do
+    {:ok, user} = Zizhixi.UserTest.insert
+    params = @valid_attrs |> Map.put_new(:user_id, user.id)
+    changeset = Group.changeset(%Group{}, params)
+    Repo.insert(changeset)
+  end
 end

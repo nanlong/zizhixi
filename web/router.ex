@@ -31,7 +31,7 @@ defmodule Zizhixi.Router do
       end
     end
 
-    # resources "/comments", PostCommentController
+    resources "/groups", GroupController
   end
 
   scope "/account", Zizhixi do
