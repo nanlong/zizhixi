@@ -31,7 +31,9 @@ defmodule Zizhixi.Router do
       end
     end
 
-    resources "/groups", GroupController
+    resources "/groups", GroupController do
+      resources "/members", GroupMemberController, as: :member, only: [:index, :create, :delete]
+    end
   end
 
   scope "/account", Zizhixi do
