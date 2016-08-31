@@ -3,7 +3,7 @@ defmodule Zizhixi.PostCommentController do
 
   alias Zizhixi.{Post, PostComment, ErrorView}
 
-  import Zizhixi.Sqlalchemy, only: [set: 4]
+  import Zizhixi.Sqlalchemy, only: [set: 4, inc: 3]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
     when action in [:create, :delete]
@@ -23,6 +23,7 @@ defmodule Zizhixi.PostCommentController do
 
     case Repo.insert(changeset) do
       {:ok, post_comment} ->
+        Post |> inc(post, :comment_count)
         conn
         |> render("show.json", post_comment: post_comment |> Repo.preload(:user))
       {:error, changeset} ->
