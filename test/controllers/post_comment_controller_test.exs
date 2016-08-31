@@ -33,19 +33,21 @@ defmodule Zizhixi.PostCommentControllerTest do
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = conn |> signup |> create_post
-    post = Post |> Repo.one
+    conn = conn
+    |> signup
+    |> create_post
+    |> post(post_comment_path(conn, :create, Post |> Repo.one), post_comment: @valid_attrs)
 
-    conn = post conn, post_comment_path(conn, :create, post), post_comment: @valid_attrs
     assert json_response(conn, 200) |> Map.has_key?("data")
     assert Repo.get_by(PostComment, @valid_attrs)
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    conn = conn |> signup |> create_post
-    post = Post |> Repo.one
+    conn = conn
+    |> signup
+    |> create_post
+    |> post(post_comment_path(conn, :create, Post |> Repo.one), post_comment: @invalid_attrs)
 
-    conn = post conn, post_comment_path(conn, :create, post), post_comment: @invalid_attrs
     refute json_response(conn, 400) |> Map.has_key?("error")
   end
 
