@@ -3,6 +3,8 @@ defmodule Zizhixi.PostController do
 
   alias Zizhixi.Post
 
+  import Zizhixi.Sqlalchemy, only: [set: 4]
+
   plug Zizhixi.VerifyRequest, [model: Post, action: "is_owner"] when action in [:edit, :update, :delete]
 
   def index(conn, _params) do
@@ -55,12 +57,10 @@ defmodule Zizhixi.PostController do
     end
   end
 
-  def delete(conn, %{"id" => _id}) do
-    # post = Post |> where(is_deleted: false) |> Repo.get!(id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    # Repo.delete!(post)
+  def delete(conn, %{"id" => id}) do
+    post = Post |> where(is_deleted: false) |> Repo.get!(id)
+    
+    Post |> set(post, :is_deleted, true)
 
     conn
     |> put_flash(:info, "Post deleted successfully.")

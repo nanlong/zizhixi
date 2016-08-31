@@ -77,12 +77,13 @@ defmodule Zizhixi.PostControllerTest do
     assert html_response(conn, 200) =~ "<html"
   end
 
-  # test "deletes chosen resource", %{conn: conn} do
-  #   post = Repo.insert! %Post{}
-  #   conn = delete conn, post_path(conn, :delete, post)
-  #   assert redirected_to(conn) == post_path(conn, :index)
-  #   refute Repo.get(Post, post.id)
-  # end
+  test "deletes chosen resource", %{conn: conn} do
+    post = insert_post
+    conn = delete conn, post_path(conn, :delete, post)
+    assert redirected_to(conn) == post_path(conn, :index)
+    post = Repo.get(Post, post.id)
+    assert post.is_deleted
+  end
 
   defp insert_post() do
     changeset = User.changeset(:signup, %User{},  @user_valid_attrs)
