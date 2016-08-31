@@ -1,7 +1,7 @@
 defmodule Zizhixi.PostCommentTest do
   use Zizhixi.ModelCase
 
-  alias Zizhixi.{User, Post, PostComment}
+  alias Zizhixi.{PostComment}
 
   @valid_attrs %{content: "some content", post_id: "xxx", user_id: "xxx"}
   @invalid_attrs %{content: "", post_id: "", user_id: ""}
@@ -17,41 +17,16 @@ defmodule Zizhixi.PostCommentTest do
   end
 
   test "post comment create" do
-    {:ok, comment} = insert_comment
+    {:ok, comment} = insert
     assert Repo.get(PostComment, comment.id)
   end
 
-  defp insert_user() do
-    user_params = %{
-      username: "Test",
-      email: "test@zizhixi.com",
-      password: "testpassword",
-    }
-
-    changeset = User.changeset(:signup, %User{},  user_params)
-    Repo.insert(changeset)
-  end
-
-  defp insert_post() do
-    {:ok, user} = insert_user
-
-    post_params = %{
-      title: "some content",
-      content: "some content",
-      user_id: user.id
-    }
-
-    changeset = Post.changeset(%Post{}, post_params)
-    {:ok, post} = Repo.insert(changeset)
-    {:ok, user, post}
-  end
-
-  def insert_comment() do
-    {:ok, user, post} = insert_post
+  def insert() do
+    {:ok, post} = Zizhixi.PostTest.insert
 
     comment_params = %{
       content: "some content",
-      user_id: user.id,
+      user_id: post.user_id,
       post_id: post.id
     }
 

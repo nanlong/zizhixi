@@ -17,7 +17,7 @@ defmodule Zizhixi.PostCommentPraiseTest do
   end
 
   test "praise create successful" do
-    {:ok, post_comment} = Zizhixi.PostCommentTest.insert_comment
+    {:ok, post_comment} = Zizhixi.PostCommentTest.insert
     params = %{post_comment_id: post_comment.id, user_id: post_comment.user_id}
     changeset = PostCommentPraise.changeset(%PostCommentPraise{}, params)
     assert changeset.valid?

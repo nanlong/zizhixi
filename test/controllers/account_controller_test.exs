@@ -65,4 +65,12 @@ defmodule Zizhixi.AccountControllerTest do
     conn = get conn, account_path(conn, :signout)
     assert conn.status == 302
   end
+
+  def signup(conn) do
+    post conn, account_path(conn, :signup), user: @signup_valid_attrs
+  end
+
+  def signin(conn) do
+    post conn, account_path(conn, :signin), user: @signin_username_valid_attrs
+  end
 end

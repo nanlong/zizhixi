@@ -1,7 +1,7 @@
 defmodule Zizhixi.PostControllerTest do
   use Zizhixi.ConnCase
 
-  alias Zizhixi.{Post, User}
+  alias Zizhixi.{Post}
 
   @valid_attrs %{
     title: "some content",
@@ -13,45 +13,41 @@ defmodule Zizhixi.PostControllerTest do
     content: ""
   }
 
-  @user_valid_attrs %{
-    username: "Test",
-    email: "test@zizhixi.com",
-    password: "testpassword",
-  }
-
-  @user_signin_atts %{
-    account: "Test",
-    password: "testpassword"
-  }
-
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, post_path(conn, :index)
     assert html_response(conn, 200) =~ "<html"
   end
 
   test "renders form for new resources", %{conn: conn} do
-    conn = post conn, account_path(conn, :signup), user: @user_valid_attrs
-    conn = get conn, post_path(conn, :new)
+    conn = conn
+    |> Zizhixi.AccountControllerTest.signup
+    |> get(post_path(conn, :new))
+
     assert html_response(conn, 200) =~ "<html"
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, account_path(conn, :signup), user: @user_valid_attrs
-    conn = post conn, post_path(conn, :create), post: @valid_attrs
+    conn = conn
+    |> Zizhixi.AccountControllerTest.signup
+    |> post(post_path(conn, :create), post: @valid_attrs)
+
     assert redirected_to(conn) == post_path(conn, :index)
     assert Repo.get_by(Post, @valid_attrs)
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    conn = post conn, account_path(conn, :signup), user: @user_valid_attrs
-    conn = post conn, post_path(conn, :create), post: @invalid_attrs
+    conn = conn
+    |> Zizhixi.AccountControllerTest.signup
+    |> post(post_path(conn, :create), post: @invalid_attrs)
+
     assert html_response(conn, 200) =~ "can&#39;t be blank"
   end
 
   test "shows chosen resource", %{conn: conn} do
-    post = insert_post
+    conn = conn
+    |> create
+    |> get(post_path(conn, :show, Repo.one(Post)))
 
-    conn = get conn, post_path(conn, :show, post)
     assert html_response(conn, 200) =~ "<html"
   end
 
@@ -62,43 +58,46 @@ defmodule Zizhixi.PostControllerTest do
   end
 
   test "renders form for editing chosen resource", %{conn: conn} do
-    post = insert_post
-    conn = post conn, account_path(conn, :signin), user: @user_signin_atts
-    conn = get conn, post_path(conn, :edit, post)
+    conn = conn
+    |> create
+    |> get(post_path(conn, :edit, Repo.one(Post)))
+
     assert html_response(conn, 200) =~ "<html"
   end
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    post = insert_post
     post_params = %{title: "edit title", content: "edit content"}
-    conn = post conn, account_path(conn, :signin), user: @user_signin_atts
-    conn = put conn, post_path(conn, :update, post), post: post_params
-    assert redirected_to(conn) == post_path(conn, :show, post)
+
+    conn = conn
+    |> create
+    |> put(post_path(conn, :update, Repo.one(Post)), post: post_params)
+
+    assert redirected_to(conn) == post_path(conn, :show, Repo.one(Post))
     assert Repo.get_by(Post, post_params)
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    post = insert_post
-    conn = post conn, account_path(conn, :signin), user: @user_signin_atts
-    conn = put conn, post_path(conn, :update, post), post: @invalid_attrs
+    conn = conn
+    |> create
+    |> put(post_path(conn, :update, Repo.one(Post)), post: @invalid_attrs)
+
     assert html_response(conn, 200) =~ "<html"
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    post = insert_post
-    conn = post conn, account_path(conn, :signin), user: @user_signin_atts
-    conn = delete conn, post_path(conn, :delete, post)
+    conn = conn
+    |> create
+    |> delete(post_path(conn, :delete, Repo.one(Post)))
+
     assert redirected_to(conn) == post_path(conn, :index)
-    post = Repo.get(Post, post.id)
+    post = Repo.one(Post)
     assert post.is_deleted
   end
 
   test "praise", %{conn: conn} do
-    post = insert_post
-    
     conn = conn
-    |> post(account_path(conn, :signin), user: @user_signin_atts)
-    |> post(post_praise_path(conn, :praise, post))
+    |> create
+    |> post(post_praise_path(conn, :praise, Repo.one(Post)))
 
     assert json_response(conn, 200) |> Map.get("status") == 1
 
@@ -106,14 +105,9 @@ defmodule Zizhixi.PostControllerTest do
     assert post.praise_count == 1
   end
 
-  defp insert_post() do
-    changeset = User.changeset(:signup, %User{},  @user_valid_attrs)
-    {:ok, user} = Repo.insert(changeset)
-
-    Repo.insert! %Post{
-      title: "some content",
-      content: "some content",
-      user_id: user.id
-    }
+  def create(conn) do
+    conn
+    |> Zizhixi.AccountControllerTest.signup
+    |> post(post_path(conn, :create), post: @valid_attrs)
   end
 end

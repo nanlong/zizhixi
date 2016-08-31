@@ -1,63 +1,36 @@
 defmodule Zizhixi.PostTest do
   use Zizhixi.ModelCase
 
-  alias Zizhixi.{Repo, Post, User}
+  alias Zizhixi.{Post}
 
-  @post_create_valid_attrs %{
-    title: "some content",
-    content: "some content",
-    user_id: ""
-  }
-
-  @post_editor_valid_attrs %{
+  @valid_attrs %{
     title: "some content",
     content: "some content",
   }
-
-  @invalid_attrs %{}
-
-  @user_params %{
-    username: "Test",
-    email: "test@zizhixi.com",
-    password: "testpassword",
+  @invalid_attrs %{
+    title: "",
+    content: ""
   }
 
-  test "post create success and update success" do
-    changeset = User.changeset(:signup, %User{},  @user_params)
-    {:ok, user} = Repo.insert(changeset)
-
-    changeset = Post.changeset(%Post{}, %{@post_create_valid_attrs | user_id: user.id})
+  test "changeset with valid attributes" do
+    post_params = @valid_attrs |> Map.put_new(:user_id, "xxx")
+    changeset = Post.changeset(%Post{}, post_params)
     assert changeset.valid?
-    {:ok, post} = Repo.insert(changeset)
-
-    changeset = Post.changeset(post, @post_editor_valid_attrs)
-    assert changeset.valid?
-    {:ok, _} = Repo.update(changeset)
   end
 
-  test "post create error" do
+  test "changeset with invalid attributes" do
     changeset = Post.changeset(%Post{}, @invalid_attrs)
     refute changeset.valid?
   end
 
-  test "post update error" do
-    changeset = Post.changeset(%Post{}, @invalid_attrs)
-    refute changeset.valid?
-
-    changeset = User.changeset(:signup, %User{},  @user_params)
-    {:ok, user} = Repo.insert(changeset)
-
-    changeset = Post.changeset(%Post{}, %{@post_create_valid_attrs | user_id: user.id})
-    assert changeset.valid?
-    {:ok, post} = Repo.insert(changeset)
-
-    changeset = Post.changeset(post, %{title: "", content: ""})
-    refute changeset.valid?
+  test "post create" do
+    {:ok, post} = insert
+    assert Repo.get(Post, post.id)
   end
 
   def insert() do
     {:ok, user} = Zizhixi.UserTest.insert
-    post_params = %{@post_create_valid_attrs | user_id: user.id}
+    post_params = @valid_attrs |> Map.put_new(:user_id, user.id)
     changeset = Post.changeset(%Post{}, post_params)
     Repo.insert(changeset)
   end

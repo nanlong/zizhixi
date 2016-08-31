@@ -6,40 +6,10 @@ defmodule Zizhixi.PostCommentControllerTest do
 
   @valid_attrs %{content: "some content"}
   @invalid_attrs %{content: ""}
-  @user_signin_atts %{
-    account: "Test",
-    password: "testpassword"
-  }
-
-  defp signup(conn) do
-    user_params = %{
-      username: "Test",
-      email: "test@zizhixi.com",
-      password: "testpassword",
-    }
-    post conn, account_path(conn, :signup), user: user_params
-  end
-
-  defp signin(conn) do
-    user_params = %{
-      account: "Test",
-      password: "testpassword"
-    }
-    post conn, account_path(conn, :signin), user: user_params
-  end
-
-  defp create_post(conn) do
-    post_params = %{
-      title: "some content",
-      content: "some content"
-    }
-    post conn, post_path(conn, :create), post: post_params
-  end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
     conn = conn
-    |> signup
-    |> create_post
+    |> Zizhixi.PostControllerTest.create
     |> post(post_comment_path(conn, :create, Post |> Repo.one), post_comment: @valid_attrs)
 
     assert json_response(conn, 200) |> Map.has_key?("data")
@@ -48,16 +18,17 @@ defmodule Zizhixi.PostCommentControllerTest do
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     conn = conn
-    |> signup
-    |> create_post
+    |> Zizhixi.PostControllerTest.create
     |> post(post_comment_path(conn, :create, Post |> Repo.one), post_comment: @invalid_attrs)
 
     refute json_response(conn, 400) |> Map.has_key?("error")
   end
 
   test "shows chosen resource", %{conn: conn} do
-    {:ok, post_comment} = Zizhixi.PostCommentTest.insert_comment
-    conn = get conn, post_comment_path(conn, :show, post_comment.post_id, post_comment)
+    conn = conn
+    |> create
+    |> get(post_comment_path(conn, :show, Repo.one(PostComment).post_id, Repo.one(PostComment)))
+
     assert html_response(conn, 200) =~ "Show post comment"
   end
 
@@ -68,26 +39,27 @@ defmodule Zizhixi.PostCommentControllerTest do
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    {:ok, post_comment} = Zizhixi.PostCommentTest.insert_comment
-
     conn = conn
-    |> signin
-    |> delete(post_comment_path(conn, :delete, post_comment.post_id, post_comment))
+    |> create
+    |> delete(post_comment_path(conn, :delete, Repo.one(PostComment).post_id, Repo.one(PostComment)))
 
     assert json_response(conn, 204)
-    refute PostComment |> Repo.get_by(%{id: post_comment.id, is_deleted: false})
+    refute PostComment |> Repo.get_by(%{id: Repo.one(PostComment).id, is_deleted: false})
   end
 
   test "praise", %{conn: conn} do
-    {:ok, comment} = Zizhixi.PostCommentTest.insert_comment
-
     conn = conn
-    |> post(account_path(conn, :signin), user: @user_signin_atts)
-    |> post(post_comment_praise_path(conn, :praise, comment.post_id, comment))
+    |> create
+    |> post(post_comment_praise_path(conn, :praise, Repo.one(PostComment).post_id, Repo.one(PostComment)))
 
     assert json_response(conn, 200) |> Map.get("status") == 1
 
-    comment = PostComment |> Repo.one
-    assert comment.praise_count == 1
+    assert Repo.one(PostComment).praise_count == 1
+  end
+
+  def create(conn) do
+    conn
+    |> Zizhixi.PostControllerTest.create
+    |> post(post_comment_path(conn, :create, Post |> Repo.one), post_comment: @valid_attrs)
   end
 end
