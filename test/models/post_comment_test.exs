@@ -27,17 +27,20 @@ defmodule Zizhixi.PostCommentTest do
       email: "test@zizhixi.com",
       password: "testpassword",
     }
+
     changeset = User.changeset(:signup, %User{},  user_params)
     Repo.insert(changeset)
   end
 
   defp insert_post() do
     {:ok, user} = insert_user
+
     post_params = %{
       title: "some content",
       content: "some content",
       user_id: user.id
     }
+
     changeset = Post.changeset(:create, %Post{}, post_params)
     {:ok, post} = Repo.insert(changeset)
     {:ok, user, post}
