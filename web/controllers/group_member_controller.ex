@@ -24,7 +24,7 @@ defmodule Zizhixi.GroupMemberController do
 
     case Repo.insert(changeset) do
       {:ok, _group_member} ->
-        Group |> inc(gropu, :member_count)
+        Group |> inc(group, :member_count)
         conn |> json(%{status: 1})
       {:error, changeset} ->
         conn
@@ -43,6 +43,6 @@ defmodule Zizhixi.GroupMemberController do
     Group |> dec(group, :member_count)
 
     conn
-    |> conn |> json(%{status: 1})
+    |> json(%{status: 1})
   end
 end
