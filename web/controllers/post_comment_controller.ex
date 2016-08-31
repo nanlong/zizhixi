@@ -13,9 +13,10 @@ defmodule Zizhixi.PostCommentController do
 
   def create(conn, %{"post_id" => post_id, "post_comment" => post_comment_params}) do
     current_user = Guardian.Plug.current_resource(conn)
+    post = Post |> Repo.get_by!(%{id: post_id, is_deleted: false})
 
     post_comment_params = post_comment_params
-    |> Map.put_new("post_id", post_id)
+    |> Map.put_new("post_id", post.id)
     |> Map.put_new("user_id", current_user.id)
 
     changeset = PostComment.changeset(%PostComment{}, post_comment_params)
@@ -31,13 +32,13 @@ defmodule Zizhixi.PostCommentController do
   end
 
   def show(conn, %{"post_id" => post_id, "id" => id}) do
-    post = Repo.get!(Post, post_id)
-    post_comment = Repo.get_by!(PostComment, %{id: id, post_id: post_id, is_deleted: false})
+    post = Post |> Repo.get_by!(%{id: post_id, is_deleted: false})
+    post_comment = PostComment |> Repo.get_by!(%{id: id, post_id: post_id, is_deleted: false})
     render(conn, "show.html", post: post, post_comment: post_comment)
   end
 
   def delete(conn, %{"post_id" => post_id, "id" => id}) do
-    post_comment = Repo.get_by!(PostComment, %{id: id, post_id: post_id, is_deleted: false})
+    post_comment = PostComment |> Repo.get_by!(%{id: id, post_id: post_id, is_deleted: false})
 
     PostComment |> set(post_comment, :is_deleted, true)
 
