@@ -24,4 +24,12 @@ defmodule Zizhixi.GroupTest do
     changeset = Group.changeset(%Group{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+  test "group create" do
+    {:ok, user} = Zizhixi.UserTest.insert
+    params = @valid_attrs |> Map.put_new(:user_id, user.id)
+    changeset = Group.changeset(%Group{}, params)
+    Repo.insert(changeset)
+    assert Repo.get_by(Group, params)
+  end
 end
