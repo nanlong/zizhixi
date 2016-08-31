@@ -1,7 +1,7 @@
 defmodule Zizhixi.PostCommentController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Post, PostComment, ErrorView}
+  alias Zizhixi.{Post, PostComment, JsonView}
 
   import Zizhixi.Sqlalchemy, only: [set: 4, inc: 3]
 
@@ -29,7 +29,7 @@ defmodule Zizhixi.PostCommentController do
       {:error, changeset} ->
         conn
         |> put_status(400)
-        |> render(ErrorView, "error.json", changeset: changeset)
+        |> render(JsonView, "error.json", changeset: changeset)
     end
   end
 
