@@ -46,7 +46,7 @@ defmodule Zizhixi.PostCommentTest do
     {:ok, user, post}
   end
 
-  defp insert_comment() do
+  def insert_comment() do
     {:ok, user, post} = insert_post
 
     comment_params = %{

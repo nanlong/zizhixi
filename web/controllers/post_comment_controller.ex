@@ -1,7 +1,7 @@
 defmodule Zizhixi.PostCommentController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Post, PostComment}
+  alias Zizhixi.{Post, PostComment, ErrorView}
 
   import Zizhixi.Sqlalchemy, only: [set: 4]
 
@@ -22,12 +22,13 @@ defmodule Zizhixi.PostCommentController do
     changeset = PostComment.changeset(%PostComment{}, post_comment_params)
 
     case Repo.insert(changeset) do
-      {:ok, _post_comment} ->
+      {:ok, post_comment} ->
         conn
-        |> put_flash(:info, "Post comment created successfully.")
-        |> redirect(to: post_path(conn, :show, post_id))
+        |> render("show.json", post_comment: post_comment |> Repo.preload(:user))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        conn
+        |> put_status(400)
+        |> render(ErrorView, "error.json", changeset: changeset)
     end
   end
 
@@ -42,8 +43,6 @@ defmodule Zizhixi.PostCommentController do
 
     PostComment |> set(post_comment, :is_deleted, true)
 
-    conn
-    |> put_flash(:info, "Post comment deleted successfully.")
-    |> redirect(to: post_path(conn, :show, post_id))
+    conn |> put_status(204) |> json(%{})
   end
 end
