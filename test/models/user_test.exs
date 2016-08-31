@@ -54,4 +54,8 @@ defmodule Zizhixi.UserTest do
     refute changeset.valid?
   end
 
+  def insert() do
+    changeset = User.changeset(:signup, %User{},  @signup_valid_attrs)
+    Repo.insert(changeset)
+  end
 end

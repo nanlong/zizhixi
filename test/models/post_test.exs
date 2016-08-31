@@ -54,4 +54,11 @@ defmodule Zizhixi.PostTest do
     changeset = Post.changeset(post, %{title: "", content: ""})
     refute changeset.valid?
   end
+
+  def insert() do
+    {:ok, user} = Zizhixi.UserTest.insert
+    post_params = %{@post_create_valid_attrs | user_id: user.id}
+    changeset = Post.changeset(%Post{}, post_params)
+    Repo.insert(changeset)
+  end
 end
