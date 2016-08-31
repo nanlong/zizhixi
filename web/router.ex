@@ -24,7 +24,8 @@ defmodule Zizhixi.Router do
     get "/", PageController, :index
 
     resources "/posts", PostController do
-      resources "/comments", PostCommentController, as: "comment", only: [:create, :show, :delete]
+      post "/praise", PostController, :praise, as: :praise
+      resources "/comments", PostCommentController, as: :comment, only: [:create, :show, :delete]
     end
 
     # resources "/comments", PostCommentController

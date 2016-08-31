@@ -93,6 +93,19 @@ defmodule Zizhixi.PostControllerTest do
     assert post.is_deleted
   end
 
+  test "praise", %{conn: conn} do
+    post = insert_post
+    
+    conn = conn
+    |> post(account_path(conn, :signin), user: @user_signin_atts)
+    |> post(post_praise_path(conn, :praise, post))
+
+    assert json_response(conn, 200) |> Map.get("status") == 1
+
+    post = Post |> Repo.one
+    assert post.praise_count == 1
+  end
+
   defp insert_post() do
     changeset = User.changeset(:signup, %User{},  @user_valid_attrs)
     {:ok, user} = Repo.insert(changeset)
