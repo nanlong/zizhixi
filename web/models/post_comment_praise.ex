@@ -13,7 +13,7 @@ defmodule Zizhixi.PostCommentPraise do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [])
-    |> validate_required([])
+    |> cast(params, [:post_comment_id, :user_id])
+    |> validate_required([:post_comment_id, :user_id])
   end
 end
