@@ -26,32 +26,32 @@ defmodule Zizhixi.PostTest do
     changeset = User.changeset(:signup, %User{},  @user_params)
     {:ok, user} = Repo.insert(changeset)
 
-    changeset = Post.changeset(:create, %Post{}, %{@post_create_valid_attrs | user_id: user.id})
+    changeset = Post.changeset(%Post{}, %{@post_create_valid_attrs | user_id: user.id})
     assert changeset.valid?
     {:ok, post} = Repo.insert(changeset)
 
-    changeset = Post.changeset(:update, post, @post_editor_valid_attrs)
+    changeset = Post.changeset(post, @post_editor_valid_attrs)
     assert changeset.valid?
     {:ok, _} = Repo.update(changeset)
   end
 
   test "post create error" do
-    changeset = Post.changeset(:create, %Post{}, @invalid_attrs)
+    changeset = Post.changeset(%Post{}, @invalid_attrs)
     refute changeset.valid?
   end
 
   test "post update error" do
-    changeset = Post.changeset(:update, %Post{}, @invalid_attrs)
+    changeset = Post.changeset(%Post{}, @invalid_attrs)
     refute changeset.valid?
 
     changeset = User.changeset(:signup, %User{},  @user_params)
     {:ok, user} = Repo.insert(changeset)
 
-    changeset = Post.changeset(:create, %Post{}, %{@post_create_valid_attrs | user_id: user.id})
+    changeset = Post.changeset(%Post{}, %{@post_create_valid_attrs | user_id: user.id})
     assert changeset.valid?
     {:ok, post} = Repo.insert(changeset)
 
-    changeset = Post.changeset(:update, post, %{title: "", content: ""})
+    changeset = Post.changeset(post, %{title: "", content: ""})
     refute changeset.valid?
   end
 end

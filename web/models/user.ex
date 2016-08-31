@@ -22,6 +22,9 @@ defmodule Zizhixi.User do
   @regex_email ~r/.+@[^\.]+.*/
   @regex_mobile ~r/1\d{10}$/
 
+  @doc """
+  Builds a changeset based on the `struct` and `params`.
+  """
   def changeset(action, struct, params \\ %{})
 
   @doc """

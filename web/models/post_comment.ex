@@ -18,5 +18,6 @@ defmodule Zizhixi.PostComment do
     struct
     |> cast(params, [:content, :post_id, :user_id])
     |> validate_required([:content, :post_id, :user_id])
+    |> validate_length(:content, max: 240)
   end
 end

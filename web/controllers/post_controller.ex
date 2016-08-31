@@ -16,14 +16,14 @@ defmodule Zizhixi.PostController do
   end
 
   def new(conn, _params) do
-    changeset = Post.changeset(:create, %Post{})
+    changeset = Post.changeset(%Post{})
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"post" => post_params}) do
     current_user = Guardian.Plug.current_resource(conn)
     post_params = Map.put_new(post_params, "user_id", current_user.id)
-    changeset = Post.changeset(:create, %Post{}, post_params)
+    changeset = Post.changeset(%Post{}, post_params)
 
     case Repo.insert(changeset) do
       {:ok, _post} ->
@@ -42,13 +42,13 @@ defmodule Zizhixi.PostController do
 
   def edit(conn, %{"id" => id}) do
     post = Post |> Repo.get_by!(%{id: id, is_deleted: false})
-    changeset = Post.changeset(:update, post)
+    changeset = Post.changeset(post)
     render(conn, "edit.html", post: post, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "post" => post_params}) do
     post = Post |> Repo.get_by!(%{id: id, is_deleted: false})
-    changeset = Post.changeset(:update, post, post_params)
+    changeset = Post.changeset(post, post_params)
 
     case Repo.update(changeset) do
       {:ok, post} ->

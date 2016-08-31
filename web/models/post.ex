@@ -15,21 +15,13 @@ defmodule Zizhixi.Post do
     timestamps()
   end
 
-  def changeset(action, struct, params \\ %{})
-
-  def changeset(:create, struct, params) do
+  @doc """
+  Builds a changeset based on the `struct` and `params`.
+  """
+  def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:title, :content, :user_id])
     |> validate_required([:title, :content, :user_id])
-    |> validate_length(:title, min: 1, max: 240)
-    |> validate_length(:content, min: 1)
-  end
-
-  def changeset(:update, struct, params) do
-    struct
-    |> cast(params, [:title, :content])
-    |> validate_required([:title, :content])
-    |> validate_length(:title, min: 1, max: 240)
-    |> validate_length(:content, min: 1)
+    |> validate_length(:title, max: 120)
   end
 end

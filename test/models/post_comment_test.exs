@@ -41,7 +41,7 @@ defmodule Zizhixi.PostCommentTest do
       user_id: user.id
     }
 
-    changeset = Post.changeset(:create, %Post{}, post_params)
+    changeset = Post.changeset(%Post{}, post_params)
     {:ok, post} = Repo.insert(changeset)
     {:ok, user, post}
   end

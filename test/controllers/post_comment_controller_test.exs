@@ -2,9 +2,9 @@ defmodule Zizhixi.PostCommentControllerTest do
   use Zizhixi.ConnCase
 
   # alias Zizhixi.PostComment
-  # @valid_attrs %{}
-  # @invalid_attrs %{}
-  #
+  @valid_attrs %{content: "some content"}
+  @invalid_attrs %{content: ""}
+
   # test "lists all entries on index", %{conn: conn} do
   #   conn = get conn, post_comment_path(conn, :index)
   #   assert html_response(conn, 200) =~ "Listing post comments"
