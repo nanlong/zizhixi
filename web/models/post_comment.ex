@@ -3,7 +3,7 @@ defmodule Zizhixi.PostComment do
 
   schema "post_comments" do
     field :content, :string
-    field :praise_count, :integer
+    field :praise_count, :integer, default: 0
     field :is_deleted, :boolean, default: false
     belongs_to :user, Zizhixi.User
     belongs_to :post, Zizhixi.Post
@@ -16,7 +16,7 @@ defmodule Zizhixi.PostComment do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:content, :praise_count, :is_deleted])
-    |> validate_required([:content, :praise_count, :is_deleted])
+    |> cast(params, [:content, :post_id, :user_id])
+    |> validate_required([:content, :post_id, :user_id])
   end
 end
