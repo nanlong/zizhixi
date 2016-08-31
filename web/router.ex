@@ -22,8 +22,12 @@ defmodule Zizhixi.Router do
     pipe_through [:browser, :browser_session] # Use the default browser stack
 
     get "/", PageController, :index
-    
-    resources "/posts", PostController
+
+    resources "/posts", PostController do
+      resources "/comments", PostCommentController, as: "comment", only: [:create, :show, :delete]
+    end
+
+    # resources "/comments", PostCommentController
   end
 
   scope "/account", Zizhixi do

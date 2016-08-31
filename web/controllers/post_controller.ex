@@ -5,7 +5,10 @@ defmodule Zizhixi.PostController do
 
   import Zizhixi.Sqlalchemy, only: [set: 4]
 
-  plug Zizhixi.VerifyRequest, [model: Post, action: "is_owner"] when action in [:edit, :update, :delete]
+  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
+    when action in [:new, :create, :edit, :update, :delete]
+  plug Zizhixi.VerifyRequest, [model: Post, action: "is_owner"]
+    when action in [:edit, :update, :delete]
 
   def index(conn, _params) do
     posts = Post |> where(is_deleted: false) |> Repo.all
@@ -33,18 +36,18 @@ defmodule Zizhixi.PostController do
   end
 
   def show(conn, %{"id" => id}) do
-    post = Post |> where(is_deleted: false) |> Repo.get!(id)
+    post = Post |> Repo.get_by!(%{id: id, is_deleted: false})
     render(conn, "show.html", post: post)
   end
 
   def edit(conn, %{"id" => id}) do
-    post = Post |> where(is_deleted: false) |> Repo.get!(id)
+    post = Post |> Repo.get_by!(%{id: id, is_deleted: false})
     changeset = Post.changeset(:update, post)
     render(conn, "edit.html", post: post, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "post" => post_params}) do
-    post = Post |> where(is_deleted: false) |> Repo.get!(id)
+    post = Post |> Repo.get_by!(%{id: id, is_deleted: false})
     changeset = Post.changeset(:update, post, post_params)
 
     case Repo.update(changeset) do
@@ -58,8 +61,8 @@ defmodule Zizhixi.PostController do
   end
 
   def delete(conn, %{"id" => id}) do
-    post = Post |> where(is_deleted: false) |> Repo.get!(id)
-    
+    post = Post |> Repo.get_by!(%{id: id, is_deleted: false})
+
     Post |> set(post, :is_deleted, true)
 
     conn
