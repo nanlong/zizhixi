@@ -1,12 +1,12 @@
 defmodule Zizhixi.PostCommentController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Post, PostComment, JsonView}
+  alias Zizhixi.{Post, PostComment, PostCommentPraise, JsonView}
 
   import Zizhixi.Sqlalchemy, only: [set: 4, inc: 3]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
-    when action in [:create, :delete]
+    when action in [:create, :delete, :praise]
 
   plug Zizhixi.VerifyRequest, [model: PostComment, action: "is_owner"]
     when action in [:delete]
@@ -45,5 +45,27 @@ defmodule Zizhixi.PostCommentController do
     PostComment |> set(post_comment, :is_deleted, true)
 
     conn |> put_status(204) |> json(%{})
+  end
+
+  def praise(conn, %{"post_id" => post_id, "post_comment_id" => post_comment_id}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    post = Post |> Repo.get_by!(%{id: post_id, is_deleted: false})
+    post_comment = PostComment |> Repo.get_by!(%{id: post_comment_id, post_id: post.id, is_deleted: false})
+    params = %{post_comment_id: post_comment.id, user_id: current_user.id}
+
+    cond do
+      PostCommentPraise |> Repo.get_by(params) ->
+        conn |> put_status(200) |> json(%{status: 1})
+      true ->
+        changeset = PostCommentPraise.changeset(%PostCommentPraise{}, params)
+
+        case Repo.insert(changeset) do
+          {:ok, _post_comment_praise} ->
+            PostComment |> inc(post_comment, :praise_count)
+            conn |> put_status(200) |> json(%{status: 1})
+          {:error, _changeset} ->
+            conn |> put_status(200) |> json(%{status: 0})
+        end
+    end
   end
 end

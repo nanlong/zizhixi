@@ -6,6 +6,10 @@ defmodule Zizhixi.PostCommentControllerTest do
 
   @valid_attrs %{content: "some content"}
   @invalid_attrs %{content: ""}
+  @user_signin_atts %{
+    account: "Test",
+    password: "testpassword"
+  }
 
   defp signup(conn) do
     user_params = %{
@@ -72,5 +76,18 @@ defmodule Zizhixi.PostCommentControllerTest do
 
     assert json_response(conn, 204)
     refute PostComment |> Repo.get_by(%{id: post_comment.id, is_deleted: false})
+  end
+
+  test "praise", %{conn: conn} do
+    {:ok, comment} = Zizhixi.PostCommentTest.insert_comment
+
+    conn = conn
+    |> post(account_path(conn, :signin), user: @user_signin_atts)
+    |> post(post_comment_praise_path(conn, :praise, comment.post_id, comment))
+
+    assert json_response(conn, 200) |> Map.get("status") == 1
+
+    comment = PostComment |> Repo.one
+    assert comment.praise_count == 1
   end
 end
