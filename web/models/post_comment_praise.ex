@@ -15,5 +15,6 @@ defmodule Zizhixi.PostCommentPraise do
     struct
     |> cast(params, [:post_comment_id, :user_id])
     |> validate_required([:post_comment_id, :user_id])
+    |> unique_constraint(:user_id, name: :ux_praise_post_comment_user)
   end
 end
