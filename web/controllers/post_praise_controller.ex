@@ -5,6 +5,12 @@ defmodule Zizhixi.PostPraiseController do
 
   import Zizhixi.Sqlalchemy, only: [inc: 3, dec: 3]
 
+  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
+    when action in [:create, :delete]
+
+  plug Zizhixi.VerifyRequest, [model: PostPraise, action: "is_owner"]
+    when action in [:delete]
+
   def index(conn, %{"post_id" => post_id}) do
     post = Repo.get!(Post, post_id)
     post_praises = Repo.all(PostPraise)
@@ -21,10 +27,10 @@ defmodule Zizhixi.PostPraiseController do
     changeset = PostPraise.changeset(%PostPraise{}, params)
 
     conn = case Repo.insert(changeset) do
-      {:ok, post_praise} ->
+      {:ok, _post_praise} ->
         Post |> inc(post, :praise_count)
         conn |> put_flash(:info, "点赞成功")
-      {:error, changeset} ->
+      {:error, _changeset} ->
         conn |> put_flash(:danger, "点赞失败")
     end
 
@@ -41,7 +47,7 @@ defmodule Zizhixi.PostPraiseController do
     # it to always work (and if it does not, it will raise).
     Repo.delete!(post_praise)
     Post |> dec(post, :praise_count)
-    
+
     conn |> redirect(to: post_path(conn, :show, post))
   end
 end

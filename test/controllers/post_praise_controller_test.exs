@@ -4,7 +4,10 @@ defmodule Zizhixi.PostPraiseControllerTest do
   alias Zizhixi.{Post, PostPraise}
 
   test "index", %{conn: conn} do
-    assert true
+    conn = conn
+    |> Zizhixi.PostControllerTest.create
+    |> get(post_praise_path(conn, :index, Repo.one(Post)))
+    assert html_response(conn, 200) =~ "<html"
   end
 
   test "create", %{conn: conn} do

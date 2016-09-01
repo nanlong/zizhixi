@@ -2,12 +2,11 @@ defmodule Zizhixi.PostController do
   use Zizhixi.Web, :controller
 
   alias Zizhixi.Post
-  alias Zizhixi.PostPraise
 
-  import Zizhixi.Sqlalchemy, only: [set: 4, inc: 3]
+  import Zizhixi.Sqlalchemy, only: [set: 4]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
-    when action in [:new, :create, :edit, :update, :delete, :praise]
+    when action in [:new, :create, :edit, :update, :delete]
   plug Zizhixi.VerifyRequest, [model: Post, action: "is_owner"]
     when action in [:edit, :update, :delete]
 
@@ -69,26 +68,5 @@ defmodule Zizhixi.PostController do
     conn
     |> put_flash(:info, "Post deleted successfully.")
     |> redirect(to: post_path(conn, :index))
-  end
-
-  def praise(conn, %{"post_id" => id}) do
-    current_user = Guardian.Plug.current_resource(conn)
-    post = Post |> Repo.get_by(%{id: id, is_deleted: false})
-    params = %{post_id: id, user_id: current_user.id}
-
-    cond do
-      PostPraise |> Repo.get_by(params) ->
-        conn |> put_status(200) |> json(%{status: 1})
-      true ->
-        changeset = PostPraise.changeset(%PostPraise{}, params)
-
-        case Repo.insert(changeset) do
-          {:ok, _post_praise} ->
-            Post |> inc(post, :praise_count)
-            conn |> put_status(200) |> json(%{status: 1})
-          {:error, _changeset} ->
-            conn |> put_status(200) |> json(%{status: 0})
-        end
-    end
   end
 end
