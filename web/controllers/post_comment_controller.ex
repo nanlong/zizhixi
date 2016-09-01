@@ -39,9 +39,9 @@ defmodule Zizhixi.PostCommentController do
     render(conn, "show.html", post: post, post_comment: post_comment)
   end
 
-  def delete(conn, %{"post_id" => post_id, "id" => id}) do
-    post_comment = PostComment |> Repo.get_by!(%{id: id, post_id: post_id, is_deleted: false})
-
+  def delete(conn, %{"id" => id}) do
+    post_comment = Repo.get!(PostComment, id)
+    
     PostComment |> set(post_comment, :is_deleted, true)
 
     conn |> put_status(204) |> json(%{})

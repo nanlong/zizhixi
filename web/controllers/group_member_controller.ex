@@ -35,19 +35,18 @@ defmodule Zizhixi.GroupMemberController do
             |> put_status(400)
             |> render(JsonView, "error.json", changeset: changeset)
         end
-    end    
+    end
   end
 
-  def delete(conn, %{"group_id" => group_id, "id" => id}) do
-    group_member = Repo.get_by!(GroupMember, %{id: id, group_id: group_id})
-    group = Repo.get!(Group, group_id)
-
+  def delete(conn, %{"id" => id}) do
+    current_user = Guardian.Plug.current_resource(conn)
+    group_member = Repo.get_by!(GroupMember, %{id: id, user_id: current_user.id})
+    group = Repo.get!(Group, group_member.group_id)
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(group_member)
     Group |> dec(group, :member_count)
 
-    conn
-    |> json(%{status: 1})
+    conn |> redirect(to: group_path(conn, :index))
   end
 end

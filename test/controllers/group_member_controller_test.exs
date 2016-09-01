@@ -41,12 +41,13 @@ defmodule Zizhixi.GroupMemberControllerTest do
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    conn
+    conn = conn
     |> Zizhixi.GroupControllerTest.create
     |> new_user
     |> post(group_member_path(conn, :create, Repo.one(Group)))
-    |> delete(group_member_path(conn, :delete, Repo.one(Group), Repo.one(GroupMember)))
+    |> delete(group_member_path(conn, :delete, Repo.one(GroupMember)))
 
-    assert Repo.one(Group).member_count == 1
+    assert redirected_to(conn) == group_path(conn, :index)
+    refute Repo.one(GroupMember)
   end
 end

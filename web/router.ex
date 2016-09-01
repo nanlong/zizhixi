@@ -23,16 +23,16 @@ defmodule Zizhixi.Router do
 
     get "/", PageController, :index
 
-    
+
     resources "/posts", PostController do
       resources "/comments", PostCommentController, as: :comment, only: [:create, :show]
     end
 
-    resources "/posts/:post_id/praise", PostPraiseController, only: [:show, :create, :delete]
+    resources "/posts/:post_id/praise", PostPraiseController, only: [:index, :create, :delete]
 
-    resources "/posts/comments", PostCommentController, only: [:delete, :praise]
+    resources "/post_comments", PostCommentController, only: [:delete]
 
-    post "/posts/comments/:id/praise", PostCommentController, :praise
+    post "/post_comments/:id/praise", PostCommentController, :praise
     # :show 是否点赞
     # :create 创建点赞
     # :delete 取消点赞
