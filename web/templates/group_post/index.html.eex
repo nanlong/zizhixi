@@ -1,0 +1,24 @@
+<h2>Listing group posts</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for group_post <- @group_posts do %>
+    <tr>
+
+      <td class="text-right">
+        <%= link "Show", to: group_post_path(@conn, :show, @group, group_post), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: group_post_path(@conn, :edit, @group, group_post), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: group_post_path(@conn, :delete, @group, group_post), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New group post", to: group_post_path(@conn, :new, @group) %>

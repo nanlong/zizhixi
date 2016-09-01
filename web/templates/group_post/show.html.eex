@@ -1,0 +1,8 @@
+<h2>Show group post</h2>
+
+<ul>
+
+</ul>
+
+<%= link "Edit", to: group_post_path(@conn, :edit, @group, @group_post) %>
+<%= link "Back", to: group_post_path(@conn, :index, @group) %>

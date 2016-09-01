@@ -33,6 +33,8 @@ defmodule Zizhixi.Router do
 
     resources "/groups", GroupController do
       resources "/members", GroupMemberController, as: :member, only: [:index, :create, :delete]
+
+      resources "/posts", GroupPostController, as: :post
     end
   end
 
