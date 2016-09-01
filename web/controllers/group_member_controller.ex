@@ -11,7 +11,7 @@ defmodule Zizhixi.GroupMemberController do
   plug Zizhixi.VerifyRequest, [model: GroupMember, action: "is_owner"]
     when action in [:delete]
 
-  def index(conn, _params) do
+  def index(conn, %{"group_id" => _group_id}) do
     group_members = Repo.all(GroupMember)
     render(conn, "index.html", group_members: group_members)
   end
@@ -22,15 +22,20 @@ defmodule Zizhixi.GroupMemberController do
     params = %{group_id: group.id, user_id: current_user.id}
     changeset = GroupMember.changeset(%GroupMember{}, params)
 
-    case Repo.insert(changeset) do
-      {:ok, _group_member} ->
-        Group |> inc(group, :member_count)
+    cond do
+      GroupMember |> Repo.get_by(params) ->
         conn |> json(%{status: 1})
-      {:error, changeset} ->
-        conn
-        |> put_status(400)
-        |> render(JsonView, "error.json", changeset: changeset)
-    end
+      true ->
+        case Repo.insert(changeset) do
+          {:ok, _group_member} ->
+            Group |> inc(group, :member_count)
+            conn |> json(%{status: 1})
+          {:error, changeset} ->
+            conn
+            |> put_status(400)
+            |> render(JsonView, "error.json", changeset: changeset)
+        end
+    end    
   end
 
   def delete(conn, %{"group_id" => group_id, "id" => id}) do
