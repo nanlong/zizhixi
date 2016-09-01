@@ -23,19 +23,33 @@ defmodule Zizhixi.Router do
 
     get "/", PageController, :index
 
+    
     resources "/posts", PostController do
-      post "/praise", PostController, :praise, as: :praise
-
-      resources "/comments", PostCommentController, as: :comment, only: [:create, :show, :delete] do
-        post "/praise", PostCommentController, :praise, as: :praise
-      end
+      resources "/comments", PostCommentController, as: :comment, only: [:create, :show]
     end
+
+    resources "/posts/:post_id/praise", PostPraiseController, only: [:show, :create, :delete]
+
+    resources "/posts/comments", PostCommentController, only: [:delete, :praise]
+
+    post "/posts/comments/:id/praise", PostCommentController, :praise
+    # :show 是否点赞
+    # :create 创建点赞
+    # :delete 取消点赞
+    # resources "/post_comments/:comment_id/praise", PostCommentPraiseController, only: [:show, :create, :delete]
 
     resources "/groups", GroupController do
-      resources "/members", GroupMemberController, as: :member, only: [:index, :create, :delete]
+      resources "/members", GroupMemberController, as: :member, only: [:index, :create]
 
-      resources "/posts", GroupPostController, as: :post
+      resources "/posts", GroupPostController, as: :post, only: [:index, :new, :create]
     end
+
+    resources "/groups/members", GroupMemberController, only: [:delete]
+
+    # delete "/groups/:group_id/members", GroupMemberController, :delete
+    # edit update delete
+    resources "/groups/posts", GroupPostController, only: [:edit, :update, :delete]
+
   end
 
   scope "/account", Zizhixi do
@@ -44,10 +58,17 @@ defmodule Zizhixi.Router do
     get "/signup", AccountController, :signup_page
     post "/signup", AccountController, :signup
 
+    # get "/signup", UserController, :new
+    # post "/signup", UserController, :create
+
     get "/signin", AccountController, :signin_page
     post "/signin", AccountController, :signin
 
+    # get "/signin", SessionController, :new
+    # post "/signin", SessionController, :create
+
     get "/signout", AccountController, :signout
+    # get "/signout", SessionController, :delete
   end
 
   # Other scopes may use custom stacks.
