@@ -26,18 +26,18 @@ defmodule Zizhixi.AccountControllerTest do
   }
 
   test "get signup page", %{conn: conn} do
-    conn = get conn, account_path(conn, :signup_page)
+    conn = get conn, user_path(conn, :new)
     assert html_response(conn, 200) =~ "用户注册"
   end
 
   test "post signup success", %{conn: conn} do
-    conn = post conn, account_path(conn, :signup), user: @signup_valid_attrs
+    conn = post conn, user_path(conn, :create), user: @signup_valid_attrs
     assert conn.status == 302
     assert User |> Repo.get_by(@signup_valid_attrs |> Map.delete(:password))
   end
 
   test "post signup error", %{conn: conn} do
-    conn = post conn, account_path(conn, :signup), user: @invalid_attrs
+    conn = post conn, user_path(conn, :create), user: @invalid_attrs
     assert html_response(conn, 200) =~ "can&#39;t be blank"
   end
 
@@ -47,7 +47,7 @@ defmodule Zizhixi.AccountControllerTest do
   end
 
   test "post signin success", %{conn: conn} do
-    post conn, account_path(conn, :signup), user: @signup_valid_attrs
+    post conn, user_path(conn, :create), user: @signup_valid_attrs
 
     conn = post conn, account_path(conn, :signin), user: @signin_username_valid_attrs
     assert conn.status == 302
@@ -67,7 +67,7 @@ defmodule Zizhixi.AccountControllerTest do
   end
 
   def signup(conn) do
-    post conn, account_path(conn, :signup), user: @signup_valid_attrs
+    post conn, user_path(conn, :create), user: @signup_valid_attrs
   end
 
   def signin(conn) do

@@ -10,7 +10,7 @@ defmodule Zizhixi.GroupMemberControllerTest do
       email: "new@test.com",
       password: "123456"
     }
-    post conn, account_path(conn, :signup), user: user_params
+    post conn, user_path(conn, :create), user: user_params
   end
 
   test "lists all entries on index", %{conn: conn} do

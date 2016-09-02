@@ -10,7 +10,7 @@ defmodule Zizhixi.PostCommentControllerTest do
   test "creates resource and redirects when data is valid", %{conn: conn} do
     conn = conn
     |> Zizhixi.PostControllerTest.create
-    |> post(post_comment_path(conn, :create, Post |> Repo.one), post_comment: @valid_attrs)
+    |> post(post_comment_path(conn, :create, Repo.one(Post)), post_comment: @valid_attrs)
 
     assert json_response(conn, 200) |> Map.has_key?("data")
     assert Repo.get_by(PostComment, @valid_attrs)
@@ -27,7 +27,7 @@ defmodule Zizhixi.PostCommentControllerTest do
   test "shows chosen resource", %{conn: conn} do
     conn = conn
     |> create
-    |> get(post_comment_path(conn, :show, Repo.one(PostComment).post_id, Repo.one(PostComment)))
+    |> get(post_comment_path(conn, :show, Repo.one(Post), Repo.one(PostComment)))
 
     assert html_response(conn, 200) =~ "Show post comment"
   end
