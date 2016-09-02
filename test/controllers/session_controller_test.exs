@@ -1,31 +1,39 @@
 defmodule Zizhixi.SessionControllerTest do
   use Zizhixi.ConnCase
 
-  # alias Zizhixi.Session
-  # @valid_attrs %{}
-  # @invalid_attrs %{}
+  # alias Zizhixi.User
+  @valid_attrs %{
+    account: "Test",
+    password: "testpassword",
+  }
+  @invalid_attrs %{
+    account: "",
+    password: ""
+  }
 
   # test "lists all entries on index", %{conn: conn} do
   #   conn = get conn, session_path(conn, :index)
   #   assert html_response(conn, 200) =~ "Listing users"
   # end
   #
-  # test "renders form for new resources", %{conn: conn} do
-  #   conn = get conn, session_path(conn, :new)
-  #   assert html_response(conn, 200) =~ "New session"
-  # end
-  #
-  # test "creates resource and redirects when data is valid", %{conn: conn} do
-  #   conn = post conn, session_path(conn, :create), session: @valid_attrs
-  #   assert redirected_to(conn) == session_path(conn, :index)
-  #   assert Repo.get_by(Session, @valid_attrs)
-  # end
-  #
-  # test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-  #   conn = post conn, session_path(conn, :create), session: @invalid_attrs
-  #   assert html_response(conn, 200) =~ "New session"
-  # end
-  #
+  test "renders form for new resources", %{conn: conn} do
+    conn = get conn, session_path(conn, :new)
+    assert html_response(conn, 200) =~ "<html"
+  end
+
+  test "creates resource and redirects when data is valid", %{conn: conn} do
+    conn = conn
+    |> Zizhixi.UserControllerTest.create
+    |> post(session_path(conn, :create), user: @valid_attrs)
+
+    assert redirected_to(conn) == page_path(conn, :index)
+  end
+
+  test "does not create resource and renders errors when data is invalid", %{conn: conn} do
+    conn = post conn, session_path(conn, :create), user: @invalid_attrs
+    assert html_response(conn, 200) =~ "<html"
+  end
+
   # test "shows chosen resource", %{conn: conn} do
   #   session = Repo.insert! %Session{}
   #   conn = get conn, session_path(conn, :show, session)
@@ -57,10 +65,17 @@ defmodule Zizhixi.SessionControllerTest do
   #   assert html_response(conn, 200) =~ "Edit session"
   # end
   #
-  # test "deletes chosen resource", %{conn: conn} do
-  #   session = Repo.insert! %Session{}
-  #   conn = delete conn, session_path(conn, :delete, session)
-  #   assert redirected_to(conn) == session_path(conn, :index)
-  #   refute Repo.get(Session, session.id)
-  # end
+  test "deletes chosen resource", %{conn: conn} do
+    conn = conn
+    |> create
+    |> get(session_path(conn, :delete))
+
+    assert redirected_to(conn) == page_path(conn, :index)
+  end
+
+  def create(conn) do
+    conn
+    |> Zizhixi.UserControllerTest.create
+    |> post(session_path(conn, :create), user: @valid_attrs)
+  end
 end

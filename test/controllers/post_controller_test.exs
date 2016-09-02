@@ -20,7 +20,7 @@ defmodule Zizhixi.PostControllerTest do
 
   test "renders form for new resources", %{conn: conn} do
     conn = conn
-    |> Zizhixi.AccountControllerTest.signup
+    |> Zizhixi.UserControllerTest.create
     |> get(post_path(conn, :new))
 
     assert html_response(conn, 200) =~ "<html"
@@ -28,7 +28,7 @@ defmodule Zizhixi.PostControllerTest do
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
     conn = conn
-    |> Zizhixi.AccountControllerTest.signup
+    |> Zizhixi.UserControllerTest.create
     |> post(post_path(conn, :create), post: @valid_attrs)
 
     assert redirected_to(conn) == post_path(conn, :index)
@@ -37,7 +37,7 @@ defmodule Zizhixi.PostControllerTest do
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     conn = conn
-    |> Zizhixi.AccountControllerTest.signup
+    |> Zizhixi.UserControllerTest.create
     |> post(post_path(conn, :create), post: @invalid_attrs)
 
     assert html_response(conn, 200) =~ "can&#39;t be blank"
@@ -107,7 +107,7 @@ defmodule Zizhixi.PostControllerTest do
 
   def create(conn) do
     conn
-    |> Zizhixi.AccountControllerTest.signup
+    |> Zizhixi.UserControllerTest.create
     |> post(post_path(conn, :create), post: @valid_attrs)
   end
 end

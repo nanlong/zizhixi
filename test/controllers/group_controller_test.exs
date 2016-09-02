@@ -20,7 +20,7 @@ defmodule Zizhixi.GroupControllerTest do
 
   test "renders form for new resources", %{conn: conn} do
     conn = conn
-    |> Zizhixi.AccountControllerTest.signup
+    |> Zizhixi.UserControllerTest.create
     |> get(group_path(conn, :new))
 
     assert html_response(conn, 200) =~ "<html"
@@ -35,7 +35,7 @@ defmodule Zizhixi.GroupControllerTest do
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
     conn = conn
-    |> Zizhixi.AccountControllerTest.signup
+    |> Zizhixi.UserControllerTest.create
     |> post(group_path(conn, :create), group: @invalid_attrs)
 
     assert html_response(conn, 200) =~ "<html"
@@ -89,7 +89,7 @@ defmodule Zizhixi.GroupControllerTest do
 
   def create(conn) do
     conn
-    |> Zizhixi.AccountControllerTest.signup
+    |> Zizhixi.UserControllerTest.create
     |> post(group_path(conn, :create), group: @valid_attrs)
   end
 end
