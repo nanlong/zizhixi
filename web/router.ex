@@ -28,12 +28,10 @@ defmodule Zizhixi.Router do
       resources "/comments", PostCommentController, as: :comment, only: [:create, :show]
     end
 
-    # 帖子点赞， 点赞列表，创建点赞，删除点赞
     resources "/posts/:post_id/praise", PostPraiseController, only: [:index, :create, :delete]
 
     resources "/post_comments", PostCommentController, only: [:delete]
 
-    # 帖子回复点赞
     resources "/post_comments/:comment_id/praise", PostCommentPraiseController, only: [:index, :create, :delete]
 
     resources "/groups", GroupController do
@@ -44,10 +42,11 @@ defmodule Zizhixi.Router do
 
     resources "/groups/members", GroupMemberController, only: [:delete]
 
-    # delete "/groups/:group_id/members", GroupMemberController, :delete
-    # edit update delete
-    resources "/groups/posts", GroupPostController, only: [:edit, :update, :delete]
+    resources "/groups/posts", GroupPostController, only: [:edit, :update, :delete] do
+      resources "/comments", GroupCommentController, as: :comment, only: [:create, :show]
+    end
 
+    resources "/group_comments", GroupCommentController, only: [:delete]
   end
 
   scope "/account", Zizhixi do
