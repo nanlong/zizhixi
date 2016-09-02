@@ -42,27 +42,27 @@ defmodule Zizhixi.AccountControllerTest do
   end
 
   test "get signin page", %{conn: conn} do
-    conn = get conn, account_path(conn, :signin_page)
+    conn = get conn, session_path(conn, :new)
     assert html_response(conn, 200) =~ "用户登录"
   end
 
   test "post signin success", %{conn: conn} do
     post conn, user_path(conn, :create), user: @signup_valid_attrs
 
-    conn = post conn, account_path(conn, :signin), user: @signin_username_valid_attrs
+    conn = post conn, session_path(conn, :create), user: @signin_username_valid_attrs
     assert conn.status == 302
 
-    conn = post conn, account_path(conn, :signin), user: @signin_email_valid_attrs
+    conn = post conn, session_path(conn, :create), user: @signin_email_valid_attrs
     assert conn.status == 302
   end
 
   test "post signin error", %{conn: conn} do
-    conn = post conn, account_path(conn, :signin), user: @invalid_attrs
+    conn = post conn, session_path(conn, :create), user: @invalid_attrs
     assert html_response(conn, 200) =~ "can&#39;t be blank"
   end
 
   test "signout", %{conn: conn} do
-    conn = get conn, account_path(conn, :signout)
+    conn = get conn, session_path(conn, :delete)
     assert conn.status == 302
   end
 
@@ -71,6 +71,6 @@ defmodule Zizhixi.AccountControllerTest do
   end
 
   def signin(conn) do
-    post conn, account_path(conn, :signin), user: @signin_username_valid_attrs
+    post conn, session_path(conn, :create), user: @signin_username_valid_attrs
   end
 end

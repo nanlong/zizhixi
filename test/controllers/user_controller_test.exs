@@ -1,9 +1,9 @@
 defmodule Zizhixi.UserControllerTest do
   use Zizhixi.ConnCase
 
-  alias Zizhixi.User
-  @valid_attrs %{}
-  @invalid_attrs %{}
+  # alias Zizhixi.User
+  # @valid_attrs %{}
+  # @invalid_attrs %{}
 
   # test "lists all entries on index", %{conn: conn} do
   #   conn = get conn, user_path(conn, :index)

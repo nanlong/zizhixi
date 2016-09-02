@@ -6,7 +6,7 @@ defmodule Zizhixi.GuardianErrorHandler do
   def unauthenticated(conn, _params) do
     conn
     |> put_flash(:error, "哎哟～ 不登录不能操作啊！")
-    |> redirect(to: Helpers.account_path(conn, :signin_page))
+    |> redirect(to: Helpers.session_path(conn, :new))
   end
 end
 

@@ -58,22 +58,10 @@ defmodule Zizhixi.Router do
     get "/signup", UserController, :new
     post "/signup", UserController, :create
 
-    # get "/signin", SessionController, :new
-    # post "/signin", SessionController, :create
-    #
-    # get "/signout", SessionController, :delete
-  end
+    get "/signin", SessionController, :new
+    post "/signin", SessionController, :create
 
-  scope "/account", Zizhixi do
-    pipe_through [:browser, :browser_session]
-
-    # get "/signup", AccountController, :signup_page
-    # post "/signup", AccountController, :signup
-
-    get "/signin", AccountController, :signin_page
-    post "/signin", AccountController, :signin
-
-    get "/signout", AccountController, :signout
+    get "/signout", SessionController, :delete
   end
 
   # Other scopes may use custom stacks.

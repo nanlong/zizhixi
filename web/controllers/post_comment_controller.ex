@@ -1,7 +1,7 @@
 defmodule Zizhixi.PostCommentController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Post, PostComment, PostCommentPraise, JsonView}
+  alias Zizhixi.{Post, PostComment, PostCommentPraise, ChangesetView}
 
   import Zizhixi.Sqlalchemy, only: [set: 4, inc: 3]
 
@@ -29,7 +29,7 @@ defmodule Zizhixi.PostCommentController do
       {:error, changeset} ->
         conn
         |> put_status(400)
-        |> render(JsonView, "error.json", changeset: changeset)
+        |> render(ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -41,7 +41,7 @@ defmodule Zizhixi.PostCommentController do
 
   def delete(conn, %{"id" => id}) do
     post_comment = Repo.get!(PostComment, id)
-    
+
     PostComment |> set(post_comment, :is_deleted, true)
 
     conn |> put_status(204) |> json(%{})

@@ -26,7 +26,7 @@
               <span></span>
             </span>
             <div class="nav-right nav-menu">
-              <%= link "登录", to: account_path(@conn, :signin_page), class: "nav-item" %>
+              <%= link "登录", to: session_path(@conn, :new), class: "nav-item" %>
               <%= link "注册", to: user_path(@conn, :new), class: "nav-item" %>
             </div>
           </div>
