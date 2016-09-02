@@ -5,6 +5,12 @@ defmodule Zizhixi.PostCommentPraiseController do
 
   import Zizhixi.Sqlalchemy, only: [inc: 3, dec: 3]
 
+  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
+    when action in [:create, :delete]
+
+  plug Zizhixi.VerifyRequest, [model: PostCommentPraise, action: "is_owner"]
+    when action in [:delete]
+
   def index(conn, %{"comment_id" => comment_id}) do
     post_comment = Repo.get!(PostComment, comment_id)
 
