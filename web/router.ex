@@ -28,15 +28,13 @@ defmodule Zizhixi.Router do
       resources "/comments", PostCommentController, as: :comment, only: [:create, :show]
     end
 
+    # 帖子点赞， 点赞列表，创建点赞，删除点赞
     resources "/posts/:post_id/praise", PostPraiseController, only: [:index, :create, :delete]
 
     resources "/post_comments", PostCommentController, only: [:delete]
 
-    post "/post_comments/:id/praise", PostCommentController, :praise
-    # :show 是否点赞
-    # :create 创建点赞
-    # :delete 取消点赞
-    # resources "/post_comments/:comment_id/praise", PostCommentPraiseController, only: [:show, :create, :delete]
+    # 帖子回复点赞
+    resources "/post_comments/:comment_id/praise", PostCommentPraiseController, only: [:index, :create, :delete]
 
     resources "/groups", GroupController do
       resources "/members", GroupMemberController, as: :member, only: [:index, :create]
