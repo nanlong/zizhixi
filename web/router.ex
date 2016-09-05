@@ -23,18 +23,9 @@ defmodule Zizhixi.Router do
 
     get "/", PageController, :index
 
-    resources "/users", UserController, param: "username", only: [:index, :show, :edit, :update]
-
-
-    resources "/posts", PostController do
-      resources "/comments", PostCommentController, as: :comment, only: [:create, :show]
-    end
-
-    resources "/posts/:post_id/praise", PostPraiseController, only: [:index, :create, :delete]
-
-    resources "/post_comments", PostCommentController, only: [:delete]
-
-    resources "/post_comments/:comment_id/praise", PostCommentPraiseController, only: [:index, :create, :delete]
+    get "/users/:username/edit/:action", UserController, :edit
+    patch "/users/:username/edit/:action", UserController, :update
+    put "/users/:username/edit/:action", UserController, :update, as: nil
 
     resources "/groups", GroupController do
       resources "/members", GroupMemberController, as: :member, only: [:index, :create]
@@ -42,9 +33,9 @@ defmodule Zizhixi.Router do
       resources "/posts", GroupPostController, as: :post, only: [:index, :new, :create]
     end
 
-    resources "/groups/members", GroupMemberController, only: [:delete]
+    resources "/groups_members", GroupMemberController, only: [:delete]
 
-    resources "/groups/posts", GroupPostController, only: [:edit, :update, :delete] do
+    resources "/groups_posts", GroupPostController, only: [:edit, :update, :delete] do
       resources "/comments", GroupCommentController, as: :comment, only: [:create, :show]
     end
 
