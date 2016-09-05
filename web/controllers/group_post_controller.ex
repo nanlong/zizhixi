@@ -1,8 +1,13 @@
 defmodule Zizhixi.GroupPostController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.Group
-  alias Zizhixi.GroupPost
+  alias Zizhixi.{Group, GroupPost}
+
+  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
+    when action in [:new, :create, :edit, :update, :delete]
+
+  plug Zizhixi.VerifyRequest, [model: GroupPost, action: "is_owner"]
+    when action in [:edit, :update, :delete]
 
   def index(conn, %{"group_id" => group_id}) do
     group = Repo.get!(Group, group_id)
@@ -10,12 +15,14 @@ defmodule Zizhixi.GroupPostController do
     render(conn, "index.html", group: group, group_posts: group_posts)
   end
 
+  # todo: 验证用户是否为小组成员
   def new(conn, %{"group_id" => group_id}) do
     group = Repo.get!(Group, group_id)
     changeset = GroupPost.changeset(%GroupPost{})
     render(conn, "new.html", group: group, changeset: changeset)
   end
 
+  # todo: 验证用户是否为小组成员
   def create(conn, %{"group_id" => group_id, "group_post" => group_post_params}) do
     group = Repo.get!(Group, group_id)
     changeset = GroupPost.changeset(%GroupPost{}, group_post_params)

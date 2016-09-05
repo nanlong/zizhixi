@@ -11,6 +11,7 @@ defmodule Zizhixi.GroupCommentController do
   plug Zizhixi.VerifyRequest, [model: GroupComment, action: "is_owner"]
     when action in [:delete]
 
+  # todo: 验证当前用户是否为小组成员
   def create(conn, %{"group_post_id" => post_id, "group_comment" => comment_params}) do
     current_user = Guardian.Plug.current_resource(conn)
     post = Repo.get!(GroupPost, post_id)
@@ -23,7 +24,7 @@ defmodule Zizhixi.GroupCommentController do
       {:ok, _group_comment} ->
         GroupPost |> inc(post, :comment_count)
         conn |> put_flash(:info, "Group comment created successfully.")
-      {:error, changeset} ->
+      {:error, _changeset} ->
         conn |> put_flash(:danger, "Group comment created faild.")
     end
 
