@@ -40,6 +40,30 @@ defmodule Zizhixi.UserController do
       changeset_password: changeset_password
   end
 
+  @doc """
+  修改密码
+  """
+  def edit(conn, %{"view" => "password"}) do
+    user = Guardian.Plug.current_resource(conn)
+    changeset = User.changeset(:settings_profile, user)
+
+    render conn, "edit-password.html",
+      user: user,
+      changeset: changeset
+  end
+
+  @doc """
+  修改用户信息
+  """
+  def edit(conn, %{"view" => "profile"}) do
+    user = Guardian.Plug.current_resource(conn)
+    changeset = User.changeset(:settings_profile, user)
+
+    render conn, "edit-profile.html",
+      user: user,
+      changeset: changeset
+  end
+
   def update(conn, %{"view" => "account", "user" => user_params}) do
     user = Guardian.Plug.current_resource(conn)
     changeset = User.changeset(:settings_password, user, user_params)
