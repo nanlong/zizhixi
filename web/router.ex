@@ -23,6 +23,8 @@ defmodule Zizhixi.Router do
 
     get "/", PageController, :index
 
+    resources "/users", UserController, param: "username", only: [:index, :show, :edit, :update]
+
 
     resources "/posts", PostController do
       resources "/comments", PostCommentController, as: :comment, only: [:create, :show]

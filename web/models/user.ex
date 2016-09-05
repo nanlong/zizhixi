@@ -15,6 +15,8 @@ defmodule Zizhixi.User do
 
     field :account, :string, virtual: true
     field :password, :string, virtual: true
+    field :old_password, :string, virtual: true # 原密码
+    field :password_confirmation, :string, virtual: true
 
     timestamps()
   end
@@ -52,6 +54,15 @@ defmodule Zizhixi.User do
     |> validate_required([:account, :password])
     |> load_user(:account)
     |> validate_password(:password)
+  end
+
+  def changeset(:modify_password, struct, params) do
+    struct
+    |> cast(params, [:old_password, :password, :password_confirmation])
+    |> validate_required([:old_password, :password, :password_confirmation])
+    |> validate_password(:old_password)
+    |> validate_confirmation(:password)
+    |> put_password_hash(:password, :password_hash)
   end
 
   @doc """
