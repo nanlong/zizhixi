@@ -1,8 +1,7 @@
-<h2>Show user</h2>
+<h2></h2>
 
 <ul>
 
 </ul>
 
-<%= link "Edit", to: user_path(@conn, :edit, @user.username) %>
-<%= link "Back", to: user_path(@conn, :index) %>
+<%= link "Edit", to: user_path(@conn, :show, @user.username) %>

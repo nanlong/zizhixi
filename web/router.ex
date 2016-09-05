@@ -14,6 +14,12 @@ defmodule Zizhixi.Router do
     plug Guardian.Plug.LoadResource
   end
 
+  pipeline :require_login do
+    plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.LoadResource
+    plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -23,14 +29,20 @@ defmodule Zizhixi.Router do
 
     get "/", PageController, :index
 
-    get "/users/:username/edit/:action", UserController, :edit
-    patch "/users/:username/edit/:action", UserController, :update
-    put "/users/:username/edit/:action", UserController, :update, as: nil
+    get "/signup", UserController, :new
+    post "/signup", UserController, :create
+
+    get "/signin", SessionController, :new
+    post "/signin", SessionController, :create
+
+    get "/signout", SessionController, :delete
+
+    resources "/users", UserController, param: "username", only: [:show]
 
     resources "/groups", GroupController do
       resources "/members", GroupMemberController, as: :member, only: [:index, :create]
 
-      resources "/posts", GroupPostController, as: :post, only: [:index, :new, :create]
+      resources "/posts", GroupPostController, as: :post, only: [:new, :create]
     end
 
     resources "/groups_members", GroupMemberController, only: [:delete]
@@ -42,18 +54,12 @@ defmodule Zizhixi.Router do
     resources "/group_comments", GroupCommentController, only: [:delete]
   end
 
-  scope "/account", Zizhixi do
-    pipe_through [:browser, :browser_session]
+  scope "/settings", Zizhixi do
+    pipe_through [:browser, :require_login]
 
-    get "/signup", UserController, :new
-    post "/signup", UserController, :create
-
-    get "/signin", SessionController, :new
-    post "/signin", SessionController, :create
-
-    get "/signout", SessionController, :delete
+    get "/:view", UserController, :edit
+    resources "/:view", UserController, only: [:update], singleton: true
   end
-
   # Other scopes may use custom stacks.
   # scope "/api", Zizhixi do
   #   pipe_through :api

@@ -9,12 +9,6 @@ defmodule Zizhixi.GroupPostController do
   plug Zizhixi.VerifyRequest, [model: GroupPost, action: "is_owner"]
     when action in [:edit, :update, :delete]
 
-  def index(conn, %{"group_id" => group_id}) do
-    group = Repo.get!(Group, group_id)
-    group_posts = Repo.all(GroupPost)
-    render(conn, "index.html", group: group, group_posts: group_posts)
-  end
-
   # todo: 验证用户是否为小组成员
   def new(conn, %{"group_id" => group_id}) do
     group = Repo.get!(Group, group_id)

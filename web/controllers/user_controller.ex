@@ -31,20 +31,20 @@ defmodule Zizhixi.UserController do
     render(conn, "show.html", user: user)
   end
 
-  def edit(conn, %{"username" => username, "action" => action}) do
-    user = Repo.get_by!(User, %{username: username})
-    changeset = User.changeset(String.to_atom(action), user)
-    render(conn, "edit-#{action}.html", user: user, changeset: changeset)
+  def edit(conn, %{"view" => "account"}) do
+    user = Guardian.Plug.current_resource(conn)
+    changeset = User.changeset(:modify_password, user)
+    render(conn, "edit-account.html", user: user, changeset: changeset)
   end
 
-  def update(conn, %{"username" => username, "action" => "modify_password", "user" => user_params}) do
-    user = Repo.get_by!(User, %{username: username})
+  def update(conn, %{"view" => "account", "user" => user_params}) do
+    user = Guardian.Plug.current_resource(conn)
     changeset = User.changeset(:modify_password, user, user_params)
 
     case Repo.update(changeset) do
       {:ok, user} ->
         conn
-        |> put_flash(:info, "User updated successfully.")
+        |> put_flash(:info, "更新成功.")
         |> redirect(to: user_path(conn, :show, user.username))
       {:error, changeset} ->
         render(conn, "edit-modify_password.html", user: user, changeset: changeset)
