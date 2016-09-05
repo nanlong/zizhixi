@@ -39,6 +39,7 @@ defmodule Zizhixi.Web do
 
       import Zizhixi.Router.Helpers
       import Zizhixi.Gettext
+      import Zizhixi.Sigils
     end
   end
 
@@ -55,6 +56,7 @@ defmodule Zizhixi.Web do
       import Zizhixi.Router.Helpers
       import Zizhixi.ErrorHelpers
       import Zizhixi.Gettext
+      import Zizhixi.Sigils
     end
   end
 
@@ -72,6 +74,7 @@ defmodule Zizhixi.Web do
       import Ecto
       import Ecto.Query
       import Zizhixi.Gettext
+      import Zizhixi.Sigils
     end
   end
 

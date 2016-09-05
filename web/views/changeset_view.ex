@@ -21,7 +21,10 @@ defmodule Zizhixi.ChangesetView do
     changeset_errors = translate_errors(changeset)
 
     changeset_errors = Enum.map(changeset_errors, fn {field, errors} ->
-      field_errors = Enum.map(errors, fn error -> "#{field} #{error}" end)
+      field_errors = Enum.map(errors, fn error ->
+        ~t(#{field} #{error})
+      end)
+
       Enum.join(field_errors, ". ")
     end)
 

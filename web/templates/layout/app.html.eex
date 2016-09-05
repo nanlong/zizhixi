@@ -34,10 +34,14 @@
       </div>
     </section>
       <!-- Hero content: will be in the middle -->
-      <div class="">
+      <div class="" style="margin-top: 10px;">
         <div class="container is-fluid">
-          <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-          <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+          <%= if flash = get_flash(@conn, :info) do %>
+          <p class="notification is-success"><%= flash %></p>
+          <%= end %>
+          <%= if flash = get_flash(@conn, :error) do %>
+          <p class="notification is-danger"><%= flash %></p>
+          <%= end %>
 
           <main role="main">
             <%= render @view_module, @view_template, assigns %>

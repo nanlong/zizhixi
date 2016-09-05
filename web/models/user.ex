@@ -15,8 +15,11 @@ defmodule Zizhixi.User do
 
     field :account, :string, virtual: true
     field :password, :string, virtual: true
-    field :old_password, :string, virtual: true # 原密码
-    field :password_confirmation, :string, virtual: true
+
+    # for settings account
+    field :old_password, :string, virtual: true
+    field :new_password, :string, virtual: true
+    field :new_password_confirmation, :string, virtual: true
 
     timestamps()
   end
@@ -58,11 +61,11 @@ defmodule Zizhixi.User do
 
   def changeset(:settings_password, struct, params) do
     struct
-    |> cast(params, [:old_password, :password, :password_confirmation])
-    |> validate_required([:old_password, :password, :password_confirmation])
+    |> cast(params, [:old_password, :new_password, :new_password_confirmation])
+    |> validate_required([:old_password, :new_password, :new_password_confirmation])
     |> validate_password(:old_password)
-    |> validate_confirmation(:password)
-    |> put_password_hash(:password, :password_hash)
+    |> validate_confirmation(:new_password)
+    |> put_password_hash(:new_password, :password_hash)
   end
 
   @doc """
@@ -115,7 +118,7 @@ defmodule Zizhixi.User do
 
     case verify_password?(password, changeset.data.password_hash) do
       true -> changeset
-      false -> changeset |> add_error(password_field, "密码错误")
+      false -> changeset |> add_error(password_field, "password error")
     end
   end
 

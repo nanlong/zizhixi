@@ -46,10 +46,10 @@ defmodule Zizhixi.UserController do
 
     conn = case Repo.update(changeset) do
       {:ok, user} ->
-        conn |> put_flash(:info, "密码修改成功.")
+        conn |> put_flash(:info, "密码更新成功")
       {:error, changeset} ->
         changeset_errors = Zizhixi.ChangesetView.translate_errors(:flash, changeset)
-        conn |> put_flash(:danger, changeset_errors)
+        conn |> put_flash(:error, changeset_errors)
     end
 
     conn |> redirect(to: user_path(conn, :edit, "account"))
