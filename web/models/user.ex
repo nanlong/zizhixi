@@ -56,7 +56,7 @@ defmodule Zizhixi.User do
     |> validate_password(:password)
   end
 
-  def changeset(:modify_password, struct, params) do
+  def changeset(:settings_password, struct, params) do
     struct
     |> cast(params, [:old_password, :password, :password_confirmation])
     |> validate_required([:old_password, :password, :password_confirmation])

@@ -16,4 +16,15 @@ defmodule Zizhixi.ChangesetView do
     # as a JSON object. So we just pass it forward.
     %{errors: translate_errors(changeset)}
   end
+
+  def translate_errors(:flash, changeset) do
+    changeset_errors = translate_errors(changeset)
+
+    changeset_errors = Enum.map(changeset_errors, fn {field, errors} ->
+      field_errors = Enum.map(errors, fn error -> "#{field} #{error}" end)
+      Enum.join(field_errors, ". ")
+    end)
+
+    "#{Enum.join(changeset_errors, ". ")}."
+  end
 end
