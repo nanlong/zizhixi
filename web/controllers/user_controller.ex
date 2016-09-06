@@ -3,6 +3,8 @@ defmodule Zizhixi.UserController do
 
   alias Zizhixi.User
 
+  import Zizhixi.ControllerHelpers, only: [redirect_to: 2]
+
   def index(conn, _params) do
     users = Repo.all(User)
     render(conn, "index.html", users: users)
@@ -20,7 +22,7 @@ defmodule Zizhixi.UserController do
       {:ok, user} ->
         conn
         |> Guardian.Plug.sign_in(user)
-        |> redirect(to: page_path(conn, :index))
+        |> redirect_to(page_path(conn, :index))
       {:error, changeset} ->
         render conn, "new.html", changeset: changeset
     end

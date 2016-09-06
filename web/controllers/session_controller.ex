@@ -3,6 +3,8 @@ defmodule Zizhixi.SessionController do
 
   alias Zizhixi.User
 
+  import Zizhixi.ControllerHelpers, only: [redirect_to: 2]
+
   def new(conn, _params) do
     changeset = User.changeset(:signin, %User{})
     render conn, "new.html", changeset: changeset
@@ -15,7 +17,7 @@ defmodule Zizhixi.SessionController do
       true ->
         conn
         |> Guardian.Plug.sign_in(changeset.data)
-        |> redirect(to: page_path(conn, :index))
+        |> redirect_to(page_path(conn, :index))
       false ->
         changeset = %{changeset | action: :signin}
         render conn, "new.html", changeset: changeset
