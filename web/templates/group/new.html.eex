@@ -1,6 +1,4 @@
-<h2>New group</h2>
+<h2>创建小组</h2>
 
 <%= render "form.html", changeset: @changeset,
                         action: group_path(@conn, :create) %>
-
-<%= link "Back", to: group_path(@conn, :index) %>

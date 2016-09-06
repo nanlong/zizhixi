@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.Group
+  alias Zizhixi.{Group, GroupPost}
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
     when action in [:new, :create, :edit, :update, :delete]
@@ -36,7 +36,8 @@ defmodule Zizhixi.GroupController do
 
   def show(conn, %{"id" => id}) do
     group = Repo.get!(Group, id)
-    render(conn, "show.html", group: group)
+    posts = GroupPost |> where(group_id: ^group.id) |> Repo.all
+    render(conn, "show.html", group: group, posts: posts)
   end
 
   def edit(conn, %{"id" => id}) do

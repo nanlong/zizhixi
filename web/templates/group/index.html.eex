@@ -10,7 +10,15 @@
   <tbody>
 <%= for group <- @groups do %>
     <tr>
-
+      <td>
+        <%= group.name %>
+      </td>
+      <td>
+        <%= group.member_count %>
+      </td>
+      <td>
+        <%= group.post_count %>
+      </td>
       <td class="text-right">
         <%= link "Show", to: group_path(@conn, :show, group), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: group_path(@conn, :edit, group), class: "btn btn-default btn-xs" %>

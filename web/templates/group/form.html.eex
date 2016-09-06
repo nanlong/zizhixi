@@ -5,7 +5,26 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
-  </div>
+  <%= label f, :name, "名称", class: "label" %>
+  <p class="control">
+    <%= text_input f, :name, class: "input" %>
+    <%= error_tag f, :name %>
+  </p>
+
+  <%= label f, :logo, "标志", class: "label" %>
+  <p class="control">
+    <%= text_input f, :logo, class: "input" %>
+    <%= error_tag f, :logo %>
+  </p>
+
+  <%= label f, :description, "简介", class: "label" %>
+  <p class="control">
+    <%= textarea f, :description, class: "textarea" %>
+    <%= error_tag f, :description %>
+  </p>
+
+  <p class="control">
+    <button class="button is-primary">登录</button>
+    <button class="button is-link" type="reset">取消</button>
+  </p>
 <% end %>

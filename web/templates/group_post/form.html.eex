@@ -5,6 +5,18 @@
     </div>
   <% end %>
 
+  <%= label f, :title, "标题", class: "label" %>
+  <p class="control">
+    <%= text_input f, :title, class: "input" %>
+    <%= error_tag f, :title %>
+  </p>
+
+  <%= label f, :content, "内容", class: "label" %>
+  <p class="control">
+    <%= textarea f, :content, class: "textarea" %>
+    <%= error_tag f, :content %>
+  </p>
+
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>

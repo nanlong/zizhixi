@@ -18,22 +18,29 @@ defmodule Zizhixi.GroupPostController do
 
   # todo: 验证用户是否为小组成员
   def create(conn, %{"group_id" => group_id, "group_post" => group_post_params}) do
+    current_user = Guardian.Plug.current_resource(conn)
     group = Repo.get!(Group, group_id)
-    changeset = GroupPost.changeset(%GroupPost{}, group_post_params)
+
+    params = group_post_params
+    |> Map.put_new("group_id", group.id)
+    |> Map.put_new("user_id", current_user.id)
+
+    changeset = GroupPost.changeset(%GroupPost{}, params)
 
     case Repo.insert(changeset) do
       {:ok, _group_post} ->
         conn
         |> put_flash(:info, "Group post created successfully.")
-        |> redirect(to: group_post_path(conn, :index, group))
+        |> redirect(to: group_path(conn, :show, group))
       {:error, changeset} ->
+        IO.inspect changeset
         render(conn, "new.html", group: group, changeset: changeset)
     end
   end
 
-  def show(conn, %{"group_id" => group_id, "id" => _id} = params) do
+  def show(conn, %{"group_id" => group_id, "id" => id} = params) do
     group = Repo.get!(Group, group_id)
-    group_post = Repo.get_by!(GroupPost, params)
+    group_post = Repo.get_by!(GroupPost, %{id: id})
     render(conn, "show.html", group: group, group_post: group_post)
   end
 
