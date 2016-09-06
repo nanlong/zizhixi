@@ -15,8 +15,6 @@ defmodule Zizhixi.Router do
   end
 
   pipeline :require_login do
-    plug Guardian.Plug.VerifySession
-    plug Guardian.Plug.LoadResource
     plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
   end
 
@@ -55,7 +53,7 @@ defmodule Zizhixi.Router do
   end
 
   scope "/settings", Zizhixi do
-    pipe_through [:browser, :require_login]
+    pipe_through [:browser, :browser_session, :require_login]
 
     get "/:view", UserController, :edit
     resources "/:view", UserController, only: [:update], singleton: true
