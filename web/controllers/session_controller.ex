@@ -3,7 +3,7 @@ defmodule Zizhixi.SessionController do
 
   alias Zizhixi.User
 
-  import Zizhixi.ControllerHelpers, only: [redirect_to: 2]
+  import Zizhixi.Controller.Helpers, only: [redirect_to: 2]
 
   def new(conn, _params) do
     changeset = User.changeset(:signin, %User{})

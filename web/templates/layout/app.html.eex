@@ -15,12 +15,10 @@
   <body>
     <nav class="nav">
       <div class="nav-left">
-        <a class="nav-item" href="#">
-          <span class="title">自制系</span>
-        </a>
-        <a class="nav-item" href="#">
-          小组
-        </a>
+        <%= link raw("<span class=\"title\">自制系</span>"), to: page_path(@conn, :index), class: "nav-item" %>
+
+        <%= link "小组", to: group_path(@conn, :index), class: "nav-item" %>
+
         <a class="nav-item" href="#">
           问答
         </a>
@@ -48,14 +46,20 @@
       </span>
 
       <div class="nav-right nav-menu">
+        <%= if @logged_in? do %>
+        <a class="nav-item" href="<%= user_path(@conn, :show, @current_user.username )%>">
+          <img src="<%= @current_user.avatar %>" alt="<%= @current_user.username %>" />
+          <span style="margin-left: 5px;"><%= @current_user.username %></span>
+        </a>
+        <%= link "退出", to: session_path(@conn, :delete), class: "nav-item" %>
+        <%= else %>
         <span class="nav-item">
           <%= link "注册", to: user_path(@conn, :new), class: "button" %>
           <%= link "登录", to: session_path(@conn, :new), class: "button is-primary" %>
         </span>
+        <%= end %>
       </div>
     </nav>
-
-
 
       <!-- Hero content: will be in the middle -->
       <div class="" style="margin-top: 10px;">

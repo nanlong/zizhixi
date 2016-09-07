@@ -3,10 +3,10 @@ defmodule Zizhixi.GroupPostController do
 
   alias Zizhixi.{Group, GroupPost}
 
-  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
+  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:new, :create, :edit, :update, :delete]
 
-  plug Zizhixi.VerifyRequest, [model: GroupPost, action: "is_owner"]
+  plug Zizhixi.Plug.VerifyRequest, [model: GroupPost, action: "is_owner"]
     when action in [:edit, :update, :delete]
 
   # todo: 验证用户是否为小组成员

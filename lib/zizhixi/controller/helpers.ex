@@ -1,4 +1,4 @@
-defmodule Zizhixi.ControllerHelpers do
+defmodule Zizhixi.Controller.Helpers do
   use Phoenix.Controller
   import Plug.Conn
 

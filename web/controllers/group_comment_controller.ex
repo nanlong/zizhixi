@@ -3,12 +3,12 @@ defmodule Zizhixi.GroupCommentController do
 
   alias Zizhixi.{GroupPost, GroupComment}
 
-  import Zizhixi.Sqlalchemy, only: [set: 4, inc: 3]
+  import Zizhixi.Ecto.Helpers, only: [set: 4, inc: 3]
 
-  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
+  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:create, :delete]
 
-  plug Zizhixi.VerifyRequest, [model: GroupComment, action: "is_owner"]
+  plug Zizhixi.Plug.VerifyRequest, [model: GroupComment, action: "is_owner"]
     when action in [:delete]
 
   # todo: 验证当前用户是否为小组成员

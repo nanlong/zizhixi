@@ -1,4 +1,4 @@
-defmodule Zizhixi.VerifyRequest do
+defmodule Zizhixi.Plug.VerifyRequest do
   import Plug.Conn
   import Phoenix.Controller, only: [text: 2]
   alias Zizhixi.Repo

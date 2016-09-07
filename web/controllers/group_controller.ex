@@ -3,10 +3,10 @@ defmodule Zizhixi.GroupController do
 
   alias Zizhixi.{Group, GroupPost}
 
-  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
+  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:new, :create, :edit, :update, :delete]
 
-  plug Zizhixi.VerifyRequest, [model: Group, action: "is_owner"]
+  plug Zizhixi.Plug.VerifyRequest, [model: Group, action: "is_owner"]
     when action in [:edit, :update, :delete]
 
   def index(conn, _params) do

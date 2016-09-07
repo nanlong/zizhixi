@@ -34,7 +34,7 @@ config :guardian, Guardian,
   ttl: {30, :days},
   verify_issuer: true,
   secret_key: to_string(Mix.env),
-  serializer: Zizhixi.GuardianSerializer
+  serializer: Zizhixi.Guardian.Serializer
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

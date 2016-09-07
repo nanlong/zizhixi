@@ -1,4 +1,4 @@
-defmodule Zizhixi.Sqlalchemy do
+defmodule Zizhixi.Ecto.Helpers do
   import Ecto.Query
 
   alias Zizhixi.Repo

@@ -3,7 +3,7 @@ defmodule Zizhixi.UserController do
 
   alias Zizhixi.User
 
-  import Zizhixi.ControllerHelpers, only: [redirect_to: 2]
+  import Zizhixi.Controller.Helpers, only: [redirect_to: 2]
 
   def index(conn, _params) do
     users = Repo.all(User)

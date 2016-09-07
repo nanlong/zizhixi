@@ -12,10 +12,11 @@ defmodule Zizhixi.Router do
   pipeline :browser_session do
     plug Guardian.Plug.VerifySession
     plug Guardian.Plug.LoadResource
+    plug Zizhixi.Plug.LoadCurrentUser
   end
 
   pipeline :require_login do
-    plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
+    plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
   end
 
   pipeline :api do

@@ -3,12 +3,12 @@ defmodule Zizhixi.GroupMemberController do
 
   alias Zizhixi.{Group, GroupMember, JsonView}
 
-  import Zizhixi.Sqlalchemy, only: [inc: 3, dec: 3]
+  import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
 
-  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.GuardianErrorHandler]
+  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:create, :delete]
 
-  plug Zizhixi.VerifyRequest, [model: GroupMember, action: "is_owner"]
+  plug Zizhixi.Plug.VerifyRequest, [model: GroupMember, action: "is_owner"]
     when action in [:delete]
 
   def index(conn, %{"group_id" => _group_id}) do
