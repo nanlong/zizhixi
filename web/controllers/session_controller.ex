@@ -7,7 +7,9 @@ defmodule Zizhixi.SessionController do
 
   def new(conn, _params) do
     changeset = User.changeset(:signin, %User{})
-    render conn, "new.html", changeset: changeset
+    conn
+    |> assign(:title, "用户登录")
+    |> render("new.html", changeset: changeset)
   end
 
   def create(conn, %{"user" => user_params}) do
@@ -20,7 +22,9 @@ defmodule Zizhixi.SessionController do
         |> redirect_to(page_path(conn, :index))
       false ->
         changeset = %{changeset | action: :signin}
-        render conn, "new.html", changeset: changeset
+        conn
+        |> assign(:title, "用户登录")
+        |> render("new.html", changeset: changeset)
     end
   end
 

@@ -1,20 +1,15 @@
 <div class="columns" style="margin-top: 1px;">
   <div class="column is-4 is-offset-4">
     <div class="card is-fullwidth">
-      <header class="card-header">
-        <p class="card-header-title title">
-          用户注册
+      <!-- <header class="card-header">
+        <p class="card-header-title">
+          注册一个新账号
         </p>
-      </header>
+      </header> -->
       <div class="card-content">
         <div class="content">
           <%= form_for @changeset, user_path(@conn, :create), fn f -> %>
-            <%= if @changeset.action do %>
-              <div class="alert alert-danger">
-                <p>Oops, something went wrong! Please check the errors below.</p>
-              </div>
-            <% end %>
-
+            
             <%= label f, :username, "用户名", class: "label" %>
             <p class="control">
               <%= text_input f, :username, class: "input" %>
@@ -34,8 +29,8 @@
             </p>
 
             <p class="control">
-              <button class="button is-primary">登录</button>
-              <button class="button is-link">取消</button>
+              <button class="button is-primary" type="submit">登录</button>
+              <button class="button is-link" type="reset">取消</button>
             </p>
           <% end %>
         </div>

@@ -12,7 +12,9 @@ defmodule Zizhixi.UserController do
 
   def new(conn, _params) do
     changeset = User.changeset(:signup, %User{})
-    render(conn, "new.html", changeset: changeset)
+    conn
+    |> assign(:title, "用户注册")
+    |> render("new.html", changeset: changeset)
   end
 
   def create(conn, %{"user" => user_params}) do
@@ -24,7 +26,9 @@ defmodule Zizhixi.UserController do
         |> Guardian.Plug.sign_in(user)
         |> redirect_to(page_path(conn, :index))
       {:error, changeset} ->
-        render conn, "new.html", changeset: changeset
+        conn
+        |> assign(:title, "用户注册")
+        |> render("new.html", changeset: changeset)
     end
   end
 
