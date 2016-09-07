@@ -128,7 +128,9 @@ defmodule Zizhixi.User do
 
     case verify_password?(password, changeset.data.password_hash) do
       true -> changeset
-      false -> changeset |> add_error(password_field, "password error")
+      false ->
+        %{changeset | data: %__MODULE__{}} 
+        |> add_error(password_field, "password error")
     end
   end
 

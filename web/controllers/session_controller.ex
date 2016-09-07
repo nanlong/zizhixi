@@ -21,7 +21,7 @@ defmodule Zizhixi.SessionController do
         |> Guardian.Plug.sign_in(changeset.data)
         |> redirect_to(page_path(conn, :index))
       false ->
-        changeset = %{changeset | action: :signin}
+        changeset = %{changeset | action: :create}
         conn
         |> assign(:title, "用户登录")
         |> render("new.html", changeset: changeset)

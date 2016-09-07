@@ -1,14 +1,23 @@
-<h2>Show group
-  <%= link "发布帖子", to: group_post_path(@conn, :new, @group) %>
+<h2>
+  <%= @group.name %>
 </h2>
+<%= link "发布帖子", to: group_post_path(@conn, :new, @group) %>
 
-<ul>
-  <%= for post <- @posts do %>
-  <li>
-    <%= link post.title, to: group_post_path(@conn, :show, @group, post) %>
-  </li>
-  <%= end %>
-</ul>
-
-<%= link "Edit", to: group_path(@conn, :edit, @group) %>
-<%= link "Back", to: group_path(@conn, :index) %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>
+        帖子标题
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for post <- @posts do %>
+    <tr>
+      <td>
+        <%= link post.title, to: group_post_path(@conn, :show, @group, post) %>
+      </td>
+    </tr>
+    <%= end %>
+  </tbody>
+</table>

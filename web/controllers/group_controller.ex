@@ -11,7 +11,10 @@ defmodule Zizhixi.GroupController do
 
   def index(conn, _params) do
     groups = Repo.all(Group)
-    render(conn, "index.html", groups: groups)
+
+    conn
+    |> assign(:title, "自制系小组")
+    |> render("index.html", groups: groups)
   end
 
   def new(conn, _params) do
