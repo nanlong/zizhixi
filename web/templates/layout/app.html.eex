@@ -17,20 +17,14 @@
       <div class="nav-left">
         <%= link raw("<span class=\"title\">自制系</span>"), to: page_path(@conn, :index), class: "nav-item" %>
 
-        <%= link "小组", to: group_path(@conn, :index), class: "nav-item" %>
+        <%= for {controllers, name, path} <- navigation(@conn) do %>
+          <%= if controller_module(@conn) in controllers do %>
+            <%= link name, to: path, class: "nav-item is-tab is-active" %>
+          <%= else %>
+            <%= link name, to: path, class: "nav-item" %>
+          <%= end %>
+        <%= end %>
 
-        <a class="nav-item" href="#">
-          问答
-        </a>
-        <a class="nav-item" href="#">
-          天工
-        </a>
-        <a class="nav-item" href="#">
-          司南车
-        </a>
-        <a class="nav-item" href="#">
-          五杂市集
-        </a>
       </div>
 
       <%= if @conn.assigns[:title] do %>
@@ -67,6 +61,7 @@
           <%= if flash = get_flash(@conn, :info) do %>
           <p class="notification is-success"><%= flash %></p>
           <%= end %>
+
           <%= if flash = get_flash(@conn, :error) do %>
           <p class="notification is-danger"><%= flash %></p>
           <%= end %>
