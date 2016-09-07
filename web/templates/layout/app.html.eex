@@ -13,49 +13,55 @@
   </head>
 
   <body>
-    <nav class="nav">
-      <div class="nav-left">
-        <%= link raw("<span class=\"title is-4\">自制系</span>"), to: page_path(@conn, :index), class: "nav-item" %>
+    <section class="hero is-medium">
+      <div class="hero-head">
+        <nav class="nav">
+          <div class="nav-left">
+            <%= link raw("<span class=\"title is-4\">自制系</span>"), to: page_path(@conn, :index), class: "nav-item" %>
 
-        <%= for {controllers, name, path} <- navigation(@conn) do %>
-          <%= if controller_module(@conn) in controllers do %>
-            <%= link name, to: path, class: "nav-item is-tab is-active" %>
-          <%= else %>
-            <%= link name, to: path, class: "nav-item" %>
+            <%= for {controllers, name, path} <- navigation(@conn) do %>
+              <%= if controller_module(@conn) in controllers do %>
+                <%= link name, to: path, class: "nav-item is-tab is-active" %>
+              <%= else %>
+                <%= link name, to: path, class: "nav-item" %>
+              <%= end %>
+            <%= end %>
+
+          </div>
+
+          <%= if @conn.assigns[:title] do %>
+          <div class="nav-center">
+            <h1 class="nav-item title is-5"><%= @conn.assigns[:title] %></h1>
+          </div>
           <%= end %>
-        <%= end %>
 
+          <span class="nav-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+
+          <div class="nav-right nav-menu">
+            <%= if @logged_in? do %>
+            <a class="nav-item" href="<%= user_path(@conn, :show, @current_user.username )%>">
+              <img src="<%= @current_user.avatar %>" alt="<%= @current_user.username %>" />
+              <span style="margin-left: 5px;"><%= @current_user.username %></span>
+            </a>
+            <%= link "退出", to: session_path(@conn, :delete), class: "nav-item" %>
+            <%= else %>
+            <span class="nav-item">
+              <%= link "注册", to: user_path(@conn, :new), class: "button" %>
+              <%= link "登录", to: session_path(@conn, :new), class: "button is-primary" %>
+            </span>
+            <%= end %>
+          </div>
+        </nav>
       </div>
+    </section>
 
-      <%= if @conn.assigns[:title] do %>
-      <div class="nav-center">
-        <h1 class="nav-item title is-5"><%= @conn.assigns[:title] %></h1>
-      </div>
-      <%= end %>
 
-      <span class="nav-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
-      </span>
 
-      <div class="nav-right nav-menu">
-        <%= if @logged_in? do %>
-        <a class="nav-item" href="<%= user_path(@conn, :show, @current_user.username )%>">
-          <img src="<%= @current_user.avatar %>" alt="<%= @current_user.username %>" />
-          <span style="margin-left: 5px;"><%= @current_user.username %></span>
-        </a>
-        <%= link "退出", to: session_path(@conn, :delete), class: "nav-item" %>
-        <%= else %>
-        <span class="nav-item">
-          <%= link "注册", to: user_path(@conn, :new), class: "button" %>
-          <%= link "登录", to: session_path(@conn, :new), class: "button is-primary" %>
-        </span>
-        <%= end %>
-      </div>
-    </nav>
-
-    <div class="" style="margin-top: 10px;">
+    <div class="" style="margin: 10px 0 20px;">
       <div class="container is-fluid">
         <%= if flash = get_flash(@conn, :info) do %>
         <p class="notification is-success"><%= flash %></p>

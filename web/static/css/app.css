@@ -1,1 +1,13 @@
 /* This file is for your main application css. */
+body {
+  background: #fff;
+}
+#header {
+  border-bottom: 1px solid #ddd;
+}
+.help-block {
+  display: block;
+  margin-top: 5px;
+  color: #ed6c63;
+  font-size: 11px;
+}

@@ -1,0 +1,14 @@
+<h2 class="title is-5">个人设置</h2>
+<aside class="menu">
+  <ul class="menu-list">
+    <%= for {view, name, path} <- subnav(@conn) do %>
+    <li>
+      <%= if view == @view do %>
+        <%= link name, to: path, class: "is-active" %>
+      <%= else %>
+        <%= link name, to: path %>
+      <%= end %>
+    </li>
+    <%= end %>
+  </ul>
+</aside>

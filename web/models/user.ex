@@ -27,6 +27,8 @@ defmodule Zizhixi.User do
   @regex_email ~r/.+@[^\.]+.*/
   @regex_mobile ~r/1\d{10}$/
 
+  # @required_params, @optional_params
+
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """
@@ -57,6 +59,14 @@ defmodule Zizhixi.User do
     |> validate_required([:account, :password])
     |> load_user(:account)
     |> validate_password(:password)
+  end
+
+  def changeset(:settings_profile, struct, params) do
+    required_params = [:avatar, :username, :email, :address, :description]
+
+    struct
+    |> cast(params, required_params)
+    |> validate_required(required_params)
   end
 
   def changeset(:settings_password, struct, params) do

@@ -1,7 +1,2 @@
-<h2></h2>
-
-<ul>
-
-</ul>
-
-<%= link "Edit", to: user_path(@conn, :show, @user.username) %>
+<h2><%= @user.username  %>的个人主页</h2>
+<%= link "编辑个人信息", to: user_path(@conn, :edit, "profile") %>

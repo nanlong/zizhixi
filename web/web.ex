@@ -53,6 +53,7 @@ defmodule Zizhixi.Web do
         get_flash: 2,
         view_module: 1,
         controller_module: 1,
+        action_name: 1,
       ]
 
       # Use all HTML functionality (forms, tags, etc)

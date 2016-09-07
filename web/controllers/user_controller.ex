@@ -37,13 +37,17 @@ defmodule Zizhixi.UserController do
     render(conn, "show.html", user: user)
   end
 
-  def edit(conn, %{"view" => "account"}) do
+  @doc """
+  修改用户信息
+  """
+  def edit(conn, %{"view" => "profile"}) do
     user = Guardian.Plug.current_resource(conn)
-    changeset_password = User.changeset(:settings_password, user)
+    changeset = User.changeset(:settings_profile, user)
 
-    render conn, "edit-account.html",
-      user: user,
-      changeset_password: changeset_password
+    conn
+    |> assign(:title, "个人信息")
+    |> assign(:view, "profile")
+    |> render("edit-profile.html", user: user, changeset: changeset)
   end
 
   @doc """
@@ -53,49 +57,43 @@ defmodule Zizhixi.UserController do
     user = Guardian.Plug.current_resource(conn)
     changeset = User.changeset(:settings_profile, user)
 
-    render conn, "edit-password.html",
-      user: user,
-      changeset: changeset
+    conn
+    |> assign(:title, "修改密码")
+    |> assign(:view, "password")
+    |> render("edit-password.html", user: user, changeset: changeset)
   end
 
-  @doc """
-  修改用户信息
-  """
-  def edit(conn, %{"view" => "profile"}) do
+  def update(conn, %{"view" => "profile", "user" => user_params}) do
     user = Guardian.Plug.current_resource(conn)
-    changeset = User.changeset(:settings_profile, user)
-
-    render conn, "edit-profile.html",
-      user: user,
-      changeset: changeset
-  end
-
-  def update(conn, %{"view" => "account", "user" => user_params}) do
-    user = Guardian.Plug.current_resource(conn)
-    changeset = User.changeset(:settings_password, user, user_params)
-
-    conn = case Repo.update(changeset) do
-      {:ok, user} ->
-        conn |> put_flash(:info, "密码更新成功")
-      {:error, changeset} ->
-        changeset_errors = Zizhixi.ChangesetView.translate_errors(:flash, changeset)
-        conn |> put_flash(:error, changeset_errors)
-    end
-
-    conn |> redirect(to: user_path(conn, :edit, "account"))
-  end
-
-  def update(conn, %{"username" => username, "user" => user_params}) do
-    user = Repo.get_by!(User, %{username: username})
-    changeset = User.changeset(user, user_params)
+    changeset = User.changeset(:settings_profile, user, user_params)
 
     case Repo.update(changeset) do
       {:ok, user} ->
         conn
-        |> put_flash(:info, "User updated successfully.")
-        |> redirect(to: user_path(conn, :show, user))
+        |> put_flash(:info, "个人信息修改成功")
+        |> redirect(to: user_path(conn, :edit, "profile"))
       {:error, changeset} ->
-        render(conn, "edit.html", user: user, changeset: changeset)
+        conn
+        |> assign(:title, "个人信息")
+        |> assign(:view, "profile")
+        |> render("edit-profile.html", user: user, changeset: changeset)
+    end
+  end
+
+  def update(conn, %{"view" => "password", "user" => user_params}) do
+    user = Guardian.Plug.current_resource(conn)
+    changeset = User.changeset(:settings_password, user, user_params)
+
+    case Repo.update(changeset) do
+      {:ok, user} ->
+        conn
+        |> put_flash(:info, "密码更新成功")
+        |> redirect(to: user_path(conn, :edit, "password"))
+      {:error, changeset} ->
+        conn
+        |> assign(:title, "修改密码")
+        |> assign(:view, "password")
+        |> render("edit-password.html", user: user, changeset: changeset)
     end
   end
 
