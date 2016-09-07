@@ -1,4 +1,16 @@
 defmodule Zizhixi.Plug.LoadCurrentUser do
+  @moduledoc """
+  example:
+    pipeline :browser_session do
+      plug Guardian.Plug.VerifySession
+      plug Guardian.Plug.LoadResource
+      plug Zizhixi.Plug.LoadCurrentUser
+    end
+
+  at template:
+    <%= @logged_in? %>
+    <%= @current_user %>
+  """
   import Guardian.Plug, only: [authenticated?: 1, current_resource: 1]
   import Plug.Conn, only: [assign: 3]
 

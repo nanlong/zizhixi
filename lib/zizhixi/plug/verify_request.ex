@@ -1,4 +1,10 @@
 defmodule Zizhixi.Plug.VerifyRequest do
+  @moduledoc """
+
+  example:
+    plug Zizhixi.Plug.VerifyRequest, [model: Group, action: "is_owner"]
+      when action in [:edit, :update, :delete]
+  """
   import Plug.Conn
   import Phoenix.Controller, only: [text: 2]
   alias Zizhixi.Repo

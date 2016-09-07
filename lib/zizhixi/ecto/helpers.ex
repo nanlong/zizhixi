@@ -1,4 +1,10 @@
 defmodule Zizhixi.Ecto.Helpers do
+  @moduledoc """
+
+  example:
+    post = Repo.get(Post, post_id)
+    Post |> inc(post, :comment_count)
+  """
   import Ecto.Query
 
   alias Zizhixi.Repo
