@@ -9,13 +9,13 @@
 
     <title><%= @conn.assigns[:title] && @conn.assigns[:title] <>  " - " %>自制系</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-    <script src="https://use.fontawesome.com/c953b87fae.js"></script>
+    <!-- <script src="https://use.fontawesome.com/c953b87fae.js"></script> -->
   </head>
 
   <body>
     <nav class="nav">
       <div class="nav-left">
-        <%= link raw("<span class=\"title\">自制系</span>"), to: page_path(@conn, :index), class: "nav-item" %>
+        <%= link raw("<span class=\"title is-4\">自制系</span>"), to: page_path(@conn, :index), class: "nav-item" %>
 
         <%= for {controllers, name, path} <- navigation(@conn) do %>
           <%= if controller_module(@conn) in controllers do %>
@@ -55,28 +55,29 @@
       </div>
     </nav>
 
-      <!-- Hero content: will be in the middle -->
-      <div class="" style="margin-top: 10px;">
-        <div class="container is-fluid">
-          <%= if flash = get_flash(@conn, :info) do %>
-          <p class="notification is-success"><%= flash %></p>
-          <%= end %>
+    <div class="" style="margin-top: 10px;">
+      <div class="container is-fluid">
+        <%= if flash = get_flash(@conn, :info) do %>
+        <p class="notification is-success"><%= flash %></p>
+        <%= end %>
 
-          <%= if flash = get_flash(@conn, :error) do %>
-          <p class="notification is-danger"><%= flash %></p>
-          <%= end %>
+        <%= if flash = get_flash(@conn, :error) do %>
+        <p class="notification is-danger"><%= flash %></p>
+        <%= end %>
 
-          <main role="main">
-            <%= render @view_module, @view_template, assigns %>
-          </main>
+        <main role="main">
+          <%= render @view_module, @view_template, assigns %>
+        </main>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="content has-text-centered">
+          Copyright © 2016 zizhixi.com
         </div>
       </div>
-
-      <!-- Hero footer: will stick at the bottom -->
-      <div class="hero-foot">
-
-      </div>
-
+    </footer>
 
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
