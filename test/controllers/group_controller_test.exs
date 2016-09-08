@@ -14,7 +14,10 @@ defmodule Zizhixi.GroupControllerTest do
   }
 
   test "lists all entries on index", %{conn: conn} do
-    conn = get conn, group_path(conn, :index)
+    conn = conn
+    |> Zizhixi.SessionControllerTest.create
+    |> get(group_path(conn, :index))
+    
     assert html_response(conn, 200) =~ "<html"
   end
 
@@ -29,7 +32,7 @@ defmodule Zizhixi.GroupControllerTest do
   test "creates resource and redirects when data is valid", %{conn: conn} do
     conn = conn |> create
 
-    assert redirected_to(conn) == group_path(conn, :index)
+    assert redirected_to(conn) == group_path(conn, :show, Repo.one(Group))
     assert Repo.get_by(Group, @valid_attrs)
   end
 
@@ -78,14 +81,15 @@ defmodule Zizhixi.GroupControllerTest do
     assert html_response(conn, 200) =~ "<html"
   end
 
-  test "deletes chosen resource", %{conn: conn} do
-    conn = conn
-    |> create
-    |> delete(group_path(conn, :delete, Repo.one(Group)))
-
-    assert redirected_to(conn) == group_path(conn, :index)
-    refute Repo.get_by(Group, @valid_attrs)
-  end
+  # 暂时不增加删除小组功能
+  # test "deletes chosen resource", %{conn: conn} do
+  #   conn = conn
+  #   |> create
+  #   |> delete(group_path(conn, :delete, Repo.one(Group)))
+  #
+  #   assert redirected_to(conn) == group_path(conn, :index)
+  #   refute Repo.get_by(Group, @valid_attrs)
+  # end
 
   def create(conn) do
     conn

@@ -10,20 +10,25 @@ defmodule Zizhixi.GroupController do
     when action in [:edit, :update, :delete]
 
   def index(conn, _params) do
-    current_user = Guardian.Plug.current_resource(conn)
+    case Guardian.Plug.authenticated?(conn) do
+      true ->
+        current_user = Guardian.Plug.current_resource(conn)
 
-    query = from p in GroupPost,
-      join: g in Group, on: p.group_id == g.id,
-      join: m in GroupMember, on: g.id == m.group_id and m.user_id == ^current_user.id,
-      preload: [:group, :user]
+        query = from p in GroupPost,
+          join: g in Group, on: p.group_id == g.id,
+          join: m in GroupMember, on: g.id == m.group_id and m.user_id == ^current_user.id,
+          preload: [:group, :user]
 
-    posts = query |> Repo.all
+        posts = query |> Repo.all
 
-    groups = Repo.all(Group)
+        groups = Repo.all(Group)
 
-    conn
-    |> assign(:title, "自制系小组")
-    |> render("index.html", groups: groups, posts: posts)
+        conn
+        |> assign(:title, "自制系小组")
+        |> render("index.html", groups: groups, posts: posts)
+      false ->
+        text conn, "no logged"
+    end
   end
 
   def new(conn, _params) do
