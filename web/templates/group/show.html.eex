@@ -1,7 +1,15 @@
 <h2>
   <%= @group.name %>
 </h2>
-<%= link "发布帖子", to: group_post_path(@conn, :new, @group) %>
+
+<%= if @logged_in? do %>
+  <%= link "发布帖子", to: group_post_path(@conn, :new, @group) %>
+  <%= if @member do %>
+    <%= link "退出小组", to: group_member_path(@conn, :delete, @group), method: :delete %>
+  <%= else %>
+    <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post %>
+  <%= end %>
+<%= end %>
 
 <table class="table">
   <thead>
@@ -16,6 +24,7 @@
     <tr>
       <td>
         <%= link post.title, to: group_post_path(@conn, :show, @group, post) %>
+        
       </td>
     </tr>
     <%= end %>

@@ -3,6 +3,8 @@ defmodule Zizhixi.GroupPostController do
 
   alias Zizhixi.{Group, GroupPost}
 
+  import Zizhixi.Ecto.Helpers, only: [inc: 3]
+
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:new, :create, :edit, :update, :delete]
 
@@ -13,7 +15,9 @@ defmodule Zizhixi.GroupPostController do
   def new(conn, %{"group_id" => group_id}) do
     group = Repo.get!(Group, group_id)
     changeset = GroupPost.changeset(%GroupPost{})
-    render(conn, "new.html", group: group, changeset: changeset)
+    conn
+    |> assign(:title, "#{group.name} - 发布帖子")
+    |> render("new.html", group: group, changeset: changeset)
   end
 
   # todo: 验证用户是否为小组成员
@@ -29,11 +33,12 @@ defmodule Zizhixi.GroupPostController do
 
     case Repo.insert(changeset) do
       {:ok, _group_post} ->
+        Group |> inc(group, :post_count)
+
         conn
-        |> put_flash(:info, "Group post created successfully.")
+        |> put_flash(:info, "发表帖子成功.")
         |> redirect(to: group_path(conn, :show, group))
       {:error, changeset} ->
-        IO.inspect changeset
         render(conn, "new.html", group: group, changeset: changeset)
     end
   end

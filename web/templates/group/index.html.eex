@@ -39,3 +39,19 @@
 <% end %>
   </tbody>
 </table>
+
+<table class="table">
+  <tbody>
+    <%= for post <- @posts do %>
+    <tr>
+      <td width="44">
+        <img class="image is-24x24" src="<%= post.user.avatar %>" alt="" />
+      </td>
+      <td><%= link post.title, to: group_post_path(@conn, :show, post.group_id, post) %></td>
+      <td class="is-icon">0个回应</td>
+      <td class="is-icon"><%= post.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></td>
+      <td class="is-icon"><%= link post.group.name, to: group_path(@conn, :show, post.group) %></td>
+    </tr>
+    <%= end %>
+  </tbody>
+</table>

@@ -1,6 +1,1 @@
-<h2>New group post</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: group_post_path(@conn, :create, @group) %>
-
-<%= link "Back", to: group_path(@conn, :show, @group) %>
+<%= render "form.html", changeset: @changeset, action: group_post_path(@conn, :create, @group) %>

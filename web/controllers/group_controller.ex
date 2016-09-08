@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupPost}
+  alias Zizhixi.{Group, GroupMember, GroupPost}
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:new, :create, :edit, :update, :delete]
@@ -10,11 +10,20 @@ defmodule Zizhixi.GroupController do
     when action in [:edit, :update, :delete]
 
   def index(conn, _params) do
+    current_user = Guardian.Plug.current_resource(conn)
+
+    query = from p in GroupPost,
+      join: g in Group, on: p.group_id == g.id,
+      join: m in GroupMember, on: g.id == m.group_id and m.user_id == ^current_user.id,
+      preload: [:group, :user]
+
+    posts = query |> Repo.all
+
     groups = Repo.all(Group)
 
     conn
     |> assign(:title, "自制系小组")
-    |> render("index.html", groups: groups)
+    |> render("index.html", groups: groups, posts: posts)
   end
 
   def new(conn, _params) do
@@ -28,19 +37,27 @@ defmodule Zizhixi.GroupController do
     changeset = Group.changeset(%Group{}, group_params)
 
     case Repo.insert(changeset) do
-      {:ok, _group} ->
+      {:ok, group} ->
+        Repo.insert(%GroupMember{group_id: group.id, user_id: current_user.id})
+
         conn
-        |> put_flash(:info, "Group created successfully.")
-        |> redirect(to: group_path(conn, :index))
+        |> put_flash(:info, "小组创建成功.")
+        |> redirect(to: group_path(conn, :show, group))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        conn
+        |> render("new.html", changeset: changeset)
     end
   end
 
   def show(conn, %{"id" => id}) do
     group = Repo.get!(Group, id)
+    member = case Guardian.Plug.current_resource(conn) do
+      nil -> nil
+      current_user -> Repo.get_by(GroupMember, %{group_id: group.id, user_id: current_user.id})
+    end
+
     posts = GroupPost |> where(group_id: ^group.id) |> Repo.all
-    render(conn, "show.html", group: group, posts: posts)
+    render(conn, "show.html", group: group, member: member, posts: posts)
   end
 
   def edit(conn, %{"id" => id}) do
