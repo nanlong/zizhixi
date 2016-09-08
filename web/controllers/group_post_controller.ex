@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupPostController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupPost, GroupComment}
+  alias Zizhixi.{Group, GroupPost, GroupComment, GroupMember}
 
   import Zizhixi.Ecto.Helpers, only: [inc: 3]
 
@@ -54,13 +54,17 @@ defmodule Zizhixi.GroupPostController do
     |> where(post_id: ^id)
     |> order_by(:inserted_at)
     |> preload([:user])
-
     |> Repo.paginate(params)
+
+    member = case Guardian.Plug.current_resource(conn) do
+      nil -> nil
+      current_user -> Repo.get_by(GroupMember, %{group_id: group.id, user_id: current_user.id})
+    end
 
     conn
     |> assign(:title, group_post.title)
     |> render("show.html", group: group, group_post: group_post,
-      pagination: pagination, changeset: changeset)
+      pagination: pagination, member: member, changeset: changeset)
   end
 
   def edit(conn, %{"group_id" => group_id, "id" => _id} = params) do

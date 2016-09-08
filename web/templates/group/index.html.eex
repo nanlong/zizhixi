@@ -32,7 +32,7 @@
                 </a>
               </td>
               <td><%= link post.title, to: group_post_path(@conn, :show, post.group_id, post) %></td>
-              <td class="is-icon">0个回应</td>
+              <td class="is-icon"><%= post.comment_count %>个回应</td>
               <td class="is-icon"><%= post.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></td>
               <td class="is-icon"><%= link post.group.name, to: group_path(@conn, :show, post.group) %></td>
             </tr>
@@ -47,7 +47,7 @@
   </div>
   <div class="column is-3">
     <div class="panel">
-      <%= link "创建小组", to: group_path(@conn, :new), class: "button is-success is-medium is-fullwidth" %>
+      <%= link "创建小组", to: group_path(@conn, :new), class: "button is-primary is-fullwidth" %>
     </div>
 
     <div class="panel">

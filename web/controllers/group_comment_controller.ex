@@ -44,11 +44,12 @@ defmodule Zizhixi.GroupCommentController do
 
   def delete(conn, %{"id" => id}) do
     comment = Repo.get!(GroupComment, id)
-
+    post = Repo.get!(GroupPost, comment.post_id)
+    
     GroupComment |> set(comment, :is_deleted, true)
 
     conn
-    |> put_flash(:info, "Group comment deleted successfully.")
-    |> redirect(to: group_post_path(conn, :show, comment.post_id))
+    |> put_flash(:info, "评论删除成功.")
+    |> redirect(to: group_post_path(conn, :show, post.group_id, post))
   end
 end
