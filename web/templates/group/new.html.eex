@@ -1,22 +1,11 @@
 <div class="columns">
   <div class="column">
-    <div class="panel">
-      <div class="panel-block">
-        <%= render "form.html",
-          changeset: @changeset,
-          action: group_path(@conn, :create)
-        %>
-      </div>
-    </div>
+    <%= render "form.html",
+      changeset: @changeset,
+      action: group_path(@conn, :create)
+    %>
   </div>
-  <div class="column is-3">
-    <div class="panel">
-      <p class="panel-heading">
-        小组创建
-      </p>
-      <div class="panel-block">
-        小组需要审核通过后才能完成创建,管理员会在3日内审核申请, 审核结果会用邮件通知你,请耐心等待。
-      </div>
-    </div>
+  <div class="column is-4">
+    <%= link raw("<span>返回小组首页</span><span class=\"icon is-small\"><i class=\"fa fa-arrow-right\"></i></span>"), to: group_path(@conn, :index), class: "button is-link" %>
   </div>
 </div>

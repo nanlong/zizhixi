@@ -16,7 +16,7 @@ defmodule Zizhixi.GroupPostController do
     group = Repo.get!(Group, group_id)
     changeset = GroupPost.changeset(%GroupPost{})
     conn
-    |> assign(:title, "#{group.name} - 发布帖子")
+    |> assign(:title, "#{group.name} - 发新帖")
     |> render("new.html", group: group, changeset: changeset)
   end
 
