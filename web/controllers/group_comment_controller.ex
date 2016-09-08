@@ -21,14 +21,17 @@ defmodule Zizhixi.GroupCommentController do
     changeset = GroupComment.changeset(%GroupComment{}, params)
 
     conn = case Repo.insert(changeset) do
-      {:ok, _group_comment} ->
+      {:ok, group_comment} ->
         GroupPost |> inc(post, :comment_count)
-        conn |> put_flash(:info, "Group comment created successfully.")
+        GroupPost |> set(post, :latest_inserted_at, group_comment.inserted_at)
+        GroupPost |> set(post, :latest_user_id, group_comment.user_id)
+
+        conn |> put_flash(:info, "评论成功.")
       {:error, _changeset} ->
-        conn |> put_flash(:danger, "Group comment created faild.")
+        conn |> put_flash(:error, "评论失败.")
     end
 
-    conn |> redirect(to: group_post_path(conn, :show, post))
+    conn |> redirect(to: group_post_path(conn, :show, post.group_id, post))
   end
 
   def show(conn, %{"group_post_id" => post_id, "id" => id}) do

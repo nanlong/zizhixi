@@ -1,11 +1,136 @@
-<h2>Show group post</h2>
+<div class="columns">
+  <div class="column">
+    <div class="panel">
+      <div class="panel-heading">
+        <a class="is-pulled-right" href="<%= user_path(@conn, :show, @group_post.user.username) %>">
+          <img class="image is-48x48" src="<%= @group_post.user.avatar %>" alt="<%= @group_post.user.username %>" />
+        </a>
 
-<h3> <%= @group_post.title %> </h3>
-<div class="">
-  <%= @group_post.content %>
+        <p>
+          <%= @group_post.title %>
+        </p>
+        <small>
+          <%= link @group_post.user.username, to: user_path(@conn, :show, @group_post.user.username), target: "_blank" %> ·
+          于 <%= @group_post.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %>前发布
+          <%= if @group_post.latest_user_id do %>
+          · 最后由 <%= link @group_post.latest_user.username, to: user_path(@conn, :show, @group_post.latest_user.username), target: "_blank" %>
+          于 <%= @group_post.latest_inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %>回复
+          <%= end %>
+        </small>
+      </div>
+      <div class="panel-block">
+        <%= @group_post.content %>
+      </div>
+      <div class="panel-block control is-grouped">
+        <p class="control">
+          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-heart-o\"></i></span><span>赞</span>"), to: "", class: "button is-light is-small" %>
+        </p>
+        <p class="control">
+          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"), to: "", class: "button is-light is-small" %>
+        </p>
+        <p class="control">
+          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-bookmark\"></i></span><span>收藏</span>"), to: "", class: "button is-light is-small" %>
+        </p>
+      </div>
+    </div>
+
+    <div class="box">
+      共收到 <strong><%= @group_post.comment_count %></strong> 条回复
+    </div>
+
+    <%= for {comment, index} <- @pagination |> Enum.with_index(1) |> Enum.to_list do %>
+      <%= if comment.is_deleted do %>
+      <div class="box">
+        <div class="media">
+          <div class="media-content">
+            <div class="has-text-centered">
+              <strike><%= index %>楼 已删除</strike>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%= else %>
+      <div class="box">
+        <article class="media">
+          <figure class="media-left">
+            <p class="image is-32x32">
+              <img src="<%= comment.user.avatar %>">
+            </p>
+          </figure>
+          <div class="media-content">
+            <div class="content">
+              <div>
+                <%= link comment.user.username, to: user_path(@conn, :show, comment.user.username), class: "link" %>
+                ·
+                <%= link "##{index}", to: "" %>
+                ·
+                <small><%= comment.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></small>
+                <div><%= comment.content %></div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="media-right">
+            <button class="delete"></button>
+          </div> -->
+        </article>
+      </div>
+      <%= end %>
+    <%= end %>
+
+    <div class="box">
+      <%= form_for @changeset, group_post_comment_path(@conn, :create, @group_post), fn f -> %>
+
+        <%= label f, :content, "我要评论", class: "label" %>
+        <p class="control">
+          <%= textarea f, :content, class: "textarea" %>
+          <%= error_tag f, :content %>
+        </p>
+
+        <p class="control">
+          <%= submit "确定", class: "button is-primary" %>
+          <button class="button is-link" type="reset">取消</button>
+        </p>
+      <% end %>
+    </div>
+  </div>
+  <div class="column is-4">
+    <div class="box">
+      <a class="button is-fullwidth" href="#">
+        <span class="icon is-small">
+          <i class="fa fa-arrow-up"></i>
+        </span>
+      </a>
+
+      <div class="has-text-centered" style="padding: 20px 0;">
+        <%= link raw("<span class=\"icon\"><i class=\"fa fa-heart-o\"></i></span><span>0个赞</span>"), to: "", class: "button is-link is-large" %>
+      </div>
+
+      <div class="is-clearfix" style="position: relative; left: 50%">
+        <p class="control has-addons is-pulled-left" style="margin-left: -68px;">
+          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"), to: "", class: "button" %>
+          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-bookmark\"></i></span><span>收藏</span>"), to: "", class: "button" %>
+        </p>
+      </div>
+
+      <div class="has-text-centered" style="padding: 20px 0; margin: 20px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
+        分享：微博 微信
+      </div>
+
+      <div class="has-text-centered" style="padding: 10px 0;">
+        共收到 <%= @group_post.comment_count %> 条回复
+      </div>
+
+      <div style="padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #eee;">
+        <a class="button is-success is-fullwidth" href="#">
+          参与回复
+        </a>
+      </div>
+
+      <a class="button is-fullwidth" href="#">
+        <span class="icon is-small">
+          <i class="fa fa-arrow-down"></i>
+        </span>
+      </a>
+    </div>
+  </div>
 </div>
-<ul>
-
-</ul>
-
-<%= link "Edit", to: group_post_path(@conn, :edit, @group_post) %>

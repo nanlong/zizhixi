@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupPostController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupPost}
+  alias Zizhixi.{Group, GroupPost, GroupComment}
 
   import Zizhixi.Ecto.Helpers, only: [inc: 3]
 
@@ -45,8 +45,22 @@ defmodule Zizhixi.GroupPostController do
 
   def show(conn, %{"group_id" => group_id, "id" => id} = params) do
     group = Repo.get!(Group, group_id)
-    group_post = Repo.get_by!(GroupPost, %{id: id})
-    render(conn, "show.html", group: group, group_post: group_post)
+    group_post = GroupPost
+    |> preload([:user, :latest_user])
+    |> Repo.get_by!(%{id: id})
+    changeset = GroupComment.changeset(%GroupComment{})
+
+    pagination = GroupComment
+    |> where(post_id: ^id)
+    |> order_by(:inserted_at)
+    |> preload([:user])
+
+    |> Repo.paginate(params)
+
+    conn
+    |> assign(:title, group_post.title)
+    |> render("show.html", group: group, group_post: group_post,
+      pagination: pagination, changeset: changeset)
   end
 
   def edit(conn, %{"group_id" => group_id, "id" => _id} = params) do
