@@ -9,23 +9,25 @@ defmodule Zizhixi.GroupController do
   plug Zizhixi.Plug.VerifyRequest, [model: Group, action: "is_owner"]
     when action in [:edit, :update, :delete]
 
-  def index(conn, _params) do
+  def index(conn, params) do
     case Guardian.Plug.authenticated?(conn) do
       true ->
         current_user = Guardian.Plug.current_resource(conn)
 
-        query = from p in GroupPost,
+        pagination = (from p in GroupPost,
           join: g in Group, on: p.group_id == g.id,
           join: m in GroupMember, on: g.id == m.group_id and m.user_id == ^current_user.id,
-          preload: [:group, :user]
+          order_by: [desc: :inserted_at],
+          preload: [:group, :user])
+          |> Repo.paginate(params)
 
-        posts = query |> Repo.all
-
-        groups = Repo.all(Group)
+        groups = (from g in Group,
+          join: m in GroupMember, on: g.id == m.group_id and m.user_id == ^current_user.id)
+          |> Repo.all
 
         conn
-        |> assign(:title, "自制系小组")
-        |> render("index.html", groups: groups, posts: posts)
+        |> assign(:title, "我的小组帖子")
+        |> render("index.html", groups: groups, pagination: pagination)
       false ->
         text conn, "no logged"
     end
@@ -33,7 +35,10 @@ defmodule Zizhixi.GroupController do
 
   def new(conn, _params) do
     changeset = Group.changeset(%Group{})
-    render(conn, "new.html", changeset: changeset)
+    
+    conn
+    |> assign(:title, "创建小组")
+    |> render("new.html", changeset: changeset)
   end
 
   def create(conn, %{"group" => group_params}) do
@@ -54,15 +59,19 @@ defmodule Zizhixi.GroupController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => id} = params) do
     group = Repo.get!(Group, id)
+
     member = case Guardian.Plug.current_resource(conn) do
       nil -> nil
       current_user -> Repo.get_by(GroupMember, %{group_id: group.id, user_id: current_user.id})
     end
 
-    posts = GroupPost |> where(group_id: ^group.id) |> Repo.all
-    render(conn, "show.html", group: group, member: member, posts: posts)
+    pagination = GroupPost |> where(group_id: ^group.id) |> Repo.paginate(params)
+
+    conn
+    |> assign(:title, group.name)
+    |> render("show.html", group: group, member: member, pagination: pagination)
   end
 
   def edit(conn, %{"id" => id}) do

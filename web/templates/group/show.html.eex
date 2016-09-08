@@ -20,13 +20,14 @@
     </tr>
   </thead>
   <tbody>
-    <%= for post <- @posts do %>
+    <%= for post <- @pagination do %>
     <tr>
       <td>
         <%= link post.title, to: group_post_path(@conn, :show, @group, post) %>
-        
       </td>
     </tr>
     <%= end %>
   </tbody>
 </table>
+
+<%= pagination_links @conn, @pagination, [@group], action: :show, path: &group_path/4 %>

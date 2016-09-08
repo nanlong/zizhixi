@@ -1,57 +1,62 @@
-<%= link "创建小组", to: group_path(@conn, :new) %>
-<table class="table">
-  <thead>
-    <tr>
-      <th>
-        小组名称
-      </th>
-      <th>
-        成员数量
-      </th>
-      <th>
-        帖子数量
-      </th>
-      <th>
-        操作
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for group <- @groups do %>
-    <tr>
-      <td>
-        <%= group.name %>
-      </td>
-      <td>
-        <%= group.member_count %>
-      </td>
-      <td>
-        <%= group.post_count %>
-      </td>
-      <td class="text-right">
-        <%= link "进入", to: group_path(@conn, :show, group), class: "btn btn-default btn-xs" %>
+<div class="columns">
+  <div class="column">
+    <div class="tabs">
+      <ul>
+        <li class="is-active"><a>我的小组</a></li>
+        <li><a>小组热帖</a></li>
+        <li><a>小组排行</a></li>
+      </ul>
+    </div>
 
-        <%= if @logged_in? && group.user_id == @current_user.id do %>
-          <%= link "编辑", to: group_path(@conn, :edit, group), class: "btn btn-default btn-xs" %>
-        <%= end %>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
+    <div class="panel">
+      <p class="panel-heading">
+        搜索
+      </p>
+      <div class="panel-block">
+        <input type="text" name="q" value="" class="input">
+      </div>
+    </div>
 
-<table class="table">
-  <tbody>
-    <%= for post <- @posts do %>
-    <tr>
-      <td width="44">
-        <img class="image is-24x24" src="<%= post.user.avatar %>" alt="" />
-      </td>
-      <td><%= link post.title, to: group_post_path(@conn, :show, post.group_id, post) %></td>
-      <td class="is-icon">0个回应</td>
-      <td class="is-icon"><%= post.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></td>
-      <td class="is-icon"><%= link post.group.name, to: group_path(@conn, :show, post.group) %></td>
-    </tr>
-    <%= end %>
-  </tbody>
-</table>
+    <div class="panel">
+      <p class="panel-heading title is-6">
+        <%= @title %>
+      </p>
+      <div class="panel-block">
+        <table class="table">
+          <tbody>
+            <%= for post <- @pagination do %>
+            <tr>
+              <td width="36">
+                <a href="<%= user_path(@conn, :show, post.user.username) %>" target="_blank">
+                  <img class="image is-16x16" src="<%= post.user.avatar %>" alt="<%= post.user.username %>" />
+                </a>
+              </td>
+              <td><%= link post.title, to: group_post_path(@conn, :show, post.group_id, post) %></td>
+              <td class="is-icon">0个回应</td>
+              <td class="is-icon"><%= post.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></td>
+              <td class="is-icon"><%= link post.group.name, to: group_path(@conn, :show, post.group) %></td>
+            </tr>
+            <%= end %>
+          </tbody>
+        </table>
+
+        <%= pagination_links @conn, @pagination, path: &group_path/3 %>
+      </div>
+    </div>
+
+  </div>
+  <div class="column is-3">
+    <div class="panel">
+      <%= link "创建小组", to: group_path(@conn, :new), class: "button is-success is-medium is-fullwidth" %>
+    </div>
+
+    <div class="panel">
+      <p class="panel-heading">
+        我的小组
+      </p>
+      <%= for group <- @groups do %>
+        <%= link group.name, to: group_path(@conn, :show, group), class: "panel-block" %>
+      <%= end %>
+    </div>
+  </div>
+</div>
