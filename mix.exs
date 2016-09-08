@@ -19,7 +19,8 @@ defmodule Zizhixi.Mixfile do
   def application do
     [mod: {Zizhixi, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :comeonin, :timex]]
+                    :phoenix_ecto, :postgrex, :comeonin, :timex, :scrivener, :scrivener_ecto,
+                    :scrivener_html]]
   end
 
   # Specifies which paths to compile per environment.
@@ -42,6 +43,9 @@ defmodule Zizhixi.Mixfile do
       {:comeonin, "~> 2.5"},
       {:guardian, "~> 0.12.0"},
       {:timex, "~> 3.0"},
+      {:scrivener, "~> 2.0"},
+      {:scrivener_ecto, "~> 1.0"},
+      {:scrivener_html, "~> 1.1"},
    ]
   end
 

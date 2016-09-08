@@ -63,6 +63,7 @@ defmodule Zizhixi.Web do
       import Zizhixi.ErrorHelpers
       import Zizhixi.Gettext
       import Zizhixi.Sigils
+      import Scrivener.HTML
     end
   end
 
