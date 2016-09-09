@@ -30,31 +30,7 @@
   <div class="column">
     <div class="box">
       <%= for post <- @pagination do %>
-      <article class="media">
-
-        <div class="media-content">
-          <div class="content">
-            <div class="title is-5">
-              <%= link post.title, to: group_post_path(@conn, :show, post.group_id, post) %>
-            </div>
-
-          </div>
-          <nav class="level">
-            <div class="level-left">
-              <div class="level-item">
-                由 <%= link post.user.username, to: user_path(@conn, :show, post.user.username )%>
-                于 <%= post.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %> 发布
-              </div>
-              <%= if post.latest_user_id do %>
-              <div class="level-item">
-                最后由 <%= link post.latest_user.username, to: user_path(@conn, :show, post.latest_user.username )%>
-                于 <%= post.latest_inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %> 回复
-              </div>
-              <%= end %>
-            </div>
-          </nav>
-        </div>
-      </article>
+        <%= render(Zizhixi.GroupPostView, "entry.html", show_group: false, conn: @conn, post: post) %>
       <%= end %>
     </div>
     <%= pagination_links @conn, @pagination, [@group], action: :show, path: &group_path/4 %>
