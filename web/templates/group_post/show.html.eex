@@ -70,30 +70,20 @@
 
     <div class="box">
     <%= for {comment, index} <- @comments |> Enum.with_index(1) |> Enum.to_list do %>
-      <%= if comment.is_deleted do %>
-        <div class="media">
-          <div class="media-content">
-            <div class="has-text-centered">
-              <strike><%= index %>楼 已删除</strike>
-            </div>
-          </div>
-        </div>
-      <%= else %>
-        <%= render Zizhixi.GroupCommentView, "entry.html",
-          logged_in?: @logged_in?,
-          current_user: @current_user,
-          conn: @conn,
-          comment: comment,
-          index: index
-        %>
-      <%= end %>
+      <%= render Zizhixi.GroupCommentView, "entry.html",
+        logged_in?: @logged_in?,
+        current_user: @current_user,
+        conn: @conn,
+        comment: comment,
+        index: index
+      %>
     <%= end %>
     </div>
     <%= end %>
     <div class="box">
       <%= form_for @changeset, group_post_comment_path(@conn, :create, @group_post), fn f -> %>
 
-        <%= label f, :content, "我要评论", class: "label" %>
+        <%= label f, :content, "回复", class: "label" %>
         <p class="control">
           <%= textarea f, :content, class: "textarea" %>
           <%= error_tag f, :content %>
@@ -108,7 +98,7 @@
   </div>
   <div class="column is-4">
     <div class="box if-fullwidth" style="position: fixed; width: 306px;">
-      <a class="button is-fullwidth" href="#">
+      <a class="button is-fullwidth btn-scroll-up" href="javascript:void(0);">
         <span class="icon is-small">
           <i class="fa fa-arrow-up"></i>
         </span>
@@ -138,12 +128,12 @@
       </div>
 
       <div style="padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #eee;">
-        <a class="button is-info is-fullwidth" href="#">
+        <a class="button is-info is-fullwidth btn-begin-comment" href="javascript:void(0);">
           参与回复
         </a>
       </div>
 
-      <a class="button is-fullwidth" href="#">
+      <a class="button is-fullwidth btn-scroll-down" href="javascript:void(0);">
         <span class="icon is-small">
           <i class="fa fa-arrow-down"></i>
         </span>

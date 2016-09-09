@@ -64,11 +64,17 @@
     <div style="padding: 70px 0 20px;">
       <div class="container" style="min-height: 550px;">
         <%= if flash = get_flash(@conn, :info) do %>
-        <p class="notification is-success"><%= flash %></p>
+        <p class="notification is-success">
+          <button class="delete"></button>
+          <%= flash %>
+        </p>
         <%= end %>
 
         <%= if flash = get_flash(@conn, :error) do %>
-        <p class="notification is-danger"><%= flash %></p>
+        <p class="notification is-danger">
+          <button class="delete"></button>
+          <%= flash %>
+        </p>
         <%= end %>
 
         <main role="main">

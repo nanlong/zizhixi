@@ -53,7 +53,7 @@ defmodule Zizhixi.GroupPostController do
     comments = GroupComment
     |> where(post_id: ^id)
     |> order_by(:inserted_at)
-    |> preload([:user])
+    |> preload([:user, :post])
     |> Repo.all
 
     member = case Guardian.Plug.current_resource(conn) do

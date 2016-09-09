@@ -47,7 +47,7 @@ defmodule Zizhixi.GroupCommentController do
     changeset = GroupComment.changeset(comment)
 
     conn
-    |> assign(:title, "修改评论")
+    |> assign(:title, "编辑回复")
     |> render("edit.html", comment: comment, post: comment.post,  changeset: changeset)
   end
 
@@ -62,7 +62,7 @@ defmodule Zizhixi.GroupCommentController do
         |> redirect(to: group_post_path(conn, :show, comment.post.group_id, comment.post))
       {:error, changeset} ->
         conn
-        |> assign(:title, "修改评论")
+        |> assign(:title, "编辑回复")
         |> render("edit.html", comment: comment, post: comment.post,  changeset: changeset)
     end
 
