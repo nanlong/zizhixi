@@ -13,7 +13,7 @@
   </head>
 
   <body>
-    <section class="hero is-medium">
+    <section class="hero is-medium" style="position: fixed; width: 100%; z-index: 999;">
       <div class="hero-head">
         <nav class="nav">
           <div class="nav-left">
@@ -61,8 +61,8 @@
       </div>
     </section>
 
-    <div style="margin: 20px 0 20px;">
-      <div class="container">
+    <div style="padding: 70px 0 20px;">
+      <div class="container" style="min-height: 550px;">
         <%= if flash = get_flash(@conn, :info) do %>
         <p class="notification is-success"><%= flash %></p>
         <%= end %>

@@ -4,9 +4,8 @@
     max-width: 960px;
   }
 }
-
 body {
-  background: #fff;
+  background: #f5f7fa;
 }
 #header {
   border-bottom: 1px solid #ddd;
@@ -22,7 +21,11 @@ body {
   color: #333;
   font-weight: bold;
 }
+.panel {
+  background: #fff;
+}
 .panel-heading {
+  background: #fafafa;
   font-size: 14px;
   padding: 5px 10px;
 }
@@ -38,4 +41,30 @@ body {
 }
 .box .column {
   padding: 0;
+}
+.button.is-link {
+  text-decoration: none;
+}
+.button-is-multiline span {
+  display: inline-block;
+  width: 100%;
+  font-size: 20px;
+}
+strike {
+  color: #ccc;
+}
+.link {
+  display: inline-block;
+}
+.media {
+  position: relative;
+}
+.media-right {
+  position: absolute;
+  top: 10px;
+  right: 0;
+}
+.media-right .delete {
+  position: absolute;
+  top: 0;
 }

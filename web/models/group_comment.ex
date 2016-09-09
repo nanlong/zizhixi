@@ -4,7 +4,7 @@ defmodule Zizhixi.GroupComment do
   schema "group_comments" do
     field :content, :string
     field :is_deleted, :boolean, default: false
-    belongs_to :post, Zizhixi.Post
+    belongs_to :post, Zizhixi.GroupPost
     belongs_to :user, Zizhixi.User
 
     timestamps()

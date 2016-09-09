@@ -1,0 +1,47 @@
+<%= if @comment.is_deleted do %>
+<div class="media">
+  <div class="media-content">
+    <div class="has-text-centered">
+      <strike><%= @index %>楼 已删除</strike>
+    </div>
+  </div>
+</div>
+<%= else %>
+<article class="media">
+  <figure class="media-left">
+    <p class="image is-32x32">
+      <img src="<%= @comment.user.avatar %>">
+    </p>
+  </figure>
+  <div class="media-content">
+    <div class="content">
+      <div>
+        <%= link @comment.user.username, to: user_path(@conn, :show, @comment.user.username), class: "link" %>
+        ·
+        <%= link "##{@index}", to: "" %>
+        ·
+        <small><%= @comment.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></small>
+        <div><%= @comment.content %></div>
+      </div>
+    </div>
+  </div>
+  <div class="media-right">
+    <%= if @logged_in? do %>
+      <%= if @current_user.id == @comment.user_id do %>
+        <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-pencil\"></i></span><span>编辑</span>"),
+          to: group_comment_path(@conn, :edit, @comment),
+          class: "button is-link is-small"
+        %>
+      <%= end %>
+      <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-reply\"></i></span><span>回复</span>"),
+        to: "javascript:void(0);",
+        class: "button is-link is-small"
+      %>
+      <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-heart-o\"></i></span><span>0个赞</span>"),
+        to: "javascript:void(0);",
+        class: "button is-link is-small"
+      %>
+    <%= end %>
+  </div>
+</article>
+<%= end %>

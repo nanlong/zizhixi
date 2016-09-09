@@ -79,32 +79,13 @@
           </div>
         </div>
       <%= else %>
-        <article class="media">
-          <figure class="media-left">
-            <p class="image is-32x32">
-              <img src="<%= comment.user.avatar %>">
-            </p>
-          </figure>
-          <div class="media-content">
-            <div class="content">
-              <div>
-                <%= link comment.user.username, to: user_path(@conn, :show, comment.user.username), class: "link" %>
-                ·
-                <%= link "##{index}", to: "" %>
-                ·
-                <small><%= comment.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></small>
-                <div><%= comment.content %></div>
-              </div>
-            </div>
-          </div>
-          <div class="media-right">
-            <%= if @logged_in? do %>
-              <%= if @current_user.id == comment.user_id do %>
-                <%= link "", to: group_comment_path(@conn, :delete, comment), class: "delete", method: :delete, data: [confirm: "确定删除评论吗?"] %>
-              <%= end %>
-            <%= end %>
-          </div>
-        </article>
+        <%= render Zizhixi.GroupCommentView, "entry.html",
+          logged_in?: @logged_in?,
+          current_user: @current_user,
+          conn: @conn,
+          comment: comment,
+          index: index
+        %>
       <%= end %>
     <%= end %>
     </div>
@@ -126,7 +107,7 @@
     </div>
   </div>
   <div class="column is-4">
-    <div class="box">
+    <div class="box if-fullwidth" style="position: fixed; width: 306px;">
       <a class="button is-fullwidth" href="#">
         <span class="icon is-small">
           <i class="fa fa-arrow-up"></i>
@@ -134,7 +115,11 @@
       </a>
 
       <div class="has-text-centered" style="padding: 20px 0;">
-        <%= link raw("<span class=\"icon\"><i class=\"fa fa-heart-o\"></i></span><span>0个赞</span>"), to: "", class: "button is-link is-large" %>
+        <%= link raw("<span class=\"icon is-large\"><i class=\"fa fa-heart-o\"></i></span><span>0个赞</span>"),
+          to: "",
+          class: "button-is-multiline",
+          method: :post
+        %>
       </div>
 
       <div class="is-clearfix" style="position: relative; left: 50%">

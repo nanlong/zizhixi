@@ -6,10 +6,10 @@ defmodule Zizhixi.GroupCommentController do
   import Zizhixi.Ecto.Helpers, only: [set: 4, inc: 3]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
-    when action in [:create, :delete]
+    when action in [:create, :edit, :update, :delete]
 
   plug Zizhixi.Plug.VerifyRequest, [model: GroupComment, action: "is_owner"]
-    when action in [:delete]
+    when action in [:edit, :update, :delete]
 
   # todo: 验证当前用户是否为小组成员
   def create(conn, %{"group_post_id" => post_id, "group_comment" => comment_params}) do
@@ -42,10 +42,36 @@ defmodule Zizhixi.GroupCommentController do
     render(conn, "show.html", group: group, post: post, comment: comment)
   end
 
+  def edit(conn, %{"id" => id}) do
+    comment = GroupComment |> preload([:post]) |> Repo.get!(id)
+    changeset = GroupComment.changeset(comment)
+
+    conn
+    |> assign(:title, "修改评论")
+    |> render("edit.html", comment: comment, post: comment.post,  changeset: changeset)
+  end
+
+  def update(conn, %{"id" => id, "group_comment" => group_comment_params}) do
+    comment = GroupComment |> preload([:post]) |> Repo.get!(id)
+    changeset = GroupComment.changeset(comment, group_comment_params)
+
+    case Repo.update(changeset) do
+      {:ok, group_comment} ->
+        conn
+        |> put_flash(:info, "修改成功")
+        |> redirect(to: group_post_path(conn, :show, comment.post.group_id, comment.post))
+      {:error, changeset} ->
+        conn
+        |> assign(:title, "修改评论")
+        |> render("edit.html", comment: comment, post: comment.post,  changeset: changeset)
+    end
+
+  end
+
   def delete(conn, %{"id" => id}) do
     comment = Repo.get!(GroupComment, id)
     post = Repo.get!(GroupPost, comment.post_id)
-    
+
     GroupComment |> set(comment, :is_deleted, true)
 
     conn
