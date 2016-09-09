@@ -36,3 +36,6 @@ body {
   color: #333;
   border-bottom: 1px solid #1fc8db;
 }
+.box .column {
+  padding: 0;
+}

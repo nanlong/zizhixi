@@ -1,57 +1,54 @@
 <div class="columns">
   <div class="column is-3">
-    <%= render "subnav.html", conn: @conn, view: @view %>
+    <div class="box">
+      <%= render "subnav.html", conn: @conn, view: @view %>
+    </div>
   </div>
   <div class="column">
-    <div class="panel">
-      <div class="panel-heading">
-        <%= @title %>
-      </div>
-      <div class="columns panel-block">
-        <div class="column is-8">
-          <%= form_for @changeset, user_path(@conn, :update, "profile"), fn f -> %>
+    <div class="box">
+      <div class="column is-8">
+        <%= form_for @changeset, user_path(@conn, :update, "profile"), fn f -> %>
 
-            <%= label f, :avatar, "头像", class: "label" %>
-            <p class="control">
-              <img class="image is-128x128" src="<%= @user.avatar %>" alt="<%= @user.username %>" />
-              <%= hidden_input f, :avatar, class: "input", disabled: "disabled" %>
-              <%= error_tag f, :avatar %>
-            </p>
+          <%= label f, :avatar, "头像", class: "label" %>
+          <p class="control">
+            <figure class="image is-128x128">
+              <img src="<%= @user.avatar %>" alt="<%= @user.username %>" />
+            </figure>
 
-            <%= label f, :username, "用户名", class: "label" %>
-            <p class="control">
-              <%= text_input f, :username, class: "input", disabled: "disabled" %>
-              <%= error_tag f, :username %>
-            </p>
+            <%= hidden_input f, :avatar, class: "input", disabled: "disabled" %>
+            <%= error_tag f, :avatar %>
+          </p>
 
-            <%= label f, :email, "邮箱", class: "label" %>
-            <p class="control">
-              <%= text_input f, :email, class: "input", disabled: "disabled" %>
-              <%= error_tag f, :email %>
-            </p>
+          <%= label f, :username, "用户名", class: "label" %>
+          <p class="control">
+            <%= text_input f, :username, class: "input", disabled: "disabled" %>
+            <%= error_tag f, :username %>
+          </p>
 
-            <%= label f, :address, "地址", class: "label" %>
-            <p class="control">
-              <%= text_input f, :address, class: "input" %>
-              <%= error_tag f, :address %>
-            </p>
+          <%= label f, :email, "邮箱", class: "label" %>
+          <p class="control">
+            <%= text_input f, :email, class: "input", disabled: "disabled" %>
+            <%= error_tag f, :email %>
+          </p>
 
-            <%= label f, :description, "个人简介", class: "label" %>
-            <p class="control">
-              <%= textarea f, :description, class: "textarea" %>
-              <%= error_tag f, :description %>
-            </p>
+          <%= label f, :address, "地址", class: "label" %>
+          <p class="control">
+            <%= text_input f, :address, class: "input" %>
+            <%= error_tag f, :address %>
+          </p>
 
-            <p class="control">
-              <button class="button is-info" type="submit">确定</button>
-              <button class="button is-link" type="reset">取消</button>
-            </p>
-          <% end %>
-        </div>
+          <%= label f, :description, "个人简介", class: "label" %>
+          <p class="control">
+            <%= textarea f, :description, class: "textarea" %>
+            <%= error_tag f, :description %>
+          </p>
+
+          <p class="control">
+            <button class="button is-info" type="submit">确定</button>
+            <button class="button is-link" type="reset">取消</button>
+          </p>
+        <% end %>
       </div>
     </div>
-
-
-
   </div>
 </div>
