@@ -8,47 +8,42 @@
       </ul>
     </div>
 
-    <div class="panel">
-      <p class="panel-heading">
-        搜索
-      </p>
-      <div class="panel-block">
-        <input type="text" name="q" value="" class="input">
-      </div>
+    <div class="box">
+      <%= for post <- @pagination do %>
+      <article class="media">
+
+        <div class="media-content">
+          <div class="content">
+            <div class="title is-5">
+              <%= link post.title, to: group_post_path(@conn, :show, post.group_id, post) %>
+            </div>
+
+          </div>
+          <nav class="level">
+            <div class="level-left">
+              <div class="level-item">
+                由 <%= link post.user.username, to: user_path(@conn, :show, post.user.username )%>
+                于 <%= post.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %> 发布
+              </div>
+              <%= if post.latest_user_id do %>
+              <div class="level-item">
+                最后由 <%= link post.latest_user.username, to: user_path(@conn, :show, post.latest_user.username )%>
+                于 <%= post.latest_inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %> 回复
+              </div>
+              <%= end %>
+              <div class="level-item">
+                来自小组 <%= link post.group.name, to: group_path(@conn, :show, post.group) %>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </article>
+      <%= end %>
     </div>
 
-    <div class="panel">
-      <p class="panel-heading title is-6">
-        <%= @title %>
-      </p>
-      <div class="panel-block">
-        <table class="table">
-          <tbody>
-            <%= for post <- @pagination do %>
-            <tr>
-              <td width="36">
-                <a href="<%= user_path(@conn, :show, post.user.username) %>" target="_blank">
-                  <img class="image is-16x16" src="<%= post.user.avatar %>" alt="<%= post.user.username %>" />
-                </a>
-              </td>
-              <td><%= link post.title, to: group_post_path(@conn, :show, post.group_id, post) %></td>
-              <td class="is-icon"><%= post.comment_count %>个回应</td>
-              <td class="is-icon"><%= post.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></td>
-              <td class="is-icon"><%= link post.group.name, to: group_path(@conn, :show, post.group) %></td>
-            </tr>
-            <%= end %>
-          </tbody>
-        </table>
-
-        <%= pagination_links @conn, @pagination, path: &group_path/3 %>
-      </div>
-    </div>
-
+    <%= pagination_links @conn, @pagination, path: &group_path/3 %>
   </div>
   <div class="column is-3">
-    <div class="panel">
-      <%= link "创建小组", to: group_path(@conn, :new), class: "button is-primary is-fullwidth" %>
-    </div>
 
     <div class="panel">
       <p class="panel-heading">
@@ -57,6 +52,10 @@
       <%= for group <- @groups do %>
         <%= link group.name, to: group_path(@conn, :show, group), class: "panel-block" %>
       <%= end %>
+    </div>
+
+    <div class="panel">
+      <%= link "创建小组", to: group_path(@conn, :new), class: "button is-info is-fullwidth" %>
     </div>
   </div>
 </div>

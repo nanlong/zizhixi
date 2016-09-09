@@ -50,11 +50,11 @@ defmodule Zizhixi.GroupPostController do
     |> Repo.get_by!(%{id: id})
     changeset = GroupComment.changeset(%GroupComment{})
 
-    pagination = GroupComment
+    comments = GroupComment
     |> where(post_id: ^id)
     |> order_by(:inserted_at)
     |> preload([:user])
-    |> Repo.paginate(params)
+    |> Repo.all
 
     member = case Guardian.Plug.current_resource(conn) do
       nil -> nil
@@ -64,7 +64,7 @@ defmodule Zizhixi.GroupPostController do
     conn
     |> assign(:title, group_post.title)
     |> render("show.html", group: group, group_post: group_post,
-      pagination: pagination, member: member, changeset: changeset)
+      comments: comments, member: member, changeset: changeset)
   end
 
   def edit(conn, %{"group_id" => group_id, "id" => _id} = params) do

@@ -1,6 +1,11 @@
 <div class="columns">
   <div class="column">
-    <%= render "form.html", changeset: @changeset, action: group_post_path(@conn, :create, @group) %>
+    <div class="box">
+      <%= render "form.html",
+        changeset: @changeset,
+        action: group_post_path(@conn, :create, @group)
+      %>
+    </div>
   </div>
   <div class="column is-4">
     <%= link raw("<span>返回#{@group.name}</span><span class=\"icon is-small\"><i class=\"fa fa-arrow-right\"></i></span>"), to: group_path(@conn, :show, @group), class: "button is-link" %>

@@ -1,4 +1,10 @@
 /* This file is for your main application css. */
+@media screen and (min-width: 1180px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
 body {
   background: #fff;
 }
@@ -15,4 +21,18 @@ body {
 .pagination .active a:hover {
   color: #333;
   font-weight: bold;
+}
+.panel-heading {
+  font-size: 14px;
+  padding: 5px 10px;
+}
+.content a:not(.button) {
+  border-bottom: none;
+}
+.content a:not(.button):visited {
+  color: #1fc8db;
+}
+.content a:not(.button):hover {
+  color: #333;
+  border-bottom: 1px solid #1fc8db;
 }

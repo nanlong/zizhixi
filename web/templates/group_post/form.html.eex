@@ -12,7 +12,7 @@
   </p>
 
   <p class="control">
-    <%= submit "确定", class: "button is-primary" %>
+    <%= submit "确定", class: "button is-info" %>
     <button class="button is-link" type="reset">取消</button>
   </p>
 <% end %>

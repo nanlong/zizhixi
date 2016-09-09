@@ -9,7 +9,7 @@
         </div>
         <div class="media-content">
           <div class="content">
-            <%= link "发新贴", to: group_post_path(@conn, :new, @group), class: "button is-primary is-pulled-right" %>
+            <%= link "发新贴", to: group_post_path(@conn, :new, @group), class: "button is-info is-pulled-right" %>
             <div class="is-clearfix">
               <%= link @group.name, to: group_path(@conn, :show, @group), target: "_blank", class: "is-pulled-left", style: "margin-right: 20px;" %>
 
@@ -63,13 +63,14 @@
       </div>
     </div>
 
+    <%= if length(@comments) > 0 do %>
     <div class="box">
       共收到 <strong><%= @group_post.comment_count %></strong> 条回复
     </div>
 
-    <%= for {comment, index} <- @pagination |> Enum.with_index(1) |> Enum.to_list do %>
+    <div class="box">
+    <%= for {comment, index} <- @comments |> Enum.with_index(1) |> Enum.to_list do %>
       <%= if comment.is_deleted do %>
-      <div class="box">
         <div class="media">
           <div class="media-content">
             <div class="has-text-centered">
@@ -77,9 +78,7 @@
             </div>
           </div>
         </div>
-      </div>
       <%= else %>
-      <div class="box">
         <article class="media">
           <figure class="media-left">
             <p class="image is-32x32">
@@ -106,10 +105,10 @@
             <%= end %>
           </div>
         </article>
-      </div>
       <%= end %>
     <%= end %>
-
+    </div>
+    <%= end %>
     <div class="box">
       <%= form_for @changeset, group_post_comment_path(@conn, :create, @group_post), fn f -> %>
 
@@ -120,7 +119,7 @@
         </p>
 
         <p class="control">
-          <%= submit "确定", class: "button is-primary" %>
+          <%= submit "确定", class: "button is-info" %>
           <button class="button is-link" type="reset">取消</button>
         </p>
       <% end %>
@@ -154,7 +153,7 @@
       </div>
 
       <div style="padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #eee;">
-        <a class="button is-primary is-fullwidth" href="#">
+        <a class="button is-info is-fullwidth" href="#">
           参与回复
         </a>
       </div>

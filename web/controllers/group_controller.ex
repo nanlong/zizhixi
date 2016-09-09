@@ -17,8 +17,8 @@ defmodule Zizhixi.GroupController do
         pagination = (from p in GroupPost,
           join: g in Group, on: p.group_id == g.id,
           join: m in GroupMember, on: g.id == m.group_id and m.user_id == ^current_user.id,
-          order_by: [desc: :inserted_at],
-          preload: [:group, :user])
+          order_by: [desc: :latest_inserted_at, desc: :inserted_at],
+          preload: [:group, :user, :latest_user])
           |> Repo.paginate(params)
 
         groups = (from g in Group,
@@ -35,7 +35,7 @@ defmodule Zizhixi.GroupController do
 
   def new(conn, _params) do
     changeset = Group.changeset(%Group{})
-    
+
     conn
     |> assign(:title, "创建小组")
     |> render("new.html", changeset: changeset)
@@ -60,18 +60,37 @@ defmodule Zizhixi.GroupController do
   end
 
   def show(conn, %{"id" => id} = params) do
-    group = Repo.get!(Group, id)
+    group = Group
+    |> preload([:user])
+    |> Repo.get!(id)
+
+    group_members = GroupMember
+    |> where(group_id: ^id)
+    |> where([m], m.user_id != ^group.user_id)
+    |> order_by([:inserted_at])
+    |> preload([:user])
+    |> Repo.paginate(%{page: 1})
+
+    IO.inspect group_members
 
     member = case Guardian.Plug.current_resource(conn) do
       nil -> nil
       current_user -> Repo.get_by(GroupMember, %{group_id: group.id, user_id: current_user.id})
     end
 
-    pagination = GroupPost |> where(group_id: ^group.id) |> Repo.paginate(params)
+    pagination = GroupPost
+    |> where(group_id: ^group.id)
+    |> order_by([desc: :latest_inserted_at, desc: :inserted_at])
+    |> preload([:user, :latest_user])
+    |> Repo.paginate(params)
 
     conn
     |> assign(:title, group.name)
-    |> render("show.html", group: group, member: member, pagination: pagination)
+    |> render("show.html",
+      group: group,
+      group_members: group_members,
+      member: member,
+      pagination: pagination)
   end
 
   def edit(conn, %{"id" => id}) do

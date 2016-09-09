@@ -19,7 +19,7 @@
   </p>
 
   <p class="control">
-    <button class="button is-primary" type="submit">确定</button>
+    <button class="button is-info" type="submit">确定</button>
     <button class="button is-link" type="reset">取消</button>
   </p>
 <% end %>

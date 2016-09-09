@@ -51,7 +51,7 @@
             <%= else %>
             <span class="nav-item">
               <%= link "注册", to: user_path(@conn, :new), class: "button" %>
-              <%= link "登录", to: session_path(@conn, :new), class: "button is-primary" %>
+              <%= link "登录", to: session_path(@conn, :new), class: "button is-info" %>
             </span>
             <%= end %>
           </div>
