@@ -51,8 +51,9 @@ defmodule Zizhixi.Router do
       resources "/comments", GroupCommentController, as: :comment, only: [:create, :show]
     end
 
-
-    resources "/group_comments", GroupCommentController, only: [:edit, :update, :delete]
+    resources "/group_comments", GroupCommentController, only: [:edit, :update, :delete] do
+      resources "/praise", GroupCommentPraiseController, as: :praise, only: [:create, :delete], singleton: true
+    end
   end
 
   scope "/settings", Zizhixi do

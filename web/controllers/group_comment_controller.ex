@@ -59,7 +59,7 @@ defmodule Zizhixi.GroupCommentController do
       {:ok, group_comment} ->
         conn
         |> put_flash(:info, "修改成功")
-        |> redirect(to: group_post_path(conn, :show, comment.post.group_id, comment.post))
+        |> redirect(to: group_post_path(conn, :show, group_comment.post.group_id, group_comment.post))
       {:error, changeset} ->
         conn
         |> assign(:title, "编辑回复")

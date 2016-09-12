@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupMemberController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupMember, JsonView}
+  alias Zizhixi.{Group, GroupMember}
 
   import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
 

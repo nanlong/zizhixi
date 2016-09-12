@@ -70,7 +70,7 @@ defmodule Zizhixi.UserController do
     changeset = User.changeset(:settings_profile, user, user_params)
 
     case Repo.update(changeset) do
-      {:ok, user} ->
+      {:ok, _user} ->
         conn
         |> put_flash(:info, "个人信息修改成功")
         |> redirect(to: user_path(conn, :edit, "profile"))
@@ -87,7 +87,7 @@ defmodule Zizhixi.UserController do
     changeset = User.changeset(:settings_password, user, user_params)
 
     case Repo.update(changeset) do
-      {:ok, user} ->
+      {:ok, _user} ->
         conn
         |> put_flash(:info, "密码更新成功")
         |> redirect(to: user_path(conn, :edit, "password"))

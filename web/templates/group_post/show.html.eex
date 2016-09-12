@@ -118,7 +118,7 @@
 
       <div class="has-text-centered" style="padding: 20px 0;">
         <%= if @logged_in? and praise?(@group_post, @current_user) do %>
-          <%= link raw("<span class=\"icon is-large\"><i class=\"fa fa-heart-o\"></i></span><span>#{@group_post.praise_count}个赞</span>"),
+          <%= link raw("<span class=\"icon is-large is-danger\"><i class=\"fa fa-heart\"></i></span><span>#{@group_post.praise_count}个赞</span>"),
             to: group_post_praise_path(@conn, :create, @group_post),
             class: "button-is-multiline",
             method: :delete

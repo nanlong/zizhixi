@@ -2,7 +2,7 @@ defmodule Zizhixi.GroupMemberControllerTest do
   use Zizhixi.ConnCase
 
   alias Zizhixi.Group
-  alias Zizhixi.GroupMember
+  # alias Zizhixi.GroupMember
 
   def new_user(conn) do
     user_params = %{

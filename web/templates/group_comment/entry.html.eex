@@ -43,10 +43,19 @@
         %>
       <%= end %>
 
-      <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-heart-o\"></i></span><span>0个赞</span>"),
-        to: "javascript:void(0);",
-        class: "button is-link is-small"
-      %>
+      <%= if @logged_in? and praise?(@comment, @current_user) do %>
+        <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-heart\"></i></span><span>#{praise_count(@comment)}</span>"),
+          to: group_comment_praise_path(@conn, :create, @comment),
+          class: "button is-link is-small",
+          method: :delete
+        %>
+      <%= else %>
+        <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-heart-o\"></i></span><span>#{praise_count(@comment)}</span>"),
+          to: group_comment_praise_path(@conn, :create, @comment),
+          class: "button is-link is-small",
+          method: :post
+        %>
+      <%= end %>
     <%= end %>
   </div>
 </article>

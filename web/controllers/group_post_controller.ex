@@ -43,7 +43,7 @@ defmodule Zizhixi.GroupPostController do
     end
   end
 
-  def show(conn, %{"group_id" => group_id, "id" => id} = params) do
+  def show(conn, %{"group_id" => group_id, "id" => id}) do
     group = Repo.get!(Group, group_id)
     group_post = GroupPost
     |> preload([:user, :latest_user])
