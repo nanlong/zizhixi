@@ -1,0 +1,6 @@
+<h2>New tutorial</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: tutorial_path(@conn, :create) %>
+
+<%= link "Back", to: tutorial_path(@conn, :index) %>

@@ -1,0 +1,8 @@
+<h2>Show tutorial</h2>
+
+<ul>
+
+</ul>
+
+<%= link "Edit", to: tutorial_path(@conn, :edit, @tutorial) %>
+<%= link "Back", to: tutorial_path(@conn, :index) %>
