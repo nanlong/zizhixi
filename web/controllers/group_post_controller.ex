@@ -85,7 +85,7 @@ defmodule Zizhixi.GroupPostController do
       {:ok, group_post} ->
         conn
         |> put_flash(:info, "Group post updated successfully.")
-        |> redirect(to: group_post_path(conn, :show, group, group_post))
+        |> redirect(to: group_post_path(conn, :show, group_post))
       {:error, changeset} ->
         render(conn, "edit.html", group: group, group_post: group_post, changeset: changeset)
     end

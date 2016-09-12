@@ -13,7 +13,7 @@ defmodule Zizhixi.GroupController do
     case tab do
       "new" ->
         pagination = (from p in GroupPost,
-          order_by: [desc: :latest_inserted_at, desc: :inserted_at],
+          order_by: [desc: :inserted_at],
           preload: [:group, :user, :latest_user])
           |> Repo.paginate(params)
 

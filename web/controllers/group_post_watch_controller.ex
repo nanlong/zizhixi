@@ -28,7 +28,7 @@ defmodule Zizhixi.GroupPostWatchController do
         conn |> put_flash(:info, "关注失败.")
     end
 
-    conn |> redirect(to: group_post_path(conn, :show, group_post.group_id, group_post))
+    conn |> redirect(to: group_post_path(conn, :show, group_post))
   end
 
   def delete(conn, %{"group_post_id" => id}) do
@@ -49,6 +49,6 @@ defmodule Zizhixi.GroupPostWatchController do
 
     conn
     |> put_flash(:info, "取消关注成功.")
-    |> redirect(to: group_post_path(conn, :show, group_post.group_id, group_post))
+    |> redirect(to: group_post_path(conn, :show, group_post))
   end
 end

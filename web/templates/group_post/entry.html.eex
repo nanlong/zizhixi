@@ -1,10 +1,12 @@
 <article class="media">
-  <div class="media-content">
+  <figure class="media-left">
+    <p class="image is-48x48">
+      <img src="<%= @post.user.avatar %>" alt="<%= @post.user.username %>" />
+    </p>
+  </figure>
+  <div class="media-content" style="padding-top: 5px;">
     <div class="content">
       <div class="title is-5">
-        <figure class="image is-16x16 is-pulled-left" style="margin-right: 10px;">
-          <img src="<%= @post.user.avatar %>" alt="<%= @post.user.username %>" />
-        </figure>
         <%= link @post.title, to: group_post_path(@conn, :show, @post) %>
       </div>
     </div>

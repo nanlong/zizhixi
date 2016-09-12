@@ -28,7 +28,7 @@ defmodule Zizhixi.GroupPostPraiseController do
         conn |> put_flash(:error, "已点赞.")
     end
 
-    conn |> redirect(to: group_post_path(conn, :show, group_post.group_id, group_post.id))
+    conn |> redirect(to: group_post_path(conn, :show, group_post.id))
   end
 
   def delete(conn, %{"group_post_id" => id}) do
@@ -49,6 +49,6 @@ defmodule Zizhixi.GroupPostPraiseController do
 
     conn
     |> put_flash(:info, "取消点赞.")
-    |> redirect(to: group_post_path(conn, :show, group_post.group_id, group_post.id))
+    |> redirect(to: group_post_path(conn, :show, group_post.id))
   end
 end

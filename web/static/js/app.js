@@ -87,11 +87,11 @@ $(function() {
     });
 
     $('.btn-scroll-up').on('click', function() {
-      $main.scrollTop(0);
+      $main.animate({scrollTop: 0}, 200);
     });
 
     $('.btn-scroll-down').on('click', function() {
-      $main.scrollTop($main.height());
+      $main.animate({scrollTop: $main.height()}, 200);
     });
 
     $('.btn-begin-comment').on('click', function() {

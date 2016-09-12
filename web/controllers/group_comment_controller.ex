@@ -31,7 +31,7 @@ defmodule Zizhixi.GroupCommentController do
         conn |> put_flash(:error, "评论失败.")
     end
 
-    conn |> redirect(to: group_post_path(conn, :show, post.group_id, post))
+    conn |> redirect(to: group_post_path(conn, :show, post))
   end
 
   def show(conn, %{"group_post_id" => post_id, "id" => id}) do
@@ -59,7 +59,7 @@ defmodule Zizhixi.GroupCommentController do
       {:ok, group_comment} ->
         conn
         |> put_flash(:info, "修改成功")
-        |> redirect(to: group_post_path(conn, :show, group_comment.post.group_id, group_comment.post))
+        |> redirect(to: group_post_path(conn, :show, group_comment.post))
       {:error, changeset} ->
         conn
         |> assign(:title, "编辑回复")
@@ -76,6 +76,6 @@ defmodule Zizhixi.GroupCommentController do
 
     conn
     |> put_flash(:info, "评论删除成功.")
-    |> redirect(to: group_post_path(conn, :show, post.group_id, post))
+    |> redirect(to: group_post_path(conn, :show, post))
   end
 end
