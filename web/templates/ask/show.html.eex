@@ -1,0 +1,8 @@
+<h2>Show ask</h2>
+
+<ul>
+
+</ul>
+
+<%= link "Edit", to: ask_path(@conn, :edit, @ask) %>
+<%= link "Back", to: ask_path(@conn, :index) %>

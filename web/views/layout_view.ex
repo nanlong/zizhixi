@@ -4,15 +4,16 @@ defmodule Zizhixi.LayoutView do
   alias Zizhixi.{
     GroupController,
     GroupPostController,
-    GroupCommentController
+    GroupCommentController,
+    AskController,
   }
 
   def navigation(conn) do
     group_controllers = [GroupController, GroupPostController, GroupCommentController]
-
+    ask_controllers = [AskController]
     [
       {group_controllers, "小组", group_path(conn, :index)},
-      {[], "问答", "/"},
+      {ask_controllers, "问答", ask_path(conn, :index)},
       {[], "天工", "/"},
       {[], "司南车", "/"},
       {[], "五杂市集", "/"},
