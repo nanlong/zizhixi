@@ -45,7 +45,7 @@
 
       <%= if @logged_in? and praise?(@comment, @current_user) do %>
         <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-heart\"></i></span><span>#{praise_count(@comment)}</span>"),
-          to: group_comment_praise_path(@conn, :create, @comment),
+          to: group_comment_praise_path(@conn, :delete, @comment),
           class: "button is-link is-small",
           method: :delete
         %>

@@ -91,6 +91,15 @@ strike {
 #group-post-sidebar {
   position: fixed;
 }
+#group-post-sidebar .btn-watch .link {
+  float: right;
+  margin-right: 5px;
+}
+#group-post-sidebar .btn-collect .link {
+  float: left;
+  margin-left: 5px;
+}
+
 @media screen and (min-width: 769px) {
   #group-post-sidebar {
     width: 225px;

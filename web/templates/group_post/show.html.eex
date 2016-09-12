@@ -56,7 +56,7 @@
         <p class="control">
           <%= if @logged_in? and praise?(@group_post, @current_user) do %>
             <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-heart\"></i></span><span>#{praise_count(@group_post)}</span>"),
-              to: group_post_praise_path(@conn, :create, @group_post.id),
+              to: group_post_praise_path(@conn, :delete, @group_post.id),
               class: "button is-light is-small",
               method: :delete
             %>
@@ -72,7 +72,19 @@
           <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"), to: "", class: "button is-light is-small" %>
         </p>
         <p class="control">
-          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-bookmark\"></i></span><span>收藏</span>"), to: "", class: "button is-light is-small" %>
+          <%= if collect?(@conn, @group_post) do %>
+            <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-bookmark\"></i></span><span>收藏</span>"),
+              to: group_post_collect_path(@conn, :delete, @group_post),
+              class: "button is-light is-small",
+              method: :delete
+            %>
+          <%= else %>
+            <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-bookmark\"></i></span><span>收藏</span>"),
+              to: group_post_collect_path(@conn, :create, @group_post),
+              class: "button is-light is-small",
+              method: :post
+            %>
+          <%= end %>
         </p>
       </div>
     </div>
@@ -119,7 +131,7 @@
       <div class="has-text-centered" style="padding: 20px 0;">
         <%= if @logged_in? and praise?(@group_post, @current_user) do %>
           <%= link raw("<span class=\"icon is-large is-danger\"><i class=\"fa fa-heart\"></i></span><span>#{@group_post.praise_count}个赞</span>"),
-            to: group_post_praise_path(@conn, :create, @group_post),
+            to: group_post_praise_path(@conn, :delete, @group_post),
             class: "button-is-multiline",
             method: :delete
           %>
@@ -131,17 +143,34 @@
           %>
         <%= end %>
       </div>
-
-      <div class="is-clearfix" style="position: relative; left: 50%">
-        <p class="control has-addons is-pulled-left" style="margin-left: -68px;">
-          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"), to: "", class: "button" %>
-          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-bookmark\"></i></span><span>收藏</span>"), to: "", class: "button" %>
-        </p>
+      <div class="columns has-text-centered">
+        <div class="column btn-watch">
+          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"),
+            to: "",
+            class: "button",
+            method: :post
+          %>
+        </div>
+        <div class="column btn-collect">
+          <%= if collect?(@conn, @group_post) do %>
+            <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-bookmark\"></i></span><span>收藏</span>"),
+              to: group_post_collect_path(@conn, :delete, @group_post),
+              class: "button",
+              method: :delete
+            %>
+          <%= else %>
+            <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-bookmark\"></i></span><span>收藏</span>"),
+              to: group_post_collect_path(@conn, :create, @group_post),
+              class: "button",
+              method: :post
+            %>
+          <%= end %>
+        </div>
       </div>
 
-      <div class="has-text-centered" style="padding: 20px 0; margin: 20px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
+      <!-- <div class="has-text-centered" style="padding: 20px 0; margin: 20px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
         分享：微博 微信
-      </div>
+      </div> -->
 
       <div class="has-text-centered" style="padding: 10px 0;">
         共收到 <%= @group_post.comment_count %> 条回复
