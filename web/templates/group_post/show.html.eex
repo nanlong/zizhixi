@@ -69,7 +69,11 @@
           <%= end %>
         </p>
         <p class="control">
-          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"), to: "", class: "button is-light is-small" %>
+          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"),
+            to: "",
+            class: "button is-light is-small",
+            method: :post
+          %>
         </p>
         <p class="control">
           <%= if collect?(@conn, @group_post) do %>

@@ -8,6 +8,7 @@ defmodule Zizhixi.GroupPost do
     field :latest_inserted_at, Ecto.DateTime
     field :comment_count, :integer, default: 0
     field :praise_count, :integer, default: 0
+    field :watch_count, :integer, default: 0
     field :collect_count, :integer, default: 0
 
     belongs_to :group, Zizhixi.Group
