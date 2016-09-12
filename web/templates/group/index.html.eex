@@ -1,12 +1,6 @@
 <div class="columns">
   <div class="column">
-    <div class="tabs">
-      <ul>
-        <li class="is-active"><a>我的小组</a></li>
-        <li><a>小组热帖</a></li>
-        <li><a>小组排行</a></li>
-      </ul>
-    </div>
+    <%= render "tabs.html", conn: @conn, current_tab: @tab %>
 
     <div class="box">
       <%= for post <- @pagination do %>
@@ -15,7 +9,7 @@
     </div>
     <%= pagination_links @conn, @pagination, path: &group_path/3 %>
   </div>
-  <div class="column is-4">
+  <div class="column is-3">
     <div class="panel">
       <p class="panel-heading">
         我的小组

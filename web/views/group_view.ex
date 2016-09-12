@@ -1,15 +1,38 @@
 defmodule Zizhixi.GroupView do
   use Zizhixi.Web, :view
 
+  alias Zizhixi.{Repo, GroupMember}
   import Guardian.Plug, only: [authenticated?: 1, current_resource: 1]
 
   def group_own?(conn, group) do
     if authenticated?(conn) do
       current_user = current_resource(conn)
-      current_user.id == group.user_id
+      (current_user.id == group.user_id)
     else
       false
     end
   end
 
+  def group_member?(conn, group) do
+    if authenticated?(conn) do
+      current_user = current_resource(conn)
+      params = %{group_id: group.id, user_id: current_user.id}
+      not (GroupMember |> Repo.get_by(params) |> is_nil)
+    else
+      false
+    end
+  end
+
+  def tabs(conn) do
+    navs = [
+      {"new", "小组新贴", group_path(conn, :index, tab: "new")},
+      {"rank", "小组排行", group_path(conn, :index, tab: "rank")},
+    ]
+
+    if authenticated?(conn) do
+      navs = List.insert_at(navs, 0, {"logged", "我的小组", group_path(conn, :index)})
+    end
+
+    navs
+  end
 end

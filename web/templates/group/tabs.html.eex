@@ -1,0 +1,13 @@
+<div class="tabs">
+  <ul>
+    <%= for {tab, name, path} <- tabs(@conn) do %>
+    <%= if tab == @current_tab do %>
+    <li class="is-active">
+    <%= else %>
+    <li>
+    <%= end %>
+      <%= link name, to: path %>
+    </li>
+    <%= end %>
+  </ul>
+</div>

@@ -9,6 +9,35 @@ defmodule Zizhixi.GroupController do
   plug Zizhixi.Plug.VerifyRequest, [model: Group, action: "is_owner"]
     when action in [:edit, :update, :delete]
 
+  def index(conn, %{"tab" => tab} = params) do
+    case tab do
+      "new" ->
+        pagination = (from p in GroupPost,
+          order_by: [desc: :latest_inserted_at, desc: :inserted_at],
+          preload: [:group, :user, :latest_user])
+          |> Repo.paginate(params)
+
+        conn
+        |> assign(:title, "小组新帖")
+        |> assign(:tab, tab)
+        |> render("index-new.html", pagination: pagination)
+
+      "rank" ->
+        groups = Group
+        |> order_by(desc: :member_count, asc: :inserted_at)
+        |> limit(50)
+        |> Repo.all
+
+        conn
+        |> assign(:title, "小组排行")
+        |> assign(:tab, tab)
+        |> render("index-rank.html", groups: groups)
+
+      _ ->
+        raise Phoenix.Router.NoRouteError, conn: conn, router: __MODULE__
+    end
+  end
+
   def index(conn, params) do
     case Guardian.Plug.authenticated?(conn) do
       true ->
@@ -27,9 +56,10 @@ defmodule Zizhixi.GroupController do
 
         conn
         |> assign(:title, "我的小组帖子")
+        |> assign(:tab, "logged")
         |> render("index.html", groups: groups, pagination: pagination)
       false ->
-        text conn, "no logged"
+        conn |> redirect(to: group_path(conn, :index, tab: "new"))
     end
   end
 

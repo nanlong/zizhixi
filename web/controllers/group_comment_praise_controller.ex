@@ -11,7 +11,7 @@ defmodule Zizhixi.GroupCommentPraiseController do
 
   def create(conn, %{"group_comment_id" => id}) do
     current_user = current_resource(conn)
-    group_comment = GroupComment |> preload([:post]) |> Repo.get!(id)
+    group_comment = Repo.get!(GroupComment, id)
 
     params = %{
       comment_id: id,
@@ -28,12 +28,12 @@ defmodule Zizhixi.GroupCommentPraiseController do
         conn |> put_flash(:info, "评论点赞失败.")
     end
 
-    conn |> redirect(to: group_post_path(conn, :show, group_comment.post.group_id, group_comment.post_id))
+    conn |> redirect(to: group_post_path(conn, :show, group_comment.post_id))
   end
 
   def delete(conn, %{"group_comment_id" => id}) do
     current_user = current_resource(conn)
-    group_comment = GroupComment |> preload([:post]) |> Repo.get!(id)
+    group_comment = Repo.get!(GroupComment, id)
 
     params = %{
       comment_id: id,
@@ -48,6 +48,6 @@ defmodule Zizhixi.GroupCommentPraiseController do
     GroupComment |> dec(group_comment, :praise_count)
 
     conn |> put_flash(:info, "取消评论点赞成功.")
-    |> redirect(to: group_post_path(conn, :show, group_comment.post.group_id, group_comment.post_id))
+    |> redirect(to: group_post_path(conn, :show, group_comment.post_id))
   end
 end

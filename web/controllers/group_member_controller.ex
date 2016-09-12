@@ -8,6 +8,7 @@ defmodule Zizhixi.GroupMemberController do
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:create, :delete]
 
+  import Zizhixi.Controller.Helpers, only: [redirect_to: 2]
   # plug Zizhixi.Plug.VerifyRequest, [model: GroupMember, action: "is_owner"]
   #   when action in [:delete]
 
@@ -40,7 +41,7 @@ defmodule Zizhixi.GroupMemberController do
         end
     end
 
-    conn |> redirect(to: group_path(conn, :show, group))
+    conn |> redirect_to(group_path(conn, :show, group))
   end
 
   def delete(conn, %{"group_id" => group_id}) do
@@ -68,7 +69,7 @@ defmodule Zizhixi.GroupMemberController do
 
         conn
         |> put_flash(:info, "已退出 #{group.name} 小组")
-        |> redirect(to: group_path(conn, :index))
+        |> redirect_to(group_path(conn, :index))
     end
   end
 end
