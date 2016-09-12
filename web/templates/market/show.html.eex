@@ -1,0 +1,8 @@
+<h2>Show market</h2>
+
+<ul>
+
+</ul>
+
+<%= link "Edit", to: market_path(@conn, :edit, @market) %>
+<%= link "Back", to: market_path(@conn, :index) %>

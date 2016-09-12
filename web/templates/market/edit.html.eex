@@ -1,0 +1,6 @@
+<h2>Edit market</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: market_path(@conn, :update, @market) %>
+
+<%= link "Back", to: market_path(@conn, :index) %>

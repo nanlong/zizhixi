@@ -2,8 +2,11 @@
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
-        问答系统，敬请期待！
+        问答系统
       </h1>
+      <h2 class="subtitle">
+        传道，授业，解惑
+      </h2>
     </div>
   </div>
 </section>
