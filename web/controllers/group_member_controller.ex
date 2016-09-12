@@ -11,9 +11,12 @@ defmodule Zizhixi.GroupMemberController do
   # plug Zizhixi.Plug.VerifyRequest, [model: GroupMember, action: "is_owner"]
   #   when action in [:delete]
 
-  def index(conn, %{"group_id" => _group_id}) do
-    group_members = Repo.all(GroupMember)
-    render(conn, "index.html", group_members: group_members)
+  def index(conn, %{"group_id" => _group_id} = params) do
+    page  = GroupMember
+    |> preload([:user])
+    |> Repo.paginate(params)
+    
+    render(conn, "index.html", page: page)
   end
 
   def create(conn, %{"group_id" => group_id}) do
@@ -24,8 +27,7 @@ defmodule Zizhixi.GroupMemberController do
 
     conn = cond do
       GroupMember |> Repo.get_by(params) ->
-        conn
-        |> put_flash(:info, "你是本小组的成员，请不要重复加入")
+        conn |> put_flash(:info, "你是本小组的成员，请不要重复加入")
       true ->
         case Repo.insert(changeset) do
           {:ok, _group_member} ->
@@ -41,7 +43,7 @@ defmodule Zizhixi.GroupMemberController do
     conn |> redirect(to: group_path(conn, :show, group))
   end
 
-  def delete(conn, %{"id" => group_id}) do
+  def delete(conn, %{"group_id" => group_id}) do
     current_user = Guardian.Plug.current_resource(conn)
     group_member = Repo.get_by!(GroupMember, %{group_id: group_id, user_id: current_user.id})
     group = Repo.get!(Group, group_id)

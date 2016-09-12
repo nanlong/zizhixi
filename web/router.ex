@@ -39,12 +39,10 @@ defmodule Zizhixi.Router do
     resources "/users", UserController, param: "username", only: [:show]
 
     resources "/groups", GroupController do
-      resources "/members", GroupMemberController, as: :member, only: [:index, :create]
-
+      resources "/members", GroupMemberController, as: :member, only: [:index]
+      resources "/members", GroupMemberController, as: :member, only: [:create, :delete], singleton: true
       resources "/posts", GroupPostController, as: :post, only: [:show, :new, :create]
     end
-
-    resources "/groups_members", GroupMemberController, only: [:delete]
 
     resources "/groups_posts", GroupPostController, only: [:edit, :update, :delete] do
       resources "/praise", GroupPostPraiseController, as: :praise, only: [:create, :delete], singleton: true
