@@ -31,7 +31,7 @@
   <div class="media-right">
     <a class="button is-small is-link" href="javascript:void(0);">
       <span class="icon is-small"><i class="fa fa-heart-o"></i></span>
-      <span><%= @post.comment_count %></span>
+      <span><%= @post.praise_count %></span>
     </a>
     <a class="button is-small is-link" href="javascript:void(0);">
       <span class="icon is-small"><i class="fa fa-comments-o"></i></span>

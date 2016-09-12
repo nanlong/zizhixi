@@ -7,6 +7,7 @@ defmodule Zizhixi.GroupPost do
     field :is_deleted, :boolean, default: false
     field :latest_inserted_at, Ecto.DateTime
     field :comment_count, :integer, default: 0
+    field :praise_count, :integer, default: 0
 
     belongs_to :group, Zizhixi.Group
     belongs_to :user, Zizhixi.User

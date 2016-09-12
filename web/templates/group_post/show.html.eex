@@ -54,7 +54,19 @@
       </div>
       <div class="panel-block control is-grouped">
         <p class="control">
-          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-heart-o\"></i></span><span>赞</span>"), to: "", class: "button is-light is-small" %>
+          <%= if @logged_in? and praise?(@group_post, @current_user) do %>
+            <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-heart\"></i></span><span>#{praise_count(@group_post)}</span>"),
+              to: group_post_praise_path(@conn, :create, @group_post.id),
+              class: "button is-light is-small",
+              method: :delete
+            %>
+          <%= else %>
+            <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-heart-o\"></i></span><span>#{praise_count(@group_post)}</span>"),
+              to: group_post_praise_path(@conn, :create, @group_post.id),
+              class: "button is-light is-small",
+              method: :post
+            %>
+          <%= end %>
         </p>
         <p class="control">
           <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"), to: "", class: "button is-light is-small" %>
@@ -64,7 +76,6 @@
         </p>
       </div>
     </div>
-
     <%= if length(@comments) > 0 do %>
     <div class="box">
       共收到 <strong><%= @group_post.comment_count %></strong> 条回复
@@ -106,11 +117,19 @@
       </a>
 
       <div class="has-text-centered" style="padding: 20px 0;">
-        <%= link raw("<span class=\"icon is-large\"><i class=\"fa fa-heart-o\"></i></span><span>0个赞</span>"),
-          to: "",
-          class: "button-is-multiline",
-          method: :post
-        %>
+        <%= if @logged_in? and praise?(@group_post, @current_user) do %>
+          <%= link raw("<span class=\"icon is-large\"><i class=\"fa fa-heart-o\"></i></span><span>#{@group_post.praise_count}个赞</span>"),
+            to: group_post_praise_path(@conn, :create, @group_post),
+            class: "button-is-multiline",
+            method: :delete
+          %>
+        <%= else %>
+          <%= link raw("<span class=\"icon is-large\"><i class=\"fa fa-heart-o\"></i></span><span>#{@group_post.praise_count}个赞</span>"),
+            to: group_post_praise_path(@conn, :create, @group_post),
+            class: "button-is-multiline",
+            method: :post
+          %>
+        <%= end %>
       </div>
 
       <div class="is-clearfix" style="position: relative; left: 50%">

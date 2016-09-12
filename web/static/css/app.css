@@ -101,3 +101,6 @@ strike {
     width: 285px;
   }
 }
+.icon.is-danger {
+  color: #ed6c63;
+}

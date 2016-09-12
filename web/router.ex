@@ -47,8 +47,10 @@ defmodule Zizhixi.Router do
     resources "/groups_members", GroupMemberController, only: [:delete]
 
     resources "/groups_posts", GroupPostController, only: [:edit, :update, :delete] do
+      resources "/praise", GroupPostPraiseController, as: :praise, only: [:create, :delete], singleton: true
       resources "/comments", GroupCommentController, as: :comment, only: [:create, :show]
     end
+
 
     resources "/group_comments", GroupCommentController, only: [:edit, :update, :delete]
   end
