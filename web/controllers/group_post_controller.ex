@@ -43,11 +43,13 @@ defmodule Zizhixi.GroupPostController do
     end
   end
 
-  def show(conn, %{"group_id" => group_id, "id" => id}) do
-    group = Repo.get!(Group, group_id)
+  def show(conn, %{"id" => id}) do
     group_post = GroupPost
-    |> preload([:user, :latest_user])
+    |> preload([:group, :user, :latest_user])
     |> Repo.get_by!(%{id: id})
+
+    group = group_post.group
+
     changeset = GroupComment.changeset(%GroupComment{})
 
     comments = GroupComment

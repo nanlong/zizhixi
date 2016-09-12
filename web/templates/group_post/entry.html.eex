@@ -5,7 +5,7 @@
         <figure class="image is-16x16 is-pulled-left" style="margin-right: 10px;">
           <img src="<%= @post.user.avatar %>" alt="<%= @post.user.username %>" />
         </figure>
-        <%= link @post.title, to: group_post_path(@conn, :show, @post.group_id, @post) %>
+        <%= link @post.title, to: group_post_path(@conn, :show, @post) %>
       </div>
     </div>
     <nav class="level">
@@ -29,11 +29,7 @@
     </nav>
   </div>
   <div class="media-right">
-    <a class="button is-small is-link" href="javascript:void(0);">
-      <span class="icon is-small"><i class="fa fa-heart-o"></i></span>
-      <span><%= @post.praise_count %></span>
-    </a>
-    <a class="button is-small is-link" href="javascript:void(0);">
+    <a class="button is-small is-link" href="<%= group_post_path(@conn, :show, @post) %>#reply<%= @post.comment_count %>">
       <span class="icon is-small"><i class="fa fa-comments-o"></i></span>
       <span><%= @post.comment_count %></span>
     </a>

@@ -1,6 +1,6 @@
 <%= if @comment.is_deleted do %>
 <div class="media">
-  <a name="<%= @index %>"></a>
+  <a name="reply<%= @index %>"></a>
   <div class="media-content">
     <div class="has-text-centered">
       <strike><%= @index %>楼 已删除</strike>
@@ -9,7 +9,7 @@
 </div>
 <%= else %>
 <article class="media">
-  <a name="<%= @index %>"></a>
+  <a name="reply<%= @index %>"></a>
   <figure class="media-left">
     <p class="image is-32x32">
       <img src="<%= @comment.user.avatar %>">
@@ -20,7 +20,7 @@
       <div style="height: 30px;">
         <%= link @comment.user.username, to: user_path(@conn, :show, @comment.user.username), class: "link" %>
         ·
-        <%= link "##{@index}", to: "#{group_post_path(@conn, :show, @comment.post.group_id, @comment.post_id)}##{@index}" %>
+        <%= link "##{@index}", to: "#{group_post_path(@conn, :show, @comment.post_id)}##{@index}" %>
         ·
         <small><%= @comment.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></small>
       </div>
