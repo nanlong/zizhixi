@@ -24,7 +24,7 @@ defmodule Zizhixi.GroupPostWatchController do
       {:ok, _group_post_watch} ->
         GroupPost |> inc(group_post, :watch_count)
         conn |> put_flash(:info, "关注成功.")
-      {:error, changeset} ->
+      {:error, _changeset} ->
         conn |> put_flash(:info, "关注失败.")
     end
 
