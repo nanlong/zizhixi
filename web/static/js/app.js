@@ -13,6 +13,7 @@
 // to also remove its path from "config.paths.watched".
 import $ from "jquery";
 import "phoenix_html";
+import Simditor from "simditor";
 
 
 $(function() {
@@ -31,10 +32,38 @@ $(function() {
     };
   })();
 
+  // 发新贴
+  (function() {
+    let $textarea = $('#group_post_content');
+
+    if ($textarea.length == 0) {
+      return;
+    }
+
+    let editor = new Simditor({
+      textarea: $textarea
+    });
+
+    editor.focus();
+  })();
+
   // 小组帖子详情
   (function() {
+    let $textarea = $('#group_comment_content');
+
+    if ($textarea.length == 0) {
+      return;
+    }
+
     let $main = $('html, body');
-    let $comment_textarea = $('#group_comment_content');
+    // ['title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale',
+    //  'color', 'ol', 'ul', 'blockquote', 'code', 'table', 'link', 'image', 'hr',
+    //  'indent', 'outdent', 'alignment']
+
+    let editor = new Simditor({
+      textarea: $textarea,
+      toolbar: ['bold', 'ol', 'ul', 'blockquote','link', 'image']
+    });
 
     $('.media').on('mouseenter', function() {
       $(this).find('.btn-edit, .btn-reply').removeClass('is-hidden');
@@ -47,10 +76,14 @@ $(function() {
     $('.btn-reply').on('click', function() {
       let floor = $(this).data('floor');
       let username = $(this).data('username');
-      let content = $comment_textarea.val();
-      let new_content = `${$.trim(content)? content + '\n' : ''}#${floor}楼 @${username} `;
+      let content = editor.getValue();
+      let new_content = `${$.trim(content)? content + '\n' : ''}#${floor}楼 @${username} <b>Hi</b>!`;
 
-      $comment_textarea.val(new_content).focus();
+      editor.setValue(new_content);
+
+      setTimeout(function() {
+        editor.focus();
+      }, 300);
     });
 
     $('.btn-scroll-up').on('click', function() {
@@ -62,8 +95,11 @@ $(function() {
     });
 
     $('.btn-begin-comment').on('click', function() {
-      $comment_textarea.focus();
+      setTimeout(function() {
+        editor.focus();
+      }, 300);
     });
+
   })();
 })
 

@@ -75,3 +75,17 @@ strike {
   width: 400px;
   z-index: 999;
 }
+.is-inline-flex {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.has-icon span:last-child {
+  margin-left: 5px;
+}
+.tabs a.button:hover {
+  
+}

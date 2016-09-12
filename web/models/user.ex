@@ -89,7 +89,7 @@ defmodule Zizhixi.User do
     email_md5 = :crypto.hash(:md5, email)
     |> Base.encode16(case: :lower)
 
-    avatar = "https://gravatar.tycdn.net/avatar/#{email_md5}?d=wavatar&s=#200"
+    avatar = "https://gravatar.tycdn.net/avatar/#{email_md5}?d=wavatar&s=#300"
 
     changeset |> put_change(avatar_field, avatar)
   end
@@ -129,7 +129,7 @@ defmodule Zizhixi.User do
     case verify_password?(password, changeset.data.password_hash) do
       true -> changeset
       false ->
-        %{changeset | data: %__MODULE__{}} 
+        %{changeset | data: %__MODULE__{}}
         |> add_error(password_field, "password error")
     end
   end

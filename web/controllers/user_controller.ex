@@ -34,7 +34,9 @@ defmodule Zizhixi.UserController do
 
   def show(conn, %{"username" => username}) do
     user = Repo.get_by!(User, %{username: username})
-    render(conn, "show.html", user: user)
+    conn
+    |> assign(:title, user.username)
+    |> render("show.html", user: user)
   end
 
   @doc """

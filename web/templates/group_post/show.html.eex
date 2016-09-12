@@ -48,7 +48,9 @@
         </small>
       </div>
       <div class="panel-block">
-          <%= @group_post.content %>
+        <div class="content">
+          <%= raw @group_post.content %>
+        </div>
       </div>
       <div class="panel-block control is-grouped">
         <p class="control">
@@ -81,14 +83,13 @@
     </div>
     <%= end %>
     <div class="box">
+      <a name="reply"></a>
       <%= form_for @changeset, group_post_comment_path(@conn, :create, @group_post), fn f -> %>
-
         <%= label f, :content, "回复", class: "label" %>
         <p class="control">
           <%= textarea f, :content, class: "textarea" %>
           <%= error_tag f, :content %>
         </p>
-
         <p class="control">
           <%= submit "确定", class: "button is-info" %>
           <button class="button is-link" type="reset">取消</button>
@@ -128,7 +129,7 @@
       </div>
 
       <div style="padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #eee;">
-        <a class="button is-info is-fullwidth btn-begin-comment" href="javascript:void(0);">
+        <a class="button is-info is-fullwidth btn-begin-comment" href="#reply">
           参与回复
         </a>
       </div>

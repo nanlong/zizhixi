@@ -1,2 +1,78 @@
-<h2><%= @user.username  %>的个人主页</h2>
-<%= link "编辑个人信息", to: user_path(@conn, :edit, "profile") %>
+<div class="columns">
+  <div class="column is-4">
+    <div class="card">
+      <div class="card-image">
+        <figure class="image is-3by3">
+          <img src="<%= @user.avatar %>" alt="">
+        </figure>
+      </div>
+      <div class="card-content">
+        <div class="content">
+          <p class="title is-5"><%= @user.username %></p>
+
+          <%= if @user.description do %>
+          <div class="subtitle is-6">
+            <%= @user.description %>
+          </div>
+          <%= end %>
+
+          <%= if @user.address do %>
+          <div class="has-icon">
+            <div class="is-inline-flex">
+              <span class="icon is-small">
+                <i class="fa fa-map-marker"></i>
+              </span>
+              <span><%= @user.address %></span>
+            </div>
+          </div>
+          <%= end %>
+          <div class="has-icon">
+            <div class="is-inline-flex">
+              <span class="icon is-small" >
+                <i class="fa fa-clock-o"></i>
+              </span>
+              <span><%= @user.inserted_at |> Ecto.DateTime.to_erl |> Timex.to_datetime("Etc/UTC") |> Timex.format!("{YYYY}-{0M}-{0D}") %>加入</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <a class="card-footer-item" href="#">关注者0</a>
+        <a class="card-footer-item" href="#">正在关注0</a>
+      </footer>
+      <%= if @logged_in? and @current_user.id == @user.id do %>
+      <footer class="card-footer">
+        <%= link "编辑个人信息", to: user_path(@conn, :edit, "profile"), class: "card-footer-item" %>
+      </footer>
+      <%= end %>
+    </div>
+  </div>
+  <div class="column">
+
+    <div class="tabs">
+      <ul class="is-left">
+        <li class="is-active"><a>个人信息</a></li>
+        <li><a>帖子</a></li>
+        <li><a>回复</a></li>
+        <li><a>正在关注</a></li>
+        <li><a>关注者</a></li>
+      </ul>
+
+      <%= if @logged_in? and @current_user.id == @user.id do %>
+      <ul class="is-right">
+        <li>
+          <a class="button" href="<%= user_path(@conn, :edit, "profile") %>">
+            <span class="icon is-small">
+              <i class="fa fa-pencil"></i>
+            </span>
+            <span>编辑个人信息</span>
+          </a>
+        </li>
+      </ul>
+
+      <%= end %>
+    </div>
+
+
+  </div>
+</div>
