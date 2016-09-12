@@ -9,7 +9,7 @@ defmodule Zizhixi.Repo.Migrations.CreateGroupPostPraise do
 
       timestamps()
     end
-    create unique_index(:group_post_praises, [:post_id, :user_id], name: :praise)
+    create unique_index(:group_post_praises, [:post_id, :user_id], name: :group_post_praise)
 
     alter table(:group_posts) do
       add :praise_count, :integer, default: 0
