@@ -15,6 +15,6 @@ defmodule Zizhixi.GroupCommentPraise do
     struct
     |> cast(params, [:comment_id, :user_id])
     |> validate_required([:comment_id, :user_id])
-    |> unique_constraint(:comment_id, name: :praise)
+    |> unique_constraint(:comment_id, name: :group_comment_praise)
   end
 end

@@ -9,6 +9,8 @@ defmodule Zizhixi.Repo.Migrations.CreateGroupCommentPraise do
 
       timestamps()
     end
+    create index(:group_comment_praises, [:comment_id])
+    create index(:group_comment_praises, [:user_id])
     create unique_index(:group_comment_praises, [:comment_id, :user_id], name: :group_comment_praise)
 
     alter table(:group_comments) do

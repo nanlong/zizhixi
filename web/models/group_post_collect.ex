@@ -1,7 +1,7 @@
-defmodule Zizhixi.GroupPostPraise do
+defmodule Zizhixi.GroupPostCollect do
   use Zizhixi.Web, :model
 
-  schema "group_post_praises" do
+  schema "group_post_collects" do
     belongs_to :post, Zizhixi.Post
     belongs_to :user, Zizhixi.User
 
@@ -15,6 +15,6 @@ defmodule Zizhixi.GroupPostPraise do
     struct
     |> cast(params, [:post_id, :user_id])
     |> validate_required([:post_id, :user_id])
-    |> unique_constraint(:post_id, name: :group_post_praise)
+    |> unique_constraint(:post_id, name: :group_post_collect)
   end
 end
