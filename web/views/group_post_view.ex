@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupPostView do
   use Zizhixi.Web, :view
 
-  alias Zizhixi.{Repo, GroupPostPraise, GroupPostCollect}
+  alias Zizhixi.{Repo, GroupPostPraise, GroupPostWatch, GroupPostCollect}
   import Guardian.Plug, only: [authenticated?: 1, current_resource: 1]
 
   def praise_count(post) do
@@ -12,15 +12,39 @@ defmodule Zizhixi.GroupPostView do
     end
   end
 
-  def praise?(post, user) do
-    params = %{
-      post_id: post.id,
-      user_id: user.id
-    }
+  def praise?(conn, post) do
+    if authenticated?(conn) do
+      current_user = current_resource(conn)
 
-    case Repo.get_by(GroupPostPraise, params) do
-      nil -> false
-      _ -> true
+      params = %{
+        post_id: post.id,
+        user_id: current_user.id
+      }
+
+      case Repo.get_by(GroupPostPraise, params) do
+        nil -> false
+        _ -> true
+      end
+    else
+      false
+    end
+  end
+
+  def watch?(conn, post) do
+    if authenticated?(conn) do
+      current_user = current_resource(conn)
+
+      params = %{
+        post_id: post.id,
+        user_id: current_user.id
+      }
+
+      case Repo.get_by(GroupPostWatch, params) do
+        nil -> false
+        _ -> true
+      end
+    else
+      false
     end
   end
 

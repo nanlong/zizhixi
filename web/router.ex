@@ -47,12 +47,15 @@ defmodule Zizhixi.Router do
     resources "/groups_posts", GroupPostController, only: [:edit, :update, :delete] do
       resources "/praise", GroupPostPraiseController, as: :praise, only: [:create, :delete], singleton: true
       resources "/collect", GroupPostCollectController, as: :collect, only: [:create, :delete], singleton: true
+      resources "/watch", GroupPostWatchController, as: :watch, only: [:create, :delete], singleton: true
       resources "/comments", GroupCommentController, as: :comment, only: [:create, :show]
     end
 
     resources "/group_comments", GroupCommentController, only: [:edit, :update, :delete] do
       resources "/praise", GroupCommentPraiseController, as: :praise, only: [:create, :delete], singleton: true
     end
+
+    resources "/group_post_watchs", GroupPostWatchController
   end
 
   scope "/settings", Zizhixi do

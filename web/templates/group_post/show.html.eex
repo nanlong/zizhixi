@@ -54,7 +54,7 @@
       </div>
       <div class="panel-block control is-grouped">
         <p class="control">
-          <%= if @logged_in? and praise?(@group_post, @current_user) do %>
+          <%= if praise?(@conn, @group_post) do %>
             <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-heart\"></i></span><span>#{praise_count(@group_post)}</span>"),
               to: group_post_praise_path(@conn, :delete, @group_post.id),
               class: "button is-light is-small",
@@ -69,11 +69,19 @@
           <%= end %>
         </p>
         <p class="control">
-          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"),
-            to: "",
-            class: "button is-light is-small",
-            method: :post
-          %>
+          <%= if watch?(@conn, @group_post) do %>
+            <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"),
+              to: group_post_watch_path(@conn, :delete, @group_post),
+              class: "button is-light is-small",
+              method: :delete
+            %>
+          <%= else %>
+            <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"),
+              to: group_post_watch_path(@conn, :create, @group_post),
+              class: "button is-light is-small",
+              method: :post
+            %>
+          <%= end %>
         </p>
         <p class="control">
           <%= if collect?(@conn, @group_post) do %>
@@ -133,7 +141,7 @@
       </a>
 
       <div class="has-text-centered" style="padding: 20px 0;">
-        <%= if @logged_in? and praise?(@group_post, @current_user) do %>
+        <%= if praise?(@conn, @group_post) do %>
           <%= link raw("<span class=\"icon is-large is-danger\"><i class=\"fa fa-heart\"></i></span><span>#{@group_post.praise_count}个赞</span>"),
             to: group_post_praise_path(@conn, :delete, @group_post),
             class: "button-is-multiline",
@@ -149,11 +157,19 @@
       </div>
       <div class="columns has-text-centered">
         <div class="column btn-watch">
-          <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"),
-            to: "",
-            class: "button",
-            method: :post
-          %>
+          <%= if watch?(@conn, @group_post) do %>
+            <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"),
+              to: group_post_watch_path(@conn, :delete, @group_post),
+              class: "button",
+              method: :delete
+            %>
+          <%= else %>
+            <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"),
+              to: group_post_watch_path(@conn, :create, @group_post),
+              class: "button",
+              method: :post
+            %>
+          <%= end %>
         </div>
         <div class="column btn-collect">
           <%= if collect?(@conn, @group_post) do %>
