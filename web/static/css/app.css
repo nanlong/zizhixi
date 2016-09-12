@@ -1,9 +1,10 @@
 /* This file is for your main application css. */
-@media screen and (min-width: 1180px) {
+/*@media screen and (min-width: 1180px) {
   .container {
     max-width: 960px;
   }
-}
+}*/
+
 body {
   background: #f5f7fa;
 }
@@ -86,6 +87,17 @@ strike {
 .has-icon span:last-child {
   margin-left: 5px;
 }
-.tabs a.button:hover {
-  
+
+#group-post-sidebar {
+  position: fixed;
+}
+@media screen and (min-width: 769px) {
+  #group-post-sidebar {
+    width: 225px;
+  }
+}
+@media screen and (min-width: 1180px) {
+  #group-post-sidebar {
+    width: 285px;
+  }
 }

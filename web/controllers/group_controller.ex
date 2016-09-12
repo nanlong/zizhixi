@@ -71,8 +71,6 @@ defmodule Zizhixi.GroupController do
     |> preload([:user])
     |> Repo.paginate(%{page: 1})
 
-    IO.inspect group_members
-
     member = case Guardian.Plug.current_resource(conn) do
       nil -> nil
       current_user -> Repo.get_by(GroupMember, %{group_id: group.id, user_id: current_user.id})

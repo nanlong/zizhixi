@@ -97,8 +97,8 @@
       <% end %>
     </div>
   </div>
-  <div class="column is-4">
-    <div class="box if-fullwidth" style="position: fixed; width: 306px;">
+  <div class="column is-3">
+    <div id="group-post-sidebar" class="box if-fullwidth">
       <a class="button is-fullwidth btn-scroll-up" href="javascript:void(0);">
         <span class="icon is-small">
           <i class="fa fa-arrow-up"></i>
