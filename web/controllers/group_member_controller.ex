@@ -15,7 +15,7 @@ defmodule Zizhixi.GroupMemberController do
     page  = GroupMember
     |> preload([:user])
     |> Repo.paginate(params)
-    
+
     render(conn, "index.html", page: page)
   end
 
@@ -45,15 +45,30 @@ defmodule Zizhixi.GroupMemberController do
 
   def delete(conn, %{"group_id" => group_id}) do
     current_user = Guardian.Plug.current_resource(conn)
-    group_member = Repo.get_by!(GroupMember, %{group_id: group_id, user_id: current_user.id})
     group = Repo.get!(Group, group_id)
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(group_member)
-    Group |> dec(group, :member_count)
 
-    conn
-    |> put_flash(:info, "已退出 #{group.name} 小组")
-    |> redirect(to: group_path(conn, :index))
+    case group.user_id == current_user.id do
+      true ->
+        conn
+        |> put_flash(:error, "创建者不能退出小组")
+        |> redirect(to: group_path(conn, :show, group))
+
+      false ->
+        params = %{
+          group_id: group_id,
+          user_id: current_user.id
+        }
+
+        group_member = Repo.get_by!(GroupMember, params)
+
+        # Here we use delete! (with a bang) because we expect
+        # it to always work (and if it does not, it will raise).
+        Repo.delete!(group_member)
+        Group |> dec(group, :member_count)
+
+        conn
+        |> put_flash(:info, "已退出 #{group.name} 小组")
+        |> redirect(to: group_path(conn, :index))
+    end
   end
 end

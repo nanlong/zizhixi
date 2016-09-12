@@ -12,10 +12,14 @@
           <%= link @group.name, to: group_path(@conn, :show, @group), target: "_blank", class: "is-pulled-left", style: "margin-right: 20px;" %>
 
           <%= if @logged_in? do %>
-            <%= if @member do %>
-              <%= link "已加入 | 退出", to: group_member_path(@conn, :delete, @group), method: :delete, class: "button is-small is-pulled-left" %>
+            <%= if @group.user_id != @current_user.id do %>
+              <%= if @member do %>
+                <%= link "已加入 | 退出", to: group_member_path(@conn, :delete, @group), method: :delete, class: "button is-small is-pulled-left" %>
+              <%= else %>
+                <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
+              <%= end %>
             <%= else %>
-              <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
+              <%= link "小组管理", to: "", class: "button is-small is-pulled-left" %>
             <%= end %>
           <%= else %>
             <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
