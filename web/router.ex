@@ -57,6 +57,7 @@ defmodule Zizhixi.Router do
 
     resources "/asks", AskController
     resources "/tutorials", TutorialController
+    resources "/links", LinkController
   end
 
   scope "/settings", Zizhixi do
