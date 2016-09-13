@@ -7,47 +7,50 @@
   <div class="column">
     <div class="box">
       <div class="column is-8">
-        <%= form_for @changeset, user_path(@conn, :update, "profile"), fn f -> %>
+        <div id="settings-profile" ng-controller="SettingsProfileCtrl">
+          <%= form_for @changeset, user_path(@conn, :update, "profile"), fn f -> %>
+            <%= label f, :avatar, "头像", class: "label" %>
+            <p class="control">
+              <figure class="image is-128x128">
+                <img id="user-avatar" src="<%= @user.avatar %>" alt="<%= @user.username %>" />
+              </figure>
 
-          <%= label f, :avatar, "头像", class: "label" %>
-          <p class="control">
-            <figure class="image is-128x128">
-              <img src="<%= @user.avatar %>" alt="<%= @user.username %>" />
-            </figure>
+              <div class="button is-small" ngf-select="upload($file)" style="width: 128px; margin-top: 10px;">上传头像</div>
+              <%= hidden_input f, :avatar, class: "input" %>
+              <%= error_tag f, :avatar %>
+            </p>
 
-            <%= hidden_input f, :avatar, class: "input", disabled: "disabled" %>
-            <%= error_tag f, :avatar %>
-          </p>
+            <%= label f, :username, "用户名", class: "label" %>
+            <p class="control">
+              <%= text_input f, :username, class: "input", disabled: "disabled" %>
+              <%= error_tag f, :username %>
+            </p>
 
-          <%= label f, :username, "用户名", class: "label" %>
-          <p class="control">
-            <%= text_input f, :username, class: "input", disabled: "disabled" %>
-            <%= error_tag f, :username %>
-          </p>
+            <%= label f, :email, "邮箱", class: "label" %>
+            <p class="control">
+              <%= text_input f, :email, class: "input", disabled: "disabled" %>
+              <%= error_tag f, :email %>
+            </p>
 
-          <%= label f, :email, "邮箱", class: "label" %>
-          <p class="control">
-            <%= text_input f, :email, class: "input", disabled: "disabled" %>
-            <%= error_tag f, :email %>
-          </p>
+            <%= label f, :address, "地址", class: "label" %>
+            <p class="control">
+              <%= text_input f, :address, class: "input" %>
+              <%= error_tag f, :address %>
+            </p>
 
-          <%= label f, :address, "地址", class: "label" %>
-          <p class="control">
-            <%= text_input f, :address, class: "input" %>
-            <%= error_tag f, :address %>
-          </p>
+            <%= label f, :description, "个人简介", class: "label" %>
+            <p class="control">
+              <%= textarea f, :description, class: "textarea" %>
+              <%= error_tag f, :description %>
+            </p>
 
-          <%= label f, :description, "个人简介", class: "label" %>
-          <p class="control">
-            <%= textarea f, :description, class: "textarea" %>
-            <%= error_tag f, :description %>
-          </p>
+            <p class="control">
+              <button class="button is-info" type="submit">确定</button>
+              <button class="button is-link" type="reset">取消</button>
+            </p>
+          <% end %>
+        </div>
 
-          <p class="control">
-            <button class="button is-info" type="submit">确定</button>
-            <button class="button is-link" type="reset">取消</button>
-          </p>
-        <% end %>
       </div>
     </div>
   </div>

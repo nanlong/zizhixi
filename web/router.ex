@@ -26,6 +26,8 @@ defmodule Zizhixi.Router do
   scope "/", Zizhixi do
     pipe_through [:browser, :browser_session] # Use the default browser stack
 
+    post "/upload", PageController, :upload
+
     get "/", PageController, :index
 
     get "/signup", UserController, :new

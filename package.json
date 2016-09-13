@@ -6,9 +6,11 @@
     "watch": "brunch watch --stdin"
   },
   "dependencies": {
+    "angular": "^1.5.8",
+    "jquery": "~3.1.0",
+    "ng-file-upload": "^12.2.9",
     "phoenix": "file:deps/phoenix",
     "phoenix_html": "file:deps/phoenix_html",
-    "jquery": "~3.1.0",
     "simditor": "^2.3.6"
   },
   "devDependencies": {

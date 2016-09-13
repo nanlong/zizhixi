@@ -11,10 +11,41 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-import $ from "jquery";
 import "phoenix_html";
+import $ from "jquery";
 import Simditor from "simditor";
+import angular from "angular";
+import "ng-file-upload";
 
+(function() {
+  if ($('#settings-profile').length <= 0) {
+    return;
+  }
+
+  let app = angular.module('fileUpload', ['ngFileUpload']);
+
+  app.controller('SettingsProfileCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
+
+    $scope.upload = function(file) {
+      if (! file) {
+        return;
+      }
+      Upload.upload({
+          url: '/upload',
+          headers: {"X-CSRF-TOKEN": $("meta[name=csrf]").attr("content")},
+          data: {file: file}
+      }).then(function (resp) {
+        var avatar_url = resp.data.url + '?imageView2/1/w/200/h/200';
+        $('#user_avatar').val(avatar_url);
+        $('#user-avatar').attr('src', avatar_url);
+      }, function (resp) {
+        alert("上传失败")
+      });
+    }
+  }]);
+
+  angular.bootstrap(document, ['fileUpload']);
+})();
 
 $(function() {
   // 消息框
@@ -99,6 +130,10 @@ $(function() {
         editor.focus();
       }, 300);
     });
+
+  })();
+
+  (function() {
 
   })();
 })

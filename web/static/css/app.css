@@ -113,3 +113,11 @@ strike {
 .icon.is-danger {
   color: #ed6c63;
 }
+.image {
+  overflow: hidden;
+}
+.nav-item figure {
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+}
