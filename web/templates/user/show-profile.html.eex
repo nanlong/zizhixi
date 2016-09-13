@@ -4,6 +4,14 @@
   </div>
   <div class="column">
     <%= render "show-tabs.html", conn: @conn, user: @user, current_tab: @current_tab %>
-
+    <section class="hero is-primary has-text-centered">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            用户 <%= @user.username %> 的个人信息还在构建中
+          </h1>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
