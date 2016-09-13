@@ -36,18 +36,41 @@
               <span><%= @user.inserted_at |> Ecto.DateTime.to_erl |> Timex.to_datetime("Etc/UTC") |> Timex.format!("{YYYY}-{0M}-{0D}") %>加入</span>
             </div>
           </div>
+
+          <%= if @logged_in? and @current_user.id != @user.id do %>
+          <div class="columns" style="margin-top: 0;">
+            <div class="column">
+              <%= if follow?(@conn, @user) do %>
+              <%= link "取消关注",
+                to: user_follow_path(@conn, :delete, @user.username),
+                class: "button is-info is-fullwidth",
+                method: :delete
+              %>
+              <%= else %>
+              <%= link "关注",
+                to: user_follow_path(@conn, :create, @user.username),
+                class: "button is-info is-fullwidth",
+                method: :post
+              %>
+              <%= end %>
+            </div>
+            <div class="column">
+
+            </div>
+          </div>
+          <%= end %>
         </div>
       </div>
       <footer class="card-footer">
         <div class="card-footer-item">
           <a class="button-is-multiline has-text-centered" href="#">
-            <span>0</span>
+            <span><%= @user.followers_count %></span>
             <span>关注者</span>
           </a>
         </div>
         <div class="card-footer-item">
           <a class="button-is-multiline has-text-centered" href="#">
-            <span>0</span>
+            <span><%= @user.following_count %></span>
             <span>正在关注</span>
           </a>
         </div>

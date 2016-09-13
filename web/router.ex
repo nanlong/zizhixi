@@ -38,7 +38,9 @@ defmodule Zizhixi.Router do
 
     get "/signout", SessionController, :delete
 
-    resources "/users", UserController, param: "username", only: [:show]
+    resources "/users", UserController, param: "username", only: [:show] do
+      resources "/follow", UserFollowController, as: :follow, only: [:create, :delete], singleton: true
+    end
 
     resources "/groups", GroupController do
       resources "/members", GroupMemberController, as: :member, only: [:index]
@@ -61,6 +63,7 @@ defmodule Zizhixi.Router do
     resources "/tutorials", TutorialController
     resources "/links", LinkController
     resources "/markets", MarketController
+
   end
 
   scope "/settings", Zizhixi do

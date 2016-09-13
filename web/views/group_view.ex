@@ -24,15 +24,18 @@ defmodule Zizhixi.GroupView do
   end
 
   def tabs(conn) do
-    navs = [
-      {"new", "小组新贴", group_path(conn, :index, tab: "new")},
-      {"rank", "小组排行", group_path(conn, :index, tab: "rank")},
-    ]
-
-    if authenticated?(conn) do
-      navs = List.insert_at(navs, 0, {"logged", "我的小组", group_path(conn, :index)})
+    case authenticated?(conn) do
+      true ->
+        [
+          {"logged", "我的小组", group_path(conn, :index)},
+          {"new", "小组新贴", group_path(conn, :index, tab: "new")},
+          {"rank", "小组排行", group_path(conn, :index, tab: "rank")},
+        ]
+      false ->
+        [
+          {"new", "小组新贴", group_path(conn, :index, tab: "new")},
+          {"rank", "小组排行", group_path(conn, :index, tab: "rank")},
+        ]
     end
-
-    navs
   end
 end
