@@ -18,6 +18,11 @@ defmodule Zizhixi.UserFollowController do
   def create(conn, %{"user_username" => username}) do
     current_user = current_resource(conn)
     follow_user = Repo.get_by!(User, %{username: username})
+
+    if current_user == follow_user do
+      raise Phoenix.NotAcceptableError
+    end
+
     params = %{
       user_id: current_user.id,
       follow_id: follow_user.id

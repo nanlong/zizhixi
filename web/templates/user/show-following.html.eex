@@ -24,7 +24,7 @@
                   <%= link item.follow.username, to: user_path(@conn, :show, item.follow.username) %>
                 </div>
                 <div class="subtitle is-6" style="margin-top: 0;">
-                  <%= if @logged_in? and @current_user.id != item.follow.id do %>
+                  <%= if @logged_in? and @current_user != item.follow do %>
                     <%= if follow?(@conn, item.follow) do %>
                     <%= link "取消关注",
                       to: "#{user_follow_path(@conn, :delete, item.follow.username)}?next=#{user_path(@conn, :show, @user.username, tab: "following")}",
