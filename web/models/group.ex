@@ -20,5 +20,6 @@ defmodule Zizhixi.Group do
     |> cast(params, [:name, :logo, :description, :user_id])
     |> validate_required([:name, :logo, :description, :user_id])
     |> validate_length(:name, max: 48)
+    |> unique_constraint(:name)
   end
 end
