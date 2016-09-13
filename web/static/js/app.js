@@ -132,10 +132,6 @@ $(function() {
     });
 
   })();
-
-  (function() {
-
-  })();
 })
 
 // Import local files

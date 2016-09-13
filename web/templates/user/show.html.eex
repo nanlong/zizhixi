@@ -1,6 +1,6 @@
 <div class="columns">
   <div class="column is-4">
-    <div class="card">
+    <div class="card is-fullwidth">
       <div class="card-content">
         <div class="media">
           <div class="media-left">
@@ -39,8 +39,24 @@
         </div>
       </div>
       <footer class="card-footer">
-        <a class="card-footer-item" href="#">关注者0</a>
-        <a class="card-footer-item" href="#">正在关注0</a>
+        <div class="card-footer-item">
+          <a class="button-is-multiline has-text-centered" href="#">
+            <span>0</span>
+            <span>关注者</span>
+          </a>
+        </div>
+        <div class="card-footer-item">
+          <a class="button-is-multiline has-text-centered" href="#">
+            <span>0</span>
+            <span>正在关注</span>
+          </a>
+        </div>
+        <div class="card-footer-item">
+          <a class="button-is-multiline has-text-centered" href="#">
+            <span>0</span>
+            <span>收藏</span>
+          </a>
+        </div>
       </footer>
       <%= if @logged_in? and @current_user.id == @user.id do %>
       <footer class="card-footer">
