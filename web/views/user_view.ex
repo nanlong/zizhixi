@@ -4,6 +4,14 @@ defmodule Zizhixi.UserView do
   alias Zizhixi.{Repo, UserFollow}
   import Guardian.Plug, only: [authenticated?: 1, current_resource: 1]
 
+  def tabs(conn, user) do
+    [
+      {"profile", "个人信息", user_path(conn, :show, user.username, tab: "profile")},
+      {"followers", "关注者", user_path(conn, :show, user.username, tab: "followers")},
+      {"following", "正在关注", user_path(conn, :show, user.username, tab: "following")},
+    ]
+  end
+
   def subnav(conn) do
     [
       {"profile", "个人信息", user_path(conn, :edit, "profile")},

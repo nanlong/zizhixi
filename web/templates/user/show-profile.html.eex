@@ -1,0 +1,9 @@
+<div class="columns">
+  <div class="column is-4">
+    <%= render "show-left.html", conn: @conn, user: @user, logged_in?: @logged_in?, current_user: @current_user %>
+  </div>
+  <div class="column">
+    <%= render "show-tabs.html", conn: @conn, user: @user, current_tab: @current_tab %>
+
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="columns">
+  <div class="column is-4">
+    <%= render "show-left.html", conn: @conn, user: @user, logged_in?: @logged_in?, current_user: @current_user %>
+  </div>
+  <div class="column">
+    <%= render "show-tabs.html", conn: @conn, user: @user, current_tab: @current_tab %>
+
+    <%= if @pagination.total_entries > 0 do %>
+    <div class="columns is-multiline">
+      <%= for item <- @pagination do %>
+      <div class="column is-4">
+        <div class="card">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left">
+                <a href="<%= user_path(@conn, :show, item.user.username) %>">
+                  <figure class="image is-48x48">
+                    <img src="<%= item.user.avatar %>" alt="<%= item.user.username %>">
+                  </figure>
+                </a>
+              </div>
+              <div class="media-content">
+                <div class="title is-5" style="margin-bottom: 6px;">
+                  <%= link item.user.username, to: user_path(@conn, :show, item.user.username) %>
+                </div>
+                <div class="subtitle is-6" style="margin-top: 0;">
+                  <%= if @logged_in? and @current_user.id != item.user.id do %>
+                    <%= if follow?(@conn, item.user) do %>
+                    <%= link "取消关注",
+                      to: "#{user_follow_path(@conn, :delete, item.user.username)}?next=#{user_path(@conn, :show, @user.username, tab: "followers")}",
+                      class: "button is-info is-small",
+                      method: :delete
+                    %>
+                    <%= else %>
+                    <%= link "关注",
+                      to: "#{user_follow_path(@conn, :create, item.user.username)}?next=#{user_path(@conn, :show, @user.username, tab: "followers")}",
+                      class: "button is-info is-small",
+                      method: :post
+                    %>
+                    <%= end %>
+                  <%= end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%= end %>
+    </div>
+
+    <%= pagination_links @conn, @pagination, [@user.username], action: :show, path: &user_path/4, tab: "followers" %>
+    <%= else %>
+    <section class="hero is-primary has-text-centered">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            用户 <%= @user.username %> 还没有关注者
+          </h1>
+          <h2 class="subtitle">
+            <%= link "关注",
+              to: "#{user_follow_path(@conn, :create, @user.username)}?next=#{user_path(@conn, :show, @user.username, tab: "followers")}",
+              class: "button is-danger",
+              method: :post
+            %>
+            一下Ta吧
+          </h2>
+        </div>
+      </div>
+    </section>
+    <%= end %>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 defmodule Zizhixi.UserController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.User
+  alias Zizhixi.{User, UserFollow}
 
   import Zizhixi.Controller.Helpers, only: [redirect_to: 2]
 
@@ -32,11 +32,45 @@ defmodule Zizhixi.UserController do
     end
   end
 
-  def show(conn, %{"username" => username}) do
+  def show(conn, %{"username" => username, "tab" => "profile"}) do
     user = Repo.get_by!(User, %{username: username})
+
     conn
-    |> assign(:title, user.username)
-    |> render("show.html", user: user)
+    |> assign(:title, "#{user.username}的个人信息")
+    |> assign(:current_tab, "profile")
+    |> render("show-profile.html", user: user)
+  end
+
+  def show(conn, %{"username" => username, "tab" => "followers"} = params) do
+    user = Repo.get_by!(User, %{username: username})
+
+    pagination = UserFollow
+    |> where(follow_id: ^user.id)
+    |> preload([:user])
+    |> Repo.paginate(params)
+
+    conn
+    |> assign(:title, "#{user.username}的关注者")
+    |> assign(:current_tab, "followers")
+    |> render("show-followers.html", user: user, pagination: pagination)
+  end
+
+  def show(conn, %{"username" => username, "tab" => "following"} = params) do
+    user = Repo.get_by!(User, %{username: username})
+
+    pagination = UserFollow
+    |> where(user_id: ^user.id)
+    |> preload([:follow])
+    |> Repo.paginate(params)
+
+    conn
+    |> assign(:title, "#{user.username}的正在关注")
+    |> assign(:current_tab, "following")
+    |> render("show-following.html", user: user, pagination: pagination)
+  end
+
+  def show(conn, %{"username" => username}) do
+    show(conn, %{"username" => username, "tab" => "profile"})
   end
 
   @doc """

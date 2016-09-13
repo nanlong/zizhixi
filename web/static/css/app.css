@@ -122,3 +122,4 @@ strike {
   overflow: hidden;
 }
 .column .link {width: 100%;}
+.subtitle .link {width: auto; vertical-align: middle;}
