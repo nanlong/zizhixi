@@ -1,4 +1,4 @@
-<div class="card is-fullwidth">
+<div id="user-show-card" class="card is-fullwidth">
   <div class="card-content">
     <div class="media">
       <div class="media-left">
@@ -37,7 +37,7 @@
 
       <%= if @logged_in? and @current_user.id != @user.id do %>
       <div class="columns" style="margin-top: 0;">
-        <div class="column">
+        <div class="column btn-follow">
           <%= if follow?(@conn, @user) do %>
           <%= link "取消关注",
             to: user_follow_path(@conn, :delete, @user.username),

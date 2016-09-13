@@ -121,5 +121,5 @@ strike {
   height: 24px;
   overflow: hidden;
 }
-.column .link {width: 100%;}
+#user-show-card .btn-follow .link {width: 100%;}
 .subtitle .link {width: auto; vertical-align: middle;}
