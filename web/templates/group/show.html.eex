@@ -2,7 +2,7 @@
   <article class="media">
     <div class="media-left">
       <figure class="image is-48x48">
-        <img src="http://placehold.it/128x128" alt="Image">
+        <img src="<%= @group.logo %>" alt="<%= @group.name %>">
       </figure>
     </div>
     <div class="media-content">
@@ -57,9 +57,9 @@
                   <div class="">
                     <small>创建时间 <%= @group.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></small>
                   </div>
-                  <div class="">
+                  <!-- <div class="">
                     <small>最后活跃 <%= @group.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></small>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </article>
@@ -92,7 +92,7 @@
                   <nav class="level">
                     <div class="level-left">
                       <div class="level-item">
-                        <small>99+帖子</small>
+                        <small><%= m.inserted_at |> Ecto.DateTime.to_erl |> Timex.to_datetime("Etc/UTC") |> Timex.format!("{YYYY}-{0M}-{0D}") %> 加入</small>
                       </div>
                     </div>
                   </nav>

@@ -4,7 +4,7 @@
       <article class="media">
         <div class="media-left">
           <figure class="image is-48x48">
-            <img src="http://placehold.it/48x48" alt="<%= @group.name %>">
+            <img src="<%= @group.logo %>" alt="<%= @group.name %>">
           </figure>
         </div>
         <div class="media-content">

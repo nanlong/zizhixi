@@ -47,6 +47,37 @@ import "ng-file-upload";
   angular.bootstrap(document, ['fileUpload']);
 })();
 
+
+(function() {
+  if ($('#groups-new').length <= 0) {
+    return;
+  }
+
+  let app = angular.module('fileUpload', ['ngFileUpload']);
+
+  app.controller('GroupsNewCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
+
+    $scope.upload = function(file) {
+      if (! file) {
+        return;
+      }
+      Upload.upload({
+          url: '/upload',
+          headers: {"X-CSRF-TOKEN": $("meta[name=csrf]").attr("content")},
+          data: {file: file}
+      }).then(function (resp) {
+        var img_url = resp.data.url + '?imageView2/1/w/200/h/200';
+        $('#group_logo').val(img_url);
+        $('#group-logo').attr('src', img_url);
+      }, function (resp) {
+        alert("上传失败")
+      });
+    }
+  }]);
+
+  angular.bootstrap(document, ['fileUpload']);
+})();
+
 $(function() {
   // 消息框
   (function() {
