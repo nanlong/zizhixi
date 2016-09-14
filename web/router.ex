@@ -46,6 +46,7 @@ defmodule Zizhixi.Router do
       resources "/members", GroupMemberController, as: :member, only: [:index]
       resources "/members", GroupMemberController, as: :member, only: [:create, :delete], singleton: true
       resources "/posts", GroupPostController, as: :post, only: [:new, :create]
+      resources "/topics", GroupTopicController, as: :topic, only: [:index, :new, :create]
     end
 
     resources "/group_posts", GroupPostController, only: [:show, :edit, :update, :delete] do
@@ -54,6 +55,8 @@ defmodule Zizhixi.Router do
       resources "/watch", GroupPostWatchController, as: :watch, only: [:create, :delete], singleton: true
       resources "/comments", GroupCommentController, as: :comment, only: [:create, :show]
     end
+
+    resources "/group_topics", GroupTopicController, only: [:edit, :update, :delete]
 
     resources "/group_comments", GroupCommentController, only: [:edit, :update, :delete] do
       resources "/praise", GroupCommentPraiseController, as: :praise, only: [:create, :delete], singleton: true

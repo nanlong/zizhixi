@@ -1,0 +1,43 @@
+<div class="columns">
+  <div class="column">
+    <div class="box">
+      <%= if Enum.count(@group_topics) > 0 do %>
+        <%= for topic <- @group_topics do %>
+        <article class="media">
+          <div class="media-content">
+            <%= link "编辑", to: group_topic_path(@conn, :edit, topic), class: "button is-small is-pulled-right" %>
+            <div class="content">
+              <p>
+                <strong class="tag is-primary is-small"><%= topic.name %></strong>
+                <small>排序</small> <strong><%= topic.sorted %></strong> |
+                <small><%= topic.inserted_at |> strftime %> 创建</small>
+              </p>
+            </div>
+          </div>
+          </article>
+        <%= end %>
+      <%= else %>
+      <section class="hero is-primary has-text-centered">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">
+              还没有话题
+            </h1>
+            <h2 class="subtitle">
+              <%= link "创建第一个话题", to: group_topic_path(@conn, :new, @group), class: "button is-danger" %>
+            </h2>
+          </div>
+        </div>
+      </section>
+      <%= end %>
+    </div>
+  </div>
+  <div class="column is-3">
+    <p>
+      <%= link "创建话题", to: group_topic_path(@conn, :new, @group), class: "button is-info is-fullwidth" %>
+    </p>
+    <p>
+      <%= link raw("<span>返回#{@group.name}</span><span class=\"icon is-small\"><i class=\"fa fa-arrow-right\"></i></span>"), to: group_path(@conn, :show, @group), class: "button is-link" %>
+    </p>
+  </div>
+</div>

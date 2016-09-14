@@ -9,7 +9,7 @@
         </div>
         <div class="media-content">
           <div class="content">
-            <%= link "发新贴", to: group_post_path(@conn, :new, @group), class: "button is-info is-pulled-right" %>
+            <%= link "发新帖", to: group_post_path(@conn, :new, @group), class: "button is-info is-pulled-right" %>
             <div class="is-clearfix">
               <%= link @group.name, to: group_path(@conn, :show, @group), target: "_blank", class: "is-pulled-left", style: "margin-right: 20px;" %>
 

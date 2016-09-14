@@ -14,7 +14,7 @@ defmodule Zizhixi.Repo.Migrations.CreateGroupTopic do
     create unique_index(:group_topics, [:name, :group_id], name: :group_topics_name)
 
     alter table(:group_posts) do
-      add :topic_id, references(:group_topics, on_delete: :nothing, type: :binary_id)
+      add :topic_id, references(:group_topics, on_delete: :nilify_all, type: :binary_id)
     end
     create index(:group_posts, [:topic_id])
   end

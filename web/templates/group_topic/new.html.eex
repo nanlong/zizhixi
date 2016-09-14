@@ -1,0 +1,18 @@
+<div class="columns">
+  <div class="column">
+    <div class="box">
+      <%= render "form.html",
+        changeset: @changeset,
+        action: group_topic_path(@conn, :create, @group)
+      %>
+    </div>
+  </div>
+  <div class="column is-3">
+    <p>
+      <%= link raw("<span>返回话题管理</span><span class=\"icon is-small\"><i class=\"fa fa-arrow-right\"></i></span>"),
+        to: group_topic_path(@conn, :index, @group),
+        class: "button is-link"
+      %>
+    </p>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupMember, GroupPost}
+  alias Zizhixi.{Group, GroupTopic, GroupMember, GroupPost}
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:new, :create, :edit, :update, :delete]
@@ -88,7 +88,7 @@ defmodule Zizhixi.GroupController do
     end
   end
 
-  def show(conn, %{"id" => id} = params) do
+  def show(conn, %{"id" => id, "tab" => tab} = params) do
     group = Group
     |> preload([:user])
     |> Repo.get!(id)
@@ -100,18 +100,34 @@ defmodule Zizhixi.GroupController do
     |> preload([:user])
     |> Repo.paginate(%{page: 1})
 
+    group_topics = GroupTopic
+    |> where(group_id: ^id)
+    |> order_by([:sorted, :inserted_at])
+    |> Repo.all
+
     pagination = GroupPost
     |> where(group_id: ^group.id)
     |> order_by([desc: :latest_inserted_at, desc: :inserted_at])
     |> preload([:user, :latest_user])
     |> Repo.paginate(params)
 
+    tabs = Enum.map(group_topics, fn topic ->
+      {topic.name, topic.name, group_path(conn, :show, group, tab: topic.name)}
+    end)
+    |> List.insert_at(0, {"全部", "全部", group_path(conn, :show, group, tab: "全部")})
+
     conn
     |> assign(:title, group.name)
+    |> assign(:current_tab, tab)
     |> render("show.html",
       group: group,
       group_members: group_members,
+      tabs: tabs,
       pagination: pagination)
+  end
+
+  def show(conn, %{"id" => id}) do
+    show(conn, %{"id" => id, "tab" => "全部"})
   end
 
   def edit(conn, %{"id" => id}) do

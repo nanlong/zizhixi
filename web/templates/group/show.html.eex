@@ -9,7 +9,7 @@
         </div>
         <div class="media-content">
           <div class="content">
-            <%= link "发新贴", to: group_post_path(@conn, :new, @group), class: "button is-info is-pulled-right" %>
+            <%= link "发新帖", to: group_post_path(@conn, :new, @group), class: "button is-info is-pulled-right" %>
             <div class="is-clearfix">
               <strong class="title is-4 is-pulled-left" style="margin-right: 10px;"><%= @group.name %></strong>
               <%= if @logged_in? do %>
@@ -21,6 +21,7 @@
                   <%= end %>
                 <%= else %>
                   <%= link "编辑", to: group_path(@conn, :edit, @group), class: "button is-small is-pulled-left" %>
+                  <%= link "话题管理", to: group_topic_path(@conn, :index, @group), class: "button is-small is-pulled-left", style: "margin-left: 10px;" %>
                 <%= end %>
               <%= else %>
                 <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
@@ -35,6 +36,20 @@
       </article>
     </div>
 
+    <div class="tabs">
+      <ul>
+        <%= for {tab, name, path} <- @tabs do %>
+        <%= if tab == @current_tab do %>
+        <li class="is-active">
+        <%= else %>
+        <li>
+        <%= end %>
+          <%= link name, to: path %>
+        </li>
+        <%= end %>
+      </ul>
+    </div>
+
     <%= if @pagination.total_entries > 0 do %>
     <div class="box">
       <%= for post <- @pagination do %>
@@ -47,10 +62,10 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            本小组还没有新贴
+            本话题还没有新帖
           </h1>
           <h2 class="subtitle">
-            <%= link "发布第一条帖子吧", to: group_post_path(@conn, :new, @group), class: "button is-danger" %>
+            <%= link "发新帖", to: group_post_path(@conn, :new, @group), class: "button is-danger" %>
           </h2>
         </div>
       </div>
