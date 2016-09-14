@@ -22,7 +22,7 @@
         ·
         <%= link "##{@index}", to: "#{group_post_path(@conn, :show, @comment.post_id)}##{@index}" %>
         ·
-        <small><%= @comment.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></small>
+        <small><%= @comment.inserted_at |> from_now %></small>
       </div>
       <div><%= raw @comment.content %></div>
     </div>

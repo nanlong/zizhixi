@@ -31,7 +31,7 @@
           <span class="icon is-small" >
             <i class="fa fa-clock-o"></i>
           </span>
-          <span><%= @user.inserted_at |> Ecto.DateTime.to_erl |> Timex.to_datetime("Etc/UTC") |> Timex.format!("{YYYY}-{0M}-{0D}") %>加入</span>
+          <span><%= @user.inserted_at |> strftime %>加入</span>
         </div>
       </div>
 

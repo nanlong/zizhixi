@@ -100,11 +100,6 @@ defmodule Zizhixi.GroupController do
     |> preload([:user])
     |> Repo.paginate(%{page: 1})
 
-    member = case Guardian.Plug.current_resource(conn) do
-      nil -> nil
-      current_user -> Repo.get_by(GroupMember, %{group_id: group.id, user_id: current_user.id})
-    end
-
     pagination = GroupPost
     |> where(group_id: ^group.id)
     |> order_by([desc: :latest_inserted_at, desc: :inserted_at])
@@ -116,7 +111,6 @@ defmodule Zizhixi.GroupController do
     |> render("show.html",
       group: group,
       group_members: group_members,
-      member: member,
       pagination: pagination)
   end
 

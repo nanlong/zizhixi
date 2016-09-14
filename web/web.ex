@@ -61,9 +61,11 @@ defmodule Zizhixi.Web do
 
       import Zizhixi.Router.Helpers
       import Zizhixi.ErrorHelpers
+      import Zizhixi.ViewHelpers
       import Zizhixi.Gettext
       import Zizhixi.Sigils
       import Scrivener.HTML
+
     end
   end
 

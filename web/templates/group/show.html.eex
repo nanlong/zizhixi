@@ -12,10 +12,9 @@
             <%= link "发新贴", to: group_post_path(@conn, :new, @group), class: "button is-info is-pulled-right" %>
             <div class="is-clearfix">
               <%= link @group.name, to: group_path(@conn, :show, @group), target: "_blank", class: "is-pulled-left", style: "margin-right: 20px;" %>
-
               <%= if @logged_in? do %>
                 <%= if not group_own?(@conn, @group) do %>
-                  <%= if @member do %>
+                  <%= if group_member?(@conn, @group) do %>
                     <%= link "已加入 | 退出", to: group_member_path(@conn, :delete, @group), method: :delete, class: "button is-small is-pulled-left" %>
                   <%= else %>
                     <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
@@ -74,10 +73,10 @@
                 <div class="content">
                   <%= link @group.user.username, to: user_path(@conn, :show, @group.user.username) %>
                   <div class="">
-                    <small>创建时间 <%= @group.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></small>
+                    <small>创建时间 <%= @group.inserted_at |> from_now %></small>
                   </div>
                   <!-- <div class="">
-                    <small>最后活跃 <%= @group.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %></small>
+                    <small>最后活跃 <%= @group.inserted_at |> from_now %></small>
                   </div> -->
                 </div>
               </div>
@@ -111,7 +110,7 @@
                   <nav class="level">
                     <div class="level-left">
                       <div class="level-item">
-                        <small><%= m.inserted_at |> Ecto.DateTime.to_erl |> Timex.to_datetime("Etc/UTC") |> Timex.format!("{YYYY}-{0M}-{0D}") %> 加入</small>
+                        <small><%= m.inserted_at |> strftime("{0M}-{0D}") %> 加入</small>
                       </div>
                     </div>
                   </nav>

@@ -30,7 +30,7 @@
     <meta name="csrf" content="<%= Plug.CSRFProtection.get_csrf_token() %>">
     <title><%= @conn.assigns[:title] && @conn.assigns[:title] <>  " - " %>自制系</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-    <script src="https://use.fontawesome.com/c953b87fae.js"></script>
+    <!-- <script src="https://use.fontawesome.com/c953b87fae.js"></script> -->
   </head>
 
   <body>

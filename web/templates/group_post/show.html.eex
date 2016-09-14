@@ -42,10 +42,10 @@
 
         <small>
           <%= link @group_post.user.username, to: user_path(@conn, :show, @group_post.user.username), target: "_blank" %>
-          于 <%= @group_post.inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %>前发布
+          于 <%= @group_post.inserted_at |> from_now %>前发布
           <%= if @group_post.latest_user_id do %>
           · 最后由 <%= link @group_post.latest_user.username, to: user_path(@conn, :show, @group_post.latest_user.username), target: "_blank" %>
-          于 <%= @group_post.latest_inserted_at |> Ecto.DateTime.to_erl |> Timex.from_now %>回复
+          于 <%= @group_post.latest_inserted_at |> from_now %>回复
           <%= end %>
         </small>
       </div>
