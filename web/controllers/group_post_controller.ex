@@ -4,6 +4,7 @@ defmodule Zizhixi.GroupPostController do
   alias Zizhixi.{Group, GroupTopic, GroupPost, GroupComment}
 
   import Zizhixi.Ecto.Helpers, only: [inc: 3]
+  import Zizhixi.GroupView, only: [group_member?: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:new, :create, :edit, :update, :delete]
@@ -11,9 +12,12 @@ defmodule Zizhixi.GroupPostController do
   plug Zizhixi.Plug.VerifyRequest, [model: GroupPost, action: "is_owner"]
     when action in [:edit, :update, :delete]
 
-  # todo: 验证用户是否为小组成员
   def new(conn, %{"group_id" => group_id}) do
     group = Repo.get!(Group, group_id)
+
+    if not group_member?(conn, group) do
+      raise Phoenix.NotAcceptableError
+    end
 
     group_topics = GroupTopic
     |> where(group_id: ^group_id)
@@ -27,10 +31,13 @@ defmodule Zizhixi.GroupPostController do
     |> render("new.html", group: group, group_topics: group_topics, changeset: changeset)
   end
 
-  # todo: 验证用户是否为小组成员
   def create(conn, %{"group_id" => group_id, "group_post" => group_post_params}) do
     current_user = Guardian.Plug.current_resource(conn)
     group = Repo.get!(Group, group_id)
+
+    if not group_member?(conn, group) do
+      raise Phoenix.NotAcceptableError
+    end
 
     params = group_post_params
     |> Map.put_new("group_id", group.id)
@@ -78,38 +85,38 @@ defmodule Zizhixi.GroupPostController do
       comments: comments, changeset: changeset)
   end
 
-  def edit(conn, %{"group_id" => group_id, "id" => _id} = params) do
-    group = Repo.get!(Group, group_id)
-    group_post = Repo.get_by!(GroupPost, params)
-    changeset = GroupPost.changeset(group_post)
-    render(conn, "edit.html", group: group, group_post: group_post, changeset: changeset)
-  end
-
-  def update(conn, %{"group_id" => group_id, "id" => id, "group_post" => group_post_params}) do
-    group = Repo.get!(Group, group_id)
-    group_post = Repo.get_by!(GroupPost, %{id: id, group_id: group.id})
-    changeset = GroupPost.changeset(group_post, group_post_params)
-
-    case Repo.update(changeset) do
-      {:ok, group_post} ->
-        conn
-        |> put_flash(:info, "Group post updated successfully.")
-        |> redirect(to: group_post_path(conn, :show, group_post))
-      {:error, changeset} ->
-        render(conn, "edit.html", group: group, group_post: group_post, changeset: changeset)
-    end
-  end
-
-  def delete(conn, %{"group_id" => group_id, "id" => _id} = params) do
-    group = Repo.get!(Group, group_id)
-    group_post = Repo.get_by!(GroupPost, params)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(group_post)
-
-    conn
-    |> put_flash(:info, "Group post deleted successfully.")
-    |> redirect(to: group_post_path(conn, :index, group))
-  end
+  # def edit(conn, %{"group_id" => group_id, "id" => _id} = params) do
+  #   group = Repo.get!(Group, group_id)
+  #   group_post = Repo.get_by!(GroupPost, params)
+  #   changeset = GroupPost.changeset(group_post)
+  #   render(conn, "edit.html", group: group, group_post: group_post, changeset: changeset)
+  # end
+  #
+  # def update(conn, %{"group_id" => group_id, "id" => id, "group_post" => group_post_params}) do
+  #   group = Repo.get!(Group, group_id)
+  #   group_post = Repo.get_by!(GroupPost, %{id: id, group_id: group.id})
+  #   changeset = GroupPost.changeset(group_post, group_post_params)
+  #
+  #   case Repo.update(changeset) do
+  #     {:ok, group_post} ->
+  #       conn
+  #       |> put_flash(:info, "Group post updated successfully.")
+  #       |> redirect(to: group_post_path(conn, :show, group_post))
+  #     {:error, changeset} ->
+  #       render(conn, "edit.html", group: group, group_post: group_post, changeset: changeset)
+  #   end
+  # end
+  #
+  # def delete(conn, %{"group_id" => group_id, "id" => _id} = params) do
+  #   group = Repo.get!(Group, group_id)
+  #   group_post = Repo.get_by!(GroupPost, params)
+  #
+  #   # Here we use delete! (with a bang) because we expect
+  #   # it to always work (and if it does not, it will raise).
+  #   Repo.delete!(group_post)
+  #
+  #   conn
+  #   |> put_flash(:info, "Group post deleted successfully.")
+  #   |> redirect(to: group_post_path(conn, :index, group))
+  # end
 end
