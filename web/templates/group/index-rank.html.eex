@@ -1,11 +1,9 @@
 <div class="columns">
   <div class="column">
-    <%= render "tabs.html", conn: @conn, current_tab: @tab %>
+    <%= render "tabs.html", conn: @conn, current_tab: @current_tab %>
 
     <div class="box">
-
         <%= for {group, index} <- @groups |> Enum.with_index(1) |> Enum.to_list do %>
-
           <article class="media">
             <figure class="media-left">
               <p class="image is-48x48">

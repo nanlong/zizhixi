@@ -1,6 +1,6 @@
 <div class="columns">
   <div class="column">
-    <%= render "tabs.html", conn: @conn, current_tab: @tab %>
+    <%= render "tabs.html", conn: @conn, current_tab: @current_tab %>
     <%= if Enum.count(@groups) > 0 do %>
       <%= if @pagination.total_entries > 0 do %>
       <div class="box">

@@ -1,13 +1,13 @@
 <div class="columns">
   <div class="column">
-    <%= render "tabs.html", conn: @conn, current_tab: @tab %>
+    <%= render "tabs.html", conn: @conn, current_tab: @current_tab %>
 
     <div class="box">
       <%= for post <- @pagination do %>
         <%= render(Zizhixi.GroupPostView, "entry.html", show_group: true, conn: @conn, post: post) %>
       <%= end %>
     </div>
-    <%= pagination_links @conn, @pagination, path: &group_path/3, tab: @tab %>
+    <%= pagination_links @conn, @pagination, path: &group_path/3, tab: @current_tab %>
   </div>
   <div class="column is-3">
 
