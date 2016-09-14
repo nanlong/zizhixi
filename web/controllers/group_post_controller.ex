@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupPostController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupTopic, GroupPost, GroupComment}
+  alias Zizhixi.{Group, GroupTopic, GroupPost, GroupComment, UserTimeline}
 
   import Zizhixi.Ecto.Helpers, only: [inc: 3]
   import Zizhixi.GroupView, only: [group_member?: 2]
@@ -46,8 +46,9 @@ defmodule Zizhixi.GroupPostController do
     changeset = GroupPost.changeset(%GroupPost{}, params)
 
     case Repo.insert(changeset) do
-      {:ok, _group_post} ->
+      {:ok, group_post} ->
         Group |> inc(group, :post_count)
+        UserTimeline.add(conn, group_post)
 
         conn
         |> put_flash(:info, "发表帖子成功.")

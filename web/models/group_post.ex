@@ -27,6 +27,6 @@ defmodule Zizhixi.GroupPost do
     |> cast(params, [:title, :content, :topic_id, :group_id, :user_id])
     |> validate_required([:title, :content, :group_id, :user_id])
     |> validate_length(:title, max: 120)
-    |> put_change(:latest_inserted_at, Ecto.DateTime.utc)
+    |> put_change(:latest_inserted_at, Timex.now)
   end
 end
