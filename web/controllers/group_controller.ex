@@ -46,7 +46,7 @@ defmodule Zizhixi.GroupController do
     |> render("index-new.html", pagination: pagination)
   end
 
-  def index(conn, %{"tab" => "rank"} = params) do
+  def index(conn, %{"tab" => "rank"}) do
     groups = Group
     |> order_by(desc: :member_count, asc: :inserted_at)
     |> limit(50)
