@@ -1,0 +1,54 @@
+<div class="columns">
+  <div class="column">
+    <%= render "tabs.html", conn: @conn, current_tab: @tab %>
+    <%= if Enum.count(@groups) > 0 do %>
+      <%= if @pagination.total_entries > 0 do %>
+      <div class="box">
+        <%= for post <- @pagination do %>
+          <%= render(Zizhixi.GroupPostView, "entry.html", show_group: true, conn: @conn, post: post) %>
+        <%= end %>
+      </div>
+      <%= pagination_links @conn, @pagination, path: &group_path/3 %>
+      <%= else %>
+      <section class="hero is-primary has-text-centered">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">
+              加入的小组中没有新贴
+            </h1>
+            <h2 class="subtitle">
+              <%= link "看看其他小组的帖子", to: group_path(@conn, :index, tab: "new"), class: "button is-danger" %>
+            </h2>
+          </div>
+        </div>
+      </section>
+      <%= end %>
+    <%= else %>
+    <section class="hero is-primary has-text-centered">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            还没有加入任何小组
+          </h1>
+          <h2 class="subtitle">
+            <%= link "去看看小组排行", to: group_path(@conn, :index, tab: "rank"), class: "button is-danger" %>
+          </h2>
+        </div>
+      </div>
+    </section>
+    <%= end %>
+  </div>
+  <div class="column is-3">
+    <div class="panel">
+      <p class="panel-heading">
+        我的小组
+      </p>
+      <%= for group <- @groups do %>
+        <%= link group.name, to: group_path(@conn, :show, group), class: "panel-block" %>
+      <%= end %>
+    </div>
+    <div class="panel">
+      <%= link "创建小组", to: group_path(@conn, :new), class: "button is-info is-fullwidth" %>
+    </div>
+  </div>
+</div>

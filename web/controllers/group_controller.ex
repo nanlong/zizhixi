@@ -9,36 +9,36 @@ defmodule Zizhixi.GroupController do
   plug Zizhixi.Plug.VerifyRequest, [model: Group, action: "is_owner"]
     when action in [:edit, :update, :delete]
 
-  def index(conn, %{"tab" => tab} = params) do
-    case tab do
-      "new" ->
-        pagination = (from p in GroupPost,
-          order_by: [desc: :inserted_at],
-          preload: [:group, :user, :latest_user])
-          |> Repo.paginate(params)
+  # def index(conn, %{"tab" => tab} = params) do
+  #   case tab do
+  #     "new" ->
+  #       pagination = (from p in GroupPost,
+  #         order_by: [desc: :inserted_at],
+  #         preload: [:group, :user, :latest_user])
+  #         |> Repo.paginate(params)
+  #
+  #       conn
+  #       |> assign(:title, "小组新帖")
+  #       |> assign(:tab, tab)
+  #       |> render("index-new.html", pagination: pagination)
+  #
+  #     "rank" ->
+  #       groups = Group
+  #       |> order_by(desc: :member_count, asc: :inserted_at)
+  #       |> limit(50)
+  #       |> Repo.all
+  #
+  #       conn
+  #       |> assign(:title, "小组排行")
+  #       |> assign(:tab, tab)
+  #       |> render("index-rank.html", groups: groups)
+  #
+  #     _ ->
+  #       raise Phoenix.Router.NoRouteError, conn: conn, router: __MODULE__
+  #   end
+  # end
 
-        conn
-        |> assign(:title, "小组新帖")
-        |> assign(:tab, tab)
-        |> render("index-new.html", pagination: pagination)
-
-      "rank" ->
-        groups = Group
-        |> order_by(desc: :member_count, asc: :inserted_at)
-        |> limit(50)
-        |> Repo.all
-
-        conn
-        |> assign(:title, "小组排行")
-        |> assign(:tab, tab)
-        |> render("index-rank.html", groups: groups)
-
-      _ ->
-        raise Phoenix.Router.NoRouteError, conn: conn, router: __MODULE__
-    end
-  end
-
-  def index(conn, params) do
+  def index(conn, %{"tab" => "my"} = params) do
     case Guardian.Plug.authenticated?(conn) do
       true ->
         current_user = Guardian.Plug.current_resource(conn)
@@ -56,11 +56,39 @@ defmodule Zizhixi.GroupController do
 
         conn
         |> assign(:title, "我的小组帖子")
-        |> assign(:tab, "logged")
-        |> render("index.html", groups: groups, pagination: pagination)
+        |> assign(:tab, "my")
+        |> render("index-my.html", groups: groups, pagination: pagination)
       false ->
         conn |> redirect(to: group_path(conn, :index, tab: "new"))
     end
+  end
+
+  def index(conn, %{"tab" => "new"} = params) do
+    pagination = (from p in GroupPost,
+      order_by: [desc: :inserted_at],
+      preload: [:group, :user, :latest_user])
+      |> Repo.paginate(params)
+
+    conn
+    |> assign(:title, "小组新帖")
+    |> assign(:tab, "new")
+    |> render("index-new.html", pagination: pagination)
+  end
+
+  def index(conn, %{"tab" => "rank"} = params) do
+    groups = Group
+    |> order_by(desc: :member_count, asc: :inserted_at)
+    |> limit(50)
+    |> Repo.all
+
+    conn
+    |> assign(:title, "小组排行")
+    |> assign(:tab, "rank")
+    |> render("index-rank.html", groups: groups)
+  end
+
+  def index(conn, _params) do
+    index(conn, %{"tab" => "my"})
   end
 
   def new(conn, _params) do

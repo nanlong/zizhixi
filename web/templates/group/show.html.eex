@@ -1,43 +1,62 @@
-<div class="box">
-  <article class="media">
-    <div class="media-left">
-      <figure class="image is-48x48">
-        <img src="<%= @group.logo %>" alt="<%= @group.name %>">
-      </figure>
-    </div>
-    <div class="media-content">
-      <div class="content">
-        <%= link "发新贴", to: group_post_path(@conn, :new, @group), class: "button is-info is-pulled-right" %>
-        <div class="is-clearfix">
-          <%= link @group.name, to: group_path(@conn, :show, @group), target: "_blank", class: "is-pulled-left", style: "margin-right: 20px;" %>
+<div class="columns">
+  <div class="column">
+    <div class="box">
+      <article class="media">
+        <div class="media-left">
+          <figure class="image is-48x48">
+            <img src="<%= @group.logo %>" alt="<%= @group.name %>">
+          </figure>
+        </div>
+        <div class="media-content">
+          <div class="content">
+            <%= link "发新贴", to: group_post_path(@conn, :new, @group), class: "button is-info is-pulled-right" %>
+            <div class="is-clearfix">
+              <%= link @group.name, to: group_path(@conn, :show, @group), target: "_blank", class: "is-pulled-left", style: "margin-right: 20px;" %>
 
-          <%= if @logged_in? do %>
-            <%= if not group_own?(@conn, @group) do %>
-              <%= if @member do %>
-                <%= link "已加入 | 退出", to: group_member_path(@conn, :delete, @group), method: :delete, class: "button is-small is-pulled-left" %>
+              <%= if @logged_in? do %>
+                <%= if not group_own?(@conn, @group) do %>
+                  <%= if @member do %>
+                    <%= link "已加入 | 退出", to: group_member_path(@conn, :delete, @group), method: :delete, class: "button is-small is-pulled-left" %>
+                  <%= else %>
+                    <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
+                  <%= end %>
+                <%= end %>
               <%= else %>
                 <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
               <%= end %>
-            <%= end %>
-          <%= else %>
-            <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
-          <%= end %>
+            </div>
+            <p><%= @group.member_count %>人加入此小组</p>
+          </div>
+          <div class="content">
+            <%= @group.description %>
+          </div>
         </div>
-        <p><%= @group.member_count %>人加入此小组</p>
-      </div>
+      </article>
     </div>
-  </article>
-</div>
-<div class="columns">
-  <div class="column">
+
+    <%= if @pagination.total_entries > 0 do %>
     <div class="box">
       <%= for post <- @pagination do %>
         <%= render(Zizhixi.GroupPostView, "entry.html", show_group: false, conn: @conn, post: post) %>
       <%= end %>
     </div>
     <%= pagination_links @conn, @pagination, [@group], action: :show, path: &group_path/4 %>
+    <%= else %>
+    <section class="hero is-primary has-text-centered">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            本小组还没有新贴
+          </h1>
+          <h2 class="subtitle">
+            <%= link "发布第一条帖子吧", to: group_post_path(@conn, :new, @group), class: "button is-danger" %>
+          </h2>
+        </div>
+      </div>
+    </section>
+    <%= end %>
   </div>
-  <div class="column is-4">
+  <div class="column is-3">
     <div class="panel">
       <div class="panel-heading">
         小组长
