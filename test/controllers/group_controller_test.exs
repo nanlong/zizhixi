@@ -17,7 +17,7 @@ defmodule Zizhixi.GroupControllerTest do
     conn = conn
     |> Zizhixi.SessionControllerTest.create
     |> get(group_path(conn, :index))
-    
+
     assert html_response(conn, 200) =~ "<html"
   end
 

@@ -5,7 +5,7 @@ defmodule Zizhixi.GroupPost do
     field :title, :string
     field :content, :string
     field :is_deleted, :boolean, default: false
-    field :latest_inserted_at, Ecto.DateTime
+    field :latest_inserted_at, Timex.Ecto.DateTime
     field :comment_count, :integer, default: 0
     field :praise_count, :integer, default: 0
     field :watch_count, :integer, default: 0
