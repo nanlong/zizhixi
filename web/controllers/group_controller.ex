@@ -18,7 +18,7 @@ defmodule Zizhixi.GroupController do
           join: g in Group, on: p.group_id == g.id,
           join: m in GroupMember, on: g.id == m.group_id and m.user_id == ^current_user.id,
           order_by: [desc: :latest_inserted_at, desc: :inserted_at],
-          preload: [:group, :user, :latest_user])
+          preload: [:topic, :group, :user, :latest_user])
           |> Repo.paginate(params)
 
         groups = (from g in Group,
@@ -37,7 +37,7 @@ defmodule Zizhixi.GroupController do
   def index(conn, %{"tab" => "new"} = params) do
     pagination = (from p in GroupPost,
       order_by: [desc: :inserted_at],
-      preload: [:group, :user, :latest_user])
+      preload: [:topic, :group, :user, :latest_user])
       |> Repo.paginate(params)
 
     conn
@@ -105,16 +105,28 @@ defmodule Zizhixi.GroupController do
     |> order_by([:sorted, :inserted_at])
     |> Repo.all
 
-    pagination = GroupPost
+    query = case tab do
+      "全部" -> GroupPost
+      # "热门" -> GroupPost
+      # "精华" -> GroupPost
+      _ -> GroupPost |> join(:inner, [p], t in GroupTopic, p.topic_id == t.id and t.name == ^tab)
+    end
+
+    pagination = query
     |> where(group_id: ^group.id)
     |> order_by([desc: :latest_inserted_at, desc: :inserted_at])
-    |> preload([:user, :latest_user])
+    |> preload([:topic, :user, :latest_user])
     |> Repo.paginate(params)
 
-    tabs = Enum.map(group_topics, fn topic ->
+    default_tabs = [
+      {"全部", "全部", group_path(conn, :show, group, tab: "全部")},
+      {"热门", "热门", group_path(conn, :show, group, tab: "热门")},
+      {"精华", "精华", group_path(conn, :show, group, tab: "精华")},
+    ]
+
+    group_topics_tabs = Enum.map(group_topics, fn topic ->
       {topic.name, topic.name, group_path(conn, :show, group, tab: topic.name)}
     end)
-    |> List.insert_at(0, {"全部", "全部", group_path(conn, :show, group, tab: "全部")})
 
     conn
     |> assign(:title, group.name)
@@ -122,7 +134,7 @@ defmodule Zizhixi.GroupController do
     |> render("show.html",
       group: group,
       group_members: group_members,
-      tabs: tabs,
+      tabs: default_tabs ++ group_topics_tabs,
       pagination: pagination)
   end
 

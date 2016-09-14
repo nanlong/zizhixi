@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupPostController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupPost, GroupComment, GroupMember}
+  alias Zizhixi.{Group, GroupTopic, GroupPost, GroupComment}
 
   import Zizhixi.Ecto.Helpers, only: [inc: 3]
 
@@ -14,10 +14,17 @@ defmodule Zizhixi.GroupPostController do
   # todo: 验证用户是否为小组成员
   def new(conn, %{"group_id" => group_id}) do
     group = Repo.get!(Group, group_id)
+
+    group_topics = GroupTopic
+    |> where(group_id: ^group_id)
+    |> order_by([:sorted, :inserted_at])
+    |> Repo.all
+
     changeset = GroupPost.changeset(%GroupPost{})
+
     conn
     |> assign(:title, "#{group.name} - 发新帖")
-    |> render("new.html", group: group, changeset: changeset)
+    |> render("new.html", group: group, group_topics: group_topics, changeset: changeset)
   end
 
   # todo: 验证用户是否为小组成员
@@ -39,7 +46,14 @@ defmodule Zizhixi.GroupPostController do
         |> put_flash(:info, "发表帖子成功.")
         |> redirect(to: group_path(conn, :show, group))
       {:error, changeset} ->
-        render(conn, "new.html", group: group, changeset: changeset)
+        group_topics = GroupTopic
+        |> where(group_id: ^group_id)
+        |> order_by([:sorted, :inserted_at])
+        |> Repo.all
+
+        conn
+        |> assign(:title, "#{group.name} - 发新帖")
+        |> render("new.html", group: group, group_topics: group_topics, changeset: changeset)
     end
   end
 
@@ -58,15 +72,10 @@ defmodule Zizhixi.GroupPostController do
     |> preload([:user, :post])
     |> Repo.all
 
-    member = case Guardian.Plug.current_resource(conn) do
-      nil -> nil
-      current_user -> Repo.get_by(GroupMember, %{group_id: group.id, user_id: current_user.id})
-    end
-
     conn
     |> assign(:title, group_post.title)
     |> render("show.html", group: group, group_post: group_post,
-      comments: comments, member: member, changeset: changeset)
+      comments: comments, changeset: changeset)
   end
 
   def edit(conn, %{"group_id" => group_id, "id" => _id} = params) do

@@ -1,7 +1,10 @@
 <%= form_for @changeset, @action, fn f -> %>
   <%= label f, :title, "标题", class: "label" %>
-  <p class="control">
-    <%= text_input f, :title, class: "input" %>
+  <p class="control has-addons">
+    <span class="select">
+      <%= select f, :topic_id, Enum.map(@group_topics, fn topic -> {topic.name, topic.id} end) |> List.insert_at(0, {"选择话题", nil}) %>
+    </span>
+    <%= text_input f, :title, class: "input is-expanded" %>
     <%= error_tag f, :title %>
   </p>
 

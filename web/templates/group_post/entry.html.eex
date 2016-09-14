@@ -12,6 +12,13 @@
     </div>
     <nav class="level">
       <div class="level-left">
+        <%= if ! is_nil(@post.topic) do %>
+        <small class="level-item">
+          <a href="<%= group_path(@conn, :show, @post.group_id, tab: @post.topic.name) %>">
+            <span class="tag is-small is-info"><%= @post.topic.name %></span>
+          </a>
+        </small>
+        <%= end %>
         <small class="level-item">
           由 <%= link @post.user.username, to: user_path(@conn, :show, @post.user.username )%>
           于 <%= @post.inserted_at |> from_now %> 发布

@@ -11,6 +11,7 @@ defmodule Zizhixi.GroupPost do
     field :watch_count, :integer, default: 0
     field :collect_count, :integer, default: 0
 
+    belongs_to :topic, Zizhixi.GroupTopic
     belongs_to :group, Zizhixi.Group
     belongs_to :user, Zizhixi.User
     belongs_to :latest_user, Zizhixi.User
@@ -23,7 +24,7 @@ defmodule Zizhixi.GroupPost do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :content, :group_id, :user_id])
+    |> cast(params, [:title, :content, :topic_id, :group_id, :user_id])
     |> validate_required([:title, :content, :group_id, :user_id])
     |> validate_length(:title, max: 120)
     |> put_change(:latest_inserted_at, Ecto.DateTime.utc)

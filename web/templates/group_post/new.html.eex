@@ -3,6 +3,7 @@
     <div class="box">
       <%= render "form.html",
         changeset: @changeset,
+        group_topics: @group_topics,
         action: group_post_path(@conn, :create, @group)
       %>
     </div>
