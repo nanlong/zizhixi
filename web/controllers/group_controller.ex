@@ -127,7 +127,7 @@ defmodule Zizhixi.GroupController do
     case Repo.update(changeset) do
       {:ok, group} ->
         conn
-        |> put_flash(:info, "Group updated successfully.")
+        |> put_flash(:info, "小组信息编辑成功.")
         |> redirect(to: group_path(conn, :show, group))
       {:error, changeset} ->
         render(conn, "edit.html", group: group, changeset: changeset)
