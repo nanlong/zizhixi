@@ -16,6 +16,7 @@ import $ from "jquery";
 import Simditor from "simditor";
 import angular from "angular";
 import "ng-file-upload";
+import "angular-events-calendar";
 
 (function() {
   if ($('#settings-profile').length <= 0) {
@@ -162,6 +163,28 @@ $(function() {
       }, 300);
     });
 
+  })();
+
+  (function() {
+    if ($('#user-show-profile').length <= 0) {
+      return;
+    }
+
+    let app = angular.module('UserShowProfile', ['eventsCalendar']);
+
+    app.controller('UserCalendarController', function($scope) {
+      $scope.selectedDay = null;
+
+      $scope.eventList = [
+        {day: '2016-01-08', count: 3}
+      ]
+
+      $scope.$watch('selectedDay', function(n, o) {
+        console.log(n, o);
+      });
+    });
+
+    angular.bootstrap(document, ['UserShowProfile']);
   })();
 })
 

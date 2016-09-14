@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "angular": "^1.5.8",
+    "angular-events-calendar": "git://github.com/nanlong/angular-events-calendar.git",
     "jquery": "~3.1.0",
     "ng-file-upload": "^12.2.9",
     "phoenix": "file:deps/phoenix",
