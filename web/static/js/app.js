@@ -172,7 +172,7 @@ $(function() {
 
     let app = angular.module('UserShowProfile', ['eventsCalendar']);
 
-    app.controller('UserCalendarController', function($scope, $http) {
+    app.controller('UserCalendarController', ['$scope', '$http', function($scope, $http) {
       $scope.selectedDay = null;
 
       $http.get($('#user-calendar').data('api')).success(function(res) {
@@ -182,7 +182,7 @@ $(function() {
       // $scope.$watch('selectedDay', function(n, o) {
       //   console.log(n, o);
       // });
-    });
+    }]);
 
     angular.bootstrap(document, ['UserShowProfile']);
   })();
