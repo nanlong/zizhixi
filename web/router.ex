@@ -40,6 +40,7 @@ defmodule Zizhixi.Router do
 
     resources "/users", UserController, param: "username", only: [:show] do
       resources "/follow", UserFollowController, as: :follow, only: [:create, :delete], singleton: true
+      resources "/events", UserEventController, as: :event, only: [:index]
     end
 
     resources "/groups", GroupController do
@@ -66,7 +67,6 @@ defmodule Zizhixi.Router do
     resources "/tutorials", TutorialController
     resources "/links", LinkController
     resources "/markets", MarketController
-
   end
 
   scope "/settings", Zizhixi do

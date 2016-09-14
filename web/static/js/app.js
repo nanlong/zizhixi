@@ -172,16 +172,16 @@ $(function() {
 
     let app = angular.module('UserShowProfile', ['eventsCalendar']);
 
-    app.controller('UserCalendarController', function($scope) {
+    app.controller('UserCalendarController', function($scope, $http) {
       $scope.selectedDay = null;
 
-      $scope.eventList = [
-        {day: '2016-01-08', count: 3}
-      ]
-
-      $scope.$watch('selectedDay', function(n, o) {
-        console.log(n, o);
+      $http.get($('#user-calendar').data('api')).success(function(res) {
+        $scope.eventList = res.data;
       });
+
+      // $scope.$watch('selectedDay', function(n, o) {
+      //   console.log(n, o);
+      // });
     });
 
     angular.bootstrap(document, ['UserShowProfile']);

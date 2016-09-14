@@ -35,9 +35,14 @@ defmodule Zizhixi.UserController do
   def show(conn, %{"username" => username, "tab" => "profile"}) do
     user = Repo.get_by!(User, %{username: username})
 
+    upto = Timex.today
+    since = Timex.shift(upto, years: -1, days: -1)
+
     conn
     |> assign(:title, "#{user.username}的个人信息")
     |> assign(:current_tab, "profile")
+    |> assign(:since, since)
+    |> assign(:upto, upto)
     |> render("show-profile.html", user: user)
   end
 
