@@ -30,31 +30,23 @@
   <div class="media-right">
     <%= if @logged_in? do %>
       <%= if @current_user.id == @comment.user_id do %>
-        <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-pencil\"></i></span><span>编辑</span>"),
-          to: group_comment_path(@conn, :edit, @comment),
-          class: "button is-link is-small btn-edit is-hidden"
-        %>
+        <%= link to: group_comment_path(@conn, :edit, @comment), class: "button is-link is-small btn-edit is-hidden" do %>
+          <span class="icon is-small"><i class="fa fa-pencil"></i></span><span>编辑</span>
+        <%= end %>
       <%= else %>
-        <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-reply\"></i></span><span>回复</span>"),
-          to: "#reply",
-          class: "button is-link is-small btn-reply is-hidden",
-          data_username: @comment.user.username,
-          data_floor: @index
-        %>
+        <%= link to: "#reply", class: "button is-link is-small btn-reply is-hidden", data_username: @comment.user.username, data_floor: @index do %>
+          <span class="icon is-small"><i class="fa fa-reply"></i></span><span>回复</span>
+        <%= end %>
       <%= end %>
 
       <%= if @logged_in? and praise?(@comment, @current_user) do %>
-        <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-heart\"></i></span><span>#{praise_count(@comment)}</span>"),
-          to: group_comment_praise_path(@conn, :delete, @comment),
-          class: "button is-link is-small",
-          method: :delete
-        %>
+        <%= link to: group_comment_praise_path(@conn, :delete, @comment), class: "button is-link is-small", method: :delete do %>
+          <span class="icon is-small is-danger"><i class="fa fa-heart"></i></span><span><%= praise_count(@comment) %></span>
+        <%= end %>
       <%= else %>
-        <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-heart-o\"></i></span><span>#{praise_count(@comment)}</span>"),
-          to: group_comment_praise_path(@conn, :create, @comment),
-          class: "button is-link is-small",
-          method: :post
-        %>
+        <%= link to: group_comment_praise_path(@conn, :create, @comment), class: "button is-link is-small", method: :post do %>
+          <span class="icon is-small"><i class="fa fa-heart-o"></i></span><span><%= praise_count(@comment) %></span>
+        <%= end %>
       <%= end %>
     <%= end %>
   </div>

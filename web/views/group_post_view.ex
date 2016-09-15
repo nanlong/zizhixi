@@ -3,7 +3,7 @@ defmodule Zizhixi.GroupPostView do
 
   alias Zizhixi.{Repo, GroupPostPraise, GroupPostWatch, GroupPostCollect}
   import Guardian.Plug, only: [authenticated?: 1, current_resource: 1]
-  import Zizhixi.GroupView, only: [group_own?: 2]
+  import Zizhixi.GroupView, only: [group_own?: 2, group_member?: 2]
 
   def praise_count(post) do
     cond do

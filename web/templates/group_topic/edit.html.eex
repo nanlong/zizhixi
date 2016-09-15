@@ -25,10 +25,9 @@
   </div>
   <div class="column is-3">
     <p>
-      <%= link raw("<span>返回话题管理</span><span class=\"icon is-small\"><i class=\"fa fa-arrow-right\"></i></span>"),
-        to: group_topic_path(@conn, :index, @group),
-        class: "button is-link"
-      %>
+      <%= link to: group_topic_path(@conn, :index, @group), class: "button is-link" do %>
+        <span>返回话题管理</span><span class="icon is-small"><i class="fa fa-arrow-right"></i></span>
+      <%= end %>
     </p>
   </div>
 </div>

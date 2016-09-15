@@ -15,7 +15,7 @@
 
               <%= if @logged_in? do %>
                 <%= if not group_own?(@conn, @group) do %>
-                  <%= if @member do %>
+                  <%= if group_member?(@conn, @group) do %>
                     <%= link "已加入 | 退出", to: group_member_path(@conn, :delete, @group), method: :delete, class: "button is-small is-pulled-left" %>
                   <%= else %>
                     <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
@@ -57,47 +57,35 @@
       <div class="panel-block control is-grouped">
         <p class="control">
           <%= if praise?(@conn, @group_post) do %>
-            <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-heart\"></i></span><span>#{praise_count(@group_post)}</span>"),
-              to: group_post_praise_path(@conn, :delete, @group_post.id),
-              class: "button is-light is-small",
-              method: :delete
-            %>
+            <%= link to: group_post_praise_path(@conn, :delete, @group_post.id), class: "button is-light is-small", method: :delete do %>
+              <span class="icon is-small is-danger"><i class="fa fa-heart"></i></span><span><%= praise_count(@group_post) %></span>
+            <%= end %>
           <%= else %>
-            <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-heart-o\"></i></span><span>#{praise_count(@group_post)}</span>"),
-              to: group_post_praise_path(@conn, :create, @group_post.id),
-              class: "button is-light is-small",
-              method: :post
-            %>
+            <%= link to: group_post_praise_path(@conn, :create, @group_post.id), class: "button is-light is-small", method: :post do %>
+              <span class="icon is-small"><i class="fa fa-heart-o"></i></span><span><%= praise_count(@group_post) %></span>
+            <%= end %>
           <%= end %>
         </p>
         <p class="control">
           <%= if watch?(@conn, @group_post) do %>
-            <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"),
-              to: group_post_watch_path(@conn, :delete, @group_post),
-              class: "button is-light is-small",
-              method: :delete
-            %>
+            <%= link to: group_post_watch_path(@conn, :delete, @group_post), class: "button is-light is-small", method: :delete do %>
+              <span class="icon is-small is-danger"><i class="fa fa-eye"></i></span><span>关注</span>
+            <%= end %>
           <%= else %>
-            <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"),
-              to: group_post_watch_path(@conn, :create, @group_post),
-              class: "button is-light is-small",
-              method: :post
-            %>
+            <%= link to: group_post_watch_path(@conn, :create, @group_post), class: "button is-light is-small", method: :post do %>
+              <span class="icon is-small"><i class="fa fa-eye"></i></span><span>关注</span>
+            <%= end %>
           <%= end %>
         </p>
         <p class="control">
           <%= if collect?(@conn, @group_post) do %>
-            <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-bookmark\"></i></span><span>收藏</span>"),
-              to: group_post_collect_path(@conn, :delete, @group_post),
-              class: "button is-light is-small",
-              method: :delete
-            %>
+            <%= link to: group_post_collect_path(@conn, :delete, @group_post), class: "button is-light is-small", method: :delete do %>
+              <span class="icon is-small is-danger"><i class="fa fa-bookmark"></i></span><span>收藏</span>
+            <%= end %>
           <%= else %>
-            <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-bookmark\"></i></span><span>收藏</span>"),
-              to: group_post_collect_path(@conn, :create, @group_post),
-              class: "button is-light is-small",
-              method: :post
-            %>
+            <%= link to: group_post_collect_path(@conn, :create, @group_post), class: "button is-light is-small", method: :post do %>
+              <span class="icon is-small"><i class="fa fa-bookmark"></i></span><span>收藏</span>
+            <%= end %>
           <%= end %>
         </p>
       </div>
@@ -144,48 +132,36 @@
 
       <div class="has-text-centered" style="padding: 20px 0;">
         <%= if praise?(@conn, @group_post) do %>
-          <%= link raw("<span class=\"icon is-large is-danger\"><i class=\"fa fa-heart\"></i></span><span>#{@group_post.praise_count}个赞</span>"),
-            to: group_post_praise_path(@conn, :delete, @group_post),
-            class: "button-is-multiline",
-            method: :delete
-          %>
+          <%= link to: group_post_praise_path(@conn, :delete, @group_post), class: "button-is-multiline", method: :delete do %>
+            <span class="icon is-large is-danger"><i class="fa fa-heart"></i></span><span><%= @group_post.praise_count %>个赞</span>
+          <%= end %>
         <%= else %>
-          <%= link raw("<span class=\"icon is-large\"><i class=\"fa fa-heart-o\"></i></span><span>#{@group_post.praise_count}个赞</span>"),
-            to: group_post_praise_path(@conn, :create, @group_post),
-            class: "button-is-multiline",
-            method: :post
-          %>
+          <%= link to: group_post_praise_path(@conn, :create, @group_post), class: "button-is-multiline", method: :post do %>
+            <span class="icon is-large"><i class="fa fa-heart-o"></i></span><span><%= @group_post.praise_count %>个赞</span>
+          <%= end %>
         <%= end %>
       </div>
       <div class="columns has-text-centered">
         <div class="column btn-watch">
           <%= if watch?(@conn, @group_post) do %>
-            <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"),
-              to: group_post_watch_path(@conn, :delete, @group_post),
-              class: "button",
-              method: :delete
-            %>
+            <%= link to: group_post_watch_path(@conn, :delete, @group_post), class: "button", method: :delete do %>
+              <span class="icon is-small is-danger"><i class="fa fa-eye"></i></span><span>关注</span>
+            <%= end %>
           <%= else %>
-            <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-eye\"></i></span><span>关注</span>"),
-              to: group_post_watch_path(@conn, :create, @group_post),
-              class: "button",
-              method: :post
-            %>
+            <%= link to: group_post_watch_path(@conn, :create, @group_post), class: "button", method: :post do %>
+              <span class="icon is-small"><i class="fa fa-eye"></i></span><span>关注</span>
+            <%= end %>
           <%= end %>
         </div>
         <div class="column btn-collect">
           <%= if collect?(@conn, @group_post) do %>
-            <%= link raw("<span class=\"icon is-small is-danger\"><i class=\"fa fa-bookmark\"></i></span><span>收藏</span>"),
-              to: group_post_collect_path(@conn, :delete, @group_post),
-              class: "button",
-              method: :delete
-            %>
+            <%= link to: group_post_collect_path(@conn, :delete, @group_post), class: "button", method: :delete do %>
+              <span class="icon is-small is-danger"><i class="fa fa-bookmark"></i></span><span>收藏</span>
+            <%= end %>
           <%= else %>
-            <%= link raw("<span class=\"icon is-small\"><i class=\"fa fa-bookmark\"></i></span><span>收藏</span>"),
-              to: group_post_collect_path(@conn, :create, @group_post),
-              class: "button",
-              method: :post
-            %>
+            <%= link to: group_post_collect_path(@conn, :create, @group_post), class: "button", method: :post do %>
+              <span class="icon is-small"><i class="fa fa-bookmark"></i></span><span>收藏</span>
+            <%= end %>
           <%= end %>
         </div>
       </div>

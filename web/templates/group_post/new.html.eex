@@ -9,6 +9,8 @@
     </div>
   </div>
   <div class="column is-3">
-    <%= link raw("<span>返回#{@group.name}</span><span class=\"icon is-small\"><i class=\"fa fa-arrow-right\"></i></span>"), to: group_path(@conn, :show, @group), class: "button is-link" %>
+    <%= link to: group_path(@conn, :show, @group), class: "button is-link" do %>
+      <span>返回 <%= @group.name %></span><span class="icon is-small"><i class="fa fa-arrow-right"></i></span>
+    <%= end %>
   </div>
 </div>

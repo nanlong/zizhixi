@@ -33,6 +33,8 @@
     </div>
   </div>
   <div class="column is-3">
-    <%= link raw("<span>返回帖子 #{@post.title}</span><span class=\"icon is-small\"><i class=\"fa fa-arrow-right\"></i></span>"), to: group_post_path(@conn, :show, @post), class: "button is-link" %>
+    <%= link to: group_post_path(@conn, :show, @post), class: "button is-link" do %>
+      <span>返回帖子 <%= @post.title %></span><span class="icon is-small"><i class="fa fa-arrow-right"></i></span>
+    <%= end %>
   </div>
 </div>

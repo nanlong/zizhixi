@@ -38,7 +38,9 @@
       <div class="hero-head">
         <nav class="nav">
           <div class="nav-left">
-            <%= link raw("<span class=\"title is-4\">自制系</span>"), to: page_path(@conn, :index), class: "nav-item" %>
+            <%= link to: page_path(@conn, :index), class: "nav-item" do %>
+              <span class="title is-4">自制系</span>
+            <%= end %>
 
             <%= for {controllers, name, path} <- navigation(@conn) do %>
               <%= if controller_module(@conn) in controllers do %>

@@ -37,7 +37,9 @@
       <%= link "创建话题", to: group_topic_path(@conn, :new, @group), class: "button is-info is-fullwidth" %>
     </p>
     <p>
-      <%= link raw("<span>返回#{@group.name}</span><span class=\"icon is-small\"><i class=\"fa fa-arrow-right\"></i></span>"), to: group_path(@conn, :show, @group), class: "button is-link" %>
+      <%= link to: group_path(@conn, :show, @group), class: "button is-link" do %>
+        <span>返回 <%= @group.name %></span><span class="icon is-small"><i class="fa fa-arrow-right"></i></span>
+      <%= end %>
     </p>
   </div>
 </div>
