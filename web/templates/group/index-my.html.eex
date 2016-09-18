@@ -39,9 +39,52 @@
     <%= end %>
   </div>
   <div class="column is-3">
+    <div class="card" style="margin-bottom: 20px;">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-32x32">
+              <img src="<%= @current_user.avatar %>" alt="<%= @current_user.username %>">
+            </figure>
+          </div>
+          <div class="media-content">
+            <p class="title is-5"><%= @current_user.username %></p>
+            <p class="subtitle is-6"></p>
+          </div>
+        </div>
+
+        <div class="content">
+          <p>
+            <%= @current_user.description %>
+          </p>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <div class="card-footer-item">
+          <a class="button-is-multiline has-text-centered" href="<%= user_path(@conn, :show, @current_user.username, tab: "followers") %>">
+            <span><%= @group_user.post_count %></span>
+            <small>发帖</small>
+          </a>
+        </div>
+        <div class="card-footer-item">
+          <a class="button-is-multiline has-text-centered" href="<%= user_path(@conn, :show, @current_user.username, tab: "following") %>">
+            <span><%= @group_user.comment_count %></span>
+            <small>回帖</small>
+          </a>
+        </div>
+        <div class="card-footer-item">
+          <a class="button-is-multiline has-text-centered" href="#">
+            <span><%= @group_user.collect_count %></span>
+            <small>收藏</small>
+          </a>
+        </div>
+      </footer>
+    </div>
+
     <div class="panel">
       <div class="panel-heading">
-        我的小组
+        <span>我的小组</span>
+        <span>(<%= Enum.count(@groups) %>)</span>
       </div>
       <div class="panel-block">
         <aside class="menu">

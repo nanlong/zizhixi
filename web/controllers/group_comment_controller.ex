@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupCommentController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{GroupMember, GroupPost, GroupComment, UserTimeline}
+  alias Zizhixi.{GroupUser, GroupMember, GroupPost, GroupComment, UserTimeline}
 
   import Zizhixi.Ecto.Helpers, only: [set: 4, inc: 3]
 
@@ -25,6 +25,9 @@ defmodule Zizhixi.GroupCommentController do
         GroupPost |> inc(post, :comment_count)
         GroupPost |> set(post, :latest_inserted_at, group_comment.inserted_at)
         GroupPost |> set(post, :latest_user_id, group_comment.user_id)
+
+        group_user = GroupUser.get(current_user.id)
+        GroupUser |> inc(group_user, :comment_count)
 
         group_member = Repo.get_by(GroupMember, %{group_id: post.group_id, user_id: current_user.id})
         GroupMember |> inc(group_member, :comment_count)

@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupPostCollectController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{GroupPost, GroupPostCollect}
+  alias Zizhixi.{GroupUser, GroupPost, GroupPostCollect}
 
   import Guardian.Plug, only: [current_resource: 1]
   import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
@@ -23,6 +23,10 @@ defmodule Zizhixi.GroupPostCollectController do
     conn = case Repo.insert(changeset) do
       {:ok, _group_post_collect} ->
         GroupPost |> inc(group_post, :collect_count)
+
+        group_user = GroupUser.get(current_user.id)
+        GroupUser |> inc(group_user, :collect_count)
+
         conn |> put_flash(:info, "收藏成功.")
       {:error, _changeset} ->
         conn |> put_flash(:error, "收藏失败.")

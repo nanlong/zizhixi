@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupTopic, GroupMember, GroupPost, UserEvent}
+  alias Zizhixi.{Group, GroupUser, GroupTopic, GroupMember, GroupPost, UserEvent}
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:new, :create, :edit, :update, :delete]
@@ -13,6 +13,8 @@ defmodule Zizhixi.GroupController do
     case Guardian.Plug.authenticated?(conn) do
       true ->
         current_user = Guardian.Plug.current_resource(conn)
+
+        group_user = GroupUser.get(current_user.id)
 
         pagination = (from p in GroupPost,
           join: g in Group, on: p.group_id == g.id,
@@ -32,6 +34,7 @@ defmodule Zizhixi.GroupController do
         |> assign(:title, "我的小组帖子")
         |> assign(:current_tab, "my")
         |> assign(:groups, groups)
+        |> assign(:group_user, group_user)
         |> assign(:groups_created, groups_created)
         |> assign(:groups_joined, groups_joined)
         |> assign(:pagination, pagination)
