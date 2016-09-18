@@ -127,7 +127,7 @@ defmodule Zizhixi.GroupController do
 
     default_tabs = [
       {"全部", "全部", group_path(conn, :show, group, tab: "全部")},
-      {"热门", "热门", group_path(conn, :show, group, tab: "热门")},
+      # {"热门", "热门", group_path(conn, :show, group, tab: "热门")},
       {"精华", "精华", group_path(conn, :show, group, tab: "精华")},
     ]
 
