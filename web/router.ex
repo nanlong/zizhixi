@@ -41,6 +41,7 @@ defmodule Zizhixi.Router do
     resources "/users", UserController, param: "username", only: [:show] do
       resources "/follow", UserFollowController, as: :follow, only: [:create, :delete], singleton: true
       resources "/events", UserEventController, as: :event, only: [:index]
+      resources "/timelines", UserTimelineController, as: :timeline, only: [:index]
     end
 
     resources "/groups", GroupController do

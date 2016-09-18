@@ -17,6 +17,8 @@ import Simditor from "simditor";
 import angular from "angular";
 import "ng-file-upload";
 import "angular-events-calendar";
+import moment from "moment";
+
 
 (function() {
   if ($('#settings-profile').length <= 0) {
@@ -172,16 +174,41 @@ $(function() {
 
     let app = angular.module('UserShowProfile', ['eventsCalendar']);
 
+    app.filter("trust", ['$sce', function($sce) {
+      return function(htmlCode){
+        return $sce.trustAsHtml(htmlCode);
+      }
+    }]);
+
+    app.filter("format", ['$sce', function($sce) {
+      return function(date){
+        return moment(date).format("hh:mm:ss");
+      }
+    }]);
+
     app.controller('UserCalendarController', ['$scope', '$http', function($scope, $http) {
       $scope.selectedDay = null;
+      $scope.day = null;
+      $scope.timelineList = [];
 
-      $http.get($('#user-calendar').data('api')).success(function(res) {
+      $http.get($('#user-calendar').data('events-api')).success(function(res) {
         $scope.eventList = res.data;
+        get_timelies(new Date());
       });
 
-      // $scope.$watch('selectedDay', function(n, o) {
-      //   console.log(n, o);
-      // });
+      function get_timelies(day) {
+        $scope.day = moment(day).format('YYYY-MM-DD');
+        let url = $('#user-calendar').data('timelines-api') + '?day=' + $scope.day;
+
+        $http.get(url).success(function(res) {
+          $scope.timelineList = res.data;
+        })
+      }
+
+      $scope.$watch('selectedDay', function(n, o) {
+        if (n == null || n == 'selectedDay') {return};
+        get_timelies(n);
+      });
     }]);
 
     angular.bootstrap(document, ['UserShowProfile']);
