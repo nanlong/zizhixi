@@ -6,7 +6,7 @@
     <%= else %>
     <li>
     <%= end %>
-      <%= link name, to: path %>
+      <%= link raw(name), to: path %>
     </li>
     <%= end %>
   </ul>
