@@ -40,15 +40,38 @@
   </div>
   <div class="column is-3">
     <div class="panel">
-      <p class="panel-heading">
+      <div class="panel-heading">
         我的小组
-      </p>
-      <%= for group <- @groups do %>
-        <%= link group.name, to: group_path(@conn, :show, group), class: "panel-block" %>
-      <%= end %>
-    </div>
-    <div class="panel">
-      <%= link "创建小组", to: group_path(@conn, :new), class: "button is-info is-fullwidth" %>
+      </div>
+      <div class="panel-block">
+        <aside class="menu">
+          <ul class="menu-list">
+            <li><%= link "创建小组", to: group_path(@conn, :new), class: "button is-fullwidth" %></li>
+          </ul>
+
+          <%= if Enum.count(@groups_created) > 0 do %>
+          <p class="menu-label">
+            我创建的
+          </p>
+          <ul class="menu-list">
+            <%= for group <- @groups_created do %>
+              <li><%= link group.name, to: group_path(@conn, :show, group) %></li>
+            <%= end %>
+          </ul>
+          <%= end %>
+
+          <%= if Enum.count(@groups_joined) > 0 do %>
+          <p class="menu-label">
+            我加入的
+          </p>
+          <ul class="menu-list">
+            <%= for group <- @groups_joined do %>
+              <li><%= link group.name, to: group_path(@conn, :show, group) %></li>
+            <%= end %>
+          </ul>
+          <%= end %>
+        </aside>
+      </div>
     </div>
   </div>
 </div>

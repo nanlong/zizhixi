@@ -13,15 +13,10 @@
             <div class="is-clearfix">
               <strong class="title is-4 is-pulled-left" style="margin-right: 10px;"><%= @group.name %></strong>
               <%= if @logged_in? do %>
-                <%= if not group_own?(@conn, @group) do %>
-                  <%= if group_member?(@conn, @group) do %>
-                    <%= link "已加入 | 退出", to: group_member_path(@conn, :delete, @group), method: :delete, class: "button is-small is-pulled-left" %>
-                  <%= else %>
-                    <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
-                  <%= end %>
+                <%= if group_member?(@conn, @group) do %>
+                  <%= link "已加入 | 退出", to: group_member_path(@conn, :delete, @group), method: :delete, class: "button is-small is-pulled-left" %>
                 <%= else %>
-                  <%= link "编辑", to: group_path(@conn, :edit, @group), class: "button is-small is-pulled-left" %>
-                  <%= link "话题管理", to: group_topic_path(@conn, :index, @group), class: "button is-small is-pulled-left", style: "margin-left: 10px;" %>
+                  <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
                 <%= end %>
               <%= else %>
                 <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
@@ -73,9 +68,26 @@
     <%= end %>
   </div>
   <div class="column is-3">
+    <%= if group_own?(@conn, @group) do %>
     <div class="panel">
       <div class="panel-heading">
-        小组长
+        <span class="icon is-small"><i class="fa fa-cogs"></i></span>
+        <span>小组管理</span>
+      </div>
+      <div class="panel-block">
+        <aside class="menu">
+          <ul class="menu-list">
+            <li><%= link "小组编辑", to: group_path(@conn, :edit, @group) %></li>
+            <li><%= link "话题管理", to: group_topic_path(@conn, :index, @group) %></li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+    <%= end %>
+    <div class="panel">
+      <div class="panel-heading">
+        <span class="icon is-small"><i class="fa fa-user"></i></span>
+        <span>小组长</span>
       </div>
       <div class="panel-block">
         <ul class="is-clearfix">
@@ -92,9 +104,6 @@
                   <div class="">
                     <small>创建时间 <%= @group.inserted_at |> from_now %></small>
                   </div>
-                  <!-- <div class="">
-                    <small>最后活跃 <%= @group.inserted_at |> from_now %></small>
-                  </div> -->
                 </div>
               </div>
             </article>
@@ -109,7 +118,8 @@
         <%= if @group_members.total_pages > 1 do %>
           <%= link "更多", to: "", class: "is-pulled-right" %>
         <%= end %>
-        <%= @group.member_count - 1 %>个小组成员
+        <span class="icon is-small"><i class="fa fa-users"></i></span>
+        <span><%= @group.member_count - 1 %>个小组成员</span>
       </div>
       <div class="panel-block">
         <ul class="columns is-multiline">

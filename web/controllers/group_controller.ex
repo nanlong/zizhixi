@@ -13,6 +13,7 @@ defmodule Zizhixi.GroupController do
     case Guardian.Plug.authenticated?(conn) do
       true ->
         current_user = Guardian.Plug.current_resource(conn)
+
         pagination = (from p in GroupPost,
           join: g in Group, on: p.group_id == g.id,
           join: m in GroupMember, on: g.id == m.group_id and m.user_id == ^current_user.id,
@@ -24,10 +25,17 @@ defmodule Zizhixi.GroupController do
           join: m in GroupMember, on: g.id == m.group_id and m.user_id == ^current_user.id)
           |> Repo.all
 
+        groups_created = Enum.filter(groups, fn group -> group.user_id == current_user.id end)
+        groups_joined = Enum.filter(groups, fn group -> group.user_id != current_user.id end)
+
         conn
         |> assign(:title, "我的小组帖子")
         |> assign(:current_tab, "my")
-        |> render("index-my.html", groups: groups, pagination: pagination)
+        |> assign(:groups, groups)
+        |> assign(:groups_created, groups_created)
+        |> assign(:groups_joined, groups_joined)
+        |> assign(:pagination, pagination)
+        |> render("index-my.html")
       false ->
         conn |> redirect(to: group_path(conn, :index, tab: "new"))
     end
