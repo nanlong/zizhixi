@@ -4,12 +4,14 @@ defmodule Zizhixi.GroupPost do
   schema "group_posts" do
     field :title, :string
     field :content, :string
-    field :is_deleted, :boolean, default: false
     field :latest_inserted_at, Timex.Ecto.DateTime
     field :comment_count, :integer, default: 0
     field :praise_count, :integer, default: 0
     field :watch_count, :integer, default: 0
     field :collect_count, :integer, default: 0
+    field :is_elite, :boolean, default: false
+    field :is_top, :boolean, default: false
+    field :is_deleted, :boolean, default: false
 
     belongs_to :topic, Zizhixi.GroupTopic
     belongs_to :group, Zizhixi.Group
