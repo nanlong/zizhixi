@@ -107,7 +107,7 @@ defmodule Zizhixi.GroupController do
     query = case tab do
       "全部" -> GroupPost
       # "热门" -> GroupPost
-      # "精华" -> GroupPost
+      "精华" -> GroupPost |> where(is_elite: true)
       _ -> GroupPost |> join(:inner, [p], t in GroupTopic, p.topic_id == t.id and t.name == ^tab)
     end
 

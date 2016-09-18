@@ -38,7 +38,12 @@
             <img src="<%= @group_post.user.avatar %>" alt="<%= @group_post.user.username %>" />
           </figure>
         </a>
-        <h1 class="title is-4 is-marginless"><%= @group_post.title %></h1>
+        <h1 class="title is-4 is-marginless">
+          <%= if @group_post.is_elite do %>
+          <span class="icon is-danger" title="精华"><i class="fa fa-diamond"></i></span>
+          <%= end %>
+          <%= @group_post.title %>
+        </h1>
 
         <small>
           <%= link @group_post.user.username, to: user_path(@conn, :show, @group_post.user.username), target: "_blank" %>
@@ -88,6 +93,19 @@
             <%= end %>
           <%= end %>
         </p>
+        <%= if group_own?(@conn, @group) do %>
+        <p class="control">
+          <%= if @group_post.is_elite do %>
+            <%= link to: group_post_elite_path(@conn, :create, @group_post), class: "button is-danger is-small", method: :delete do %>
+              <span class="icon is-small"><i class="fa fa-diamond"></i></span><span>取消加精</span>
+            <%= end %>
+          <%= else %>
+            <%= link to: group_post_elite_path(@conn, :create, @group_post), class: "button is-warning is-small", method: :post do %>
+              <span class="icon is-small"><i class="fa fa-diamond"></i></span><span>加精</span>
+            <%= end %>
+          <%= end %>
+        </p>
+        <%= end %>
       </div>
     </div>
     <%= if length(@comments) > 0 do %>

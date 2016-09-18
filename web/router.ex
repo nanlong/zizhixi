@@ -56,6 +56,7 @@ defmodule Zizhixi.Router do
       resources "/collect", GroupPostCollectController, as: :collect, only: [:create, :delete], singleton: true
       resources "/watch", GroupPostWatchController, as: :watch, only: [:create, :delete], singleton: true
       resources "/comments", GroupCommentController, as: :comment, only: [:create, :show]
+      resources "/elite", GroupPostEliteController, as: :elite, only: [:create, :delete], singleton: true
     end
 
     resources "/group_topics", GroupTopicController, only: [:edit, :update, :delete]
