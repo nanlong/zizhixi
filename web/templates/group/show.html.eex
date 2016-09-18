@@ -22,7 +22,7 @@
                 <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
               <%= end %>
             </div>
-            <p><%= @group.member_count %>人加入此小组</p>
+            <p><%= @group.member_count %>人加入此小组 | 共<%= @group.post_count %>条帖子</p>
           </div>
           <div class="content">
             <%= @group.description %>
@@ -136,9 +136,15 @@
                 <div class="content">
                   <%= link m.user.username, to: user_path(@conn, :show, m.user.username) %>
                   <nav class="level">
-                    <div class="level-left">
+                    <div class="">
                       <div class="level-item">
                         <small><%= m.inserted_at |> strftime("{0M}-{0D}") %> 加入</small>
+                      </div>
+                      <div class="level-item">
+                        <small><%= m.post_count %> 帖子</small>
+                      </div>
+                      <div class="level-item">
+                        <small><%= m.comment_count %> 回复</small>
                       </div>
                     </div>
                   </nav>

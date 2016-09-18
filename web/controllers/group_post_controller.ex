@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupPostController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupTopic, GroupPost, GroupComment, UserTimeline}
+  alias Zizhixi.{Group, GroupMember, GroupTopic, GroupPost, GroupComment, UserTimeline}
 
   import Zizhixi.Ecto.Helpers, only: [inc: 3]
   import Zizhixi.GroupView, only: [group_member?: 2]
@@ -48,6 +48,8 @@ defmodule Zizhixi.GroupPostController do
     case Repo.insert(changeset) do
       {:ok, group_post} ->
         Group |> inc(group, :post_count)
+        group_member = Repo.get_by(GroupMember, %{group_id: group.id, user_id: current_user.id})
+        GroupMember |> inc(group_member, :post_count)
         UserTimeline.add(conn, group_post)
 
         conn

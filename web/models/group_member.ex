@@ -2,6 +2,9 @@ defmodule Zizhixi.GroupMember do
   use Zizhixi.Web, :model
 
   schema "group_members" do
+    field :post_count, :integer, default: 0
+    field :comment_count, :integer, default: 0
+
     belongs_to :group, Zizhixi.Group
     belongs_to :user, Zizhixi.User
 
