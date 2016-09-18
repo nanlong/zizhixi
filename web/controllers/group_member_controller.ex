@@ -12,12 +12,20 @@ defmodule Zizhixi.GroupMemberController do
   # plug Zizhixi.Plug.VerifyRequest, [model: GroupMember, action: "is_owner"]
   #   when action in [:delete]
 
-  def index(conn, %{"group_id" => _group_id} = params) do
-    page  = GroupMember
-    |> preload([:user])
-    |> Repo.paginate(params)
+  def index(conn, %{"group_id" => group_id} = params) do
+    group = Group |> preload([:user]) |> Repo.get!(group_id)
 
-    render(conn, "index.html", page: page)
+    group_members  = GroupMember
+    |> where([m], m.user_id != ^group.user_id)
+    |> where(group_id: ^group_id)
+    |> preload([:user])
+    |> Repo.all
+
+    conn
+    |> assign(:title, "<#{group.name}>的成员列表")
+    |> assign(:group, group)
+    |> assign(:group_members, group_members)
+    |> render("index.html")
   end
 
   def create(conn, %{"group_id" => group_id}) do

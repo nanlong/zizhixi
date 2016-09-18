@@ -1,0 +1,76 @@
+<div class="columns">
+  <div class="column">
+    <div class="panel">
+      <div class="panel-heading">
+        <span class="icon is-small"><i class="fa fa-users"></i></span>
+        <span>小组长</span>
+      </div>
+      <div class="panel-block">
+        <div class="columns is-multiline">
+
+          <div class="column is-3">
+            <article class="media">
+              <figure class="media-left">
+                <p class="image is-32x32">
+                  <img src="<%= @group.user.avatar %>">
+                </p>
+              </figure>
+              <div class="media-content">
+                <div class="content">
+                  <%= link @group.user.username, to: user_path(@conn, :show, @group.user.username) %>
+                  <nav class="level">
+                    <div class="level-left">
+                      <div class="level-item">
+                        <small><%= @group.inserted_at |> strftime("{0M}-{0D}") %> 创建</small>
+                      </div>
+                    </div>
+                  </nav>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-heading">
+        <span class="icon is-small"><i class="fa fa-users"></i></span>
+        <span>成员</span>
+        <span><%= Enum.count(@group_members) %></span>
+      </div>
+      <div class="panel-block">
+        <div class="columns is-multiline">
+          <%= for m <- @group_members do %>
+          <div class="column is-3">
+            <article class="media">
+              <figure class="media-left">
+                <p class="image is-32x32">
+                  <img src="<%= m.user.avatar %>">
+                </p>
+              </figure>
+              <div class="media-content">
+                <div class="content">
+                  <%= link m.user.username, to: user_path(@conn, :show, m.user.username) %>
+                  <nav class="level">
+                    <div class="level-left">
+                      <div class="level-item">
+                        <small><%= m.inserted_at |> strftime("{0M}-{0D}") %> 加入</small>
+                      </div>
+                    </div>
+                  </nav>
+                </div>
+              </div>
+            </article>
+          </div>
+          <%= end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="column is-3">
+    <%= link to: group_path(@conn, :show, @group), class: "button is-link" do %>
+      <span>返回</span><span class="icon is-small"><i class="fa fa-arrow-right"></i></span>
+    <%= end %>
+  </div>
+</div>

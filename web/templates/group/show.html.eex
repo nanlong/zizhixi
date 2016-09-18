@@ -79,6 +79,7 @@
           <ul class="menu-list">
             <li><%= link "小组编辑", to: group_path(@conn, :edit, @group) %></li>
             <li><%= link "话题管理", to: group_topic_path(@conn, :index, @group) %></li>
+            <li><%= link "成员列表", to: group_member_path(@conn, :index, @group) %></li>
           </ul>
         </aside>
       </div>
@@ -116,7 +117,7 @@
     <div class="panel">
       <div class="panel-heading">
         <%= if @group_members.total_pages > 1 do %>
-          <%= link "更多", to: "", class: "is-pulled-right" %>
+          <%= link "更多", to: group_member_path(@conn, :index, @group), class: "is-pulled-right" %>
         <%= end %>
         <span class="icon is-small"><i class="fa fa-users"></i></span>
         <span><%= @group.member_count - 1 %>个小组成员</span>
