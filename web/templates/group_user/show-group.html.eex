@@ -5,7 +5,8 @@
       user: @user,
       group_user: @group_user,
       logged_in?: @logged_in?,
-      current_user: @current_user
+      current_user: @current_user,
+      current_tab: @current_tab
     %>
 
     <%= render "tabs.html",
@@ -18,39 +19,14 @@
     <div class="box columns is-multiline">
       <%= for group <- @pagination do %>
       <div class="column is-4">
-        <article class="media">
-          <figure class="media-left">
-            <p class="image is-96x96">
-              <img src="<%= group.logo %>">
-            </p>
-          </figure>
-          <div class="media-content">
-            <div class="content">
-              <%= link group.name, to: group_path(@conn, :show, group) %>
-              <nav class="level">
-                <div class="">
-                  <div class="level-item">
-                    <small><%= group.member_count %> 成员</small>
-                  </div>
-                  <div class="level-item">
-                    <small><%= group.post_count %> 帖子</small>
-                  </div>
-                  <div class="level-item">
-                    <%= if @logged_in? do %>
-                      <%= if group_member?(@conn, group) do %>
-                        <%= link "已加入 | 退出", to: group_member_path(@conn, :delete, group, next: group_user_path(@conn, :show, @user.username, tab: @current_tab)), method: :delete, class: "button is-small is-pulled-left" %>
-                      <%= else %>
-                        <%= link "加入小组", to: group_member_path(@conn, :create, group, next: group_user_path(@conn, :show, @user.username, tab: @current_tab)), method: :post, class: "button is-small is-pulled-left" %>
-                      <%= end %>
-                    <%= else %>
-                      <%= link "加入小组", to: group_member_path(@conn, :create, group, next: group_user_path(@conn, :show, @user.username, tab: @current_tab)), method: :post, class: "button is-small is-pulled-left" %>
-                    <%= end %>
-                  </div>
-                </div>
-              </nav>
-            </div>
-          </div>
-        </article>
+        <%= render Zizhixi.GroupView, "list-entry.html",
+          conn: @conn,
+          user: @user,
+          group: group,
+          logged_in?: @logged_in?,
+          current_user: @current_user,
+          current_tab: @current_tab
+        %>
       </div>
       <%= end %>
     </div>

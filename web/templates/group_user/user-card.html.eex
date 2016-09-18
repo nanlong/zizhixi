@@ -25,19 +25,22 @@
       <%= if @logged_in? and @current_user != @user do %>
         <%= if follow?(@conn, @user) do %>
           <%= link "取消关注",
-            to: user_follow_path(@conn, :delete, @user.username),
+            to: user_follow_path(@conn, :delete, @user.username, next: group_user_path(@conn, :show, @user.username, tab: @current_tab)),
             class: "button is-info",
             method: :delete
           %>
         <%= else %>
           <%= link "关注",
-            to: user_follow_path(@conn, :create, @user.username),
+            to: user_follow_path(@conn, :create, @user.username, next: group_user_path(@conn, :show, @user.username, tab: @current_tab)),
             class: "button is-info",
             method: :post
           %>
         <%= end %>
       <%= end %>
-      <%= link "个人主页", to: user_path(@conn, :show, @user.username), class: "button is-link" %>
+      <%= link "个人主页",
+        to: user_path(@conn, :show, @user.username), 
+        class: "button is-link"
+      %>
     </div>
   </footer>
 </div>

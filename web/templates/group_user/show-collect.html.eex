@@ -5,7 +5,8 @@
       user: @user,
       group_user: @group_user,
       logged_in?: @logged_in?,
-      current_user: @current_user
+      current_user: @current_user,
+      current_tab: @current_tab
     %>
 
     <%= render "tabs.html",
@@ -26,7 +27,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            还没有发帖
+            还没有收藏
           </h1>
         </div>
       </div>
