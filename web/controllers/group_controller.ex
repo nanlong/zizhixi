@@ -1,7 +1,8 @@
 defmodule Zizhixi.GroupController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupUser, GroupTopic, GroupMember, GroupPost, UserEvent}
+  alias Zizhixi.{Group, GroupUser, GroupTopic, GroupMember, GroupPost}
+  import Zizhixi.Ecto.Helpers, only: [inc: 3]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:new, :create, :edit, :update, :delete]
@@ -88,6 +89,9 @@ defmodule Zizhixi.GroupController do
     case Repo.insert(changeset) do
       {:ok, group} ->
         Repo.insert(%GroupMember{group_id: group.id, user_id: current_user.id})
+
+        group_user = GroupUser.get(current_user.id)
+        GroupUser |> inc(group_user, :group_count)
 
         conn
         |> put_flash(:info, "小组创建成功.")

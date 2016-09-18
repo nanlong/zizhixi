@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupPostEliteController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupPost}
+  alias Zizhixi.{GroupPost}
 
   import Guardian.Plug, only: [current_resource: 1]
   import Zizhixi.Ecto.Helpers, only: [set: 4]

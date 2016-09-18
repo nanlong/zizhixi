@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupPostPraiseController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{GroupPost, GroupPostPraise}
+  alias Zizhixi.{GroupUser, GroupPost, GroupPostPraise}
 
   import Guardian.Plug, only: [current_resource: 1]
   import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
@@ -23,6 +23,10 @@ defmodule Zizhixi.GroupPostPraiseController do
     conn = case Repo.insert(changeset) do
       {:ok, _group_post_praise} ->
         GroupPost |> inc(group_post, :praise_count)
+
+        group_user = GroupUser.get(current_user.id)
+        GroupUser |> inc(group_user, :praise_count)
+
         conn |> put_flash(:info, "点赞成功.")
       {:error, _changeset} ->
         conn |> put_flash(:error, "已点赞.")
@@ -45,7 +49,11 @@ defmodule Zizhixi.GroupPostPraiseController do
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(group_post_praise)
+
     GroupPost |> dec(group_post, :praise_count)
+
+    group_user = GroupUser.get(current_user.id)
+    GroupUser |> dec(group_user, :praise_count)
 
     conn
     |> put_flash(:info, "取消点赞.")

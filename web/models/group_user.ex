@@ -7,6 +7,9 @@ defmodule Zizhixi.GroupUser do
     field :post_count, :integer, default: 0
     field :comment_count, :integer, default: 0
     field :collect_count, :integer, default: 0
+    field :group_count, :integer, default: 0
+    field :praise_count, :integer, default: 0
+
     belongs_to :user, Zizhixi.User
 
     timestamps()

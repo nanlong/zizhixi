@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupMemberController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupMember}
+  alias Zizhixi.{Group, GroupUser, GroupMember}
 
   import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
 
@@ -41,6 +41,10 @@ defmodule Zizhixi.GroupMemberController do
         case Repo.insert(changeset) do
           {:ok, _group_member} ->
             Group |> inc(group, :member_count)
+
+            group_user = GroupUser.get(current_user.id)
+            GroupUser |> inc(group_user, :group_count)
+
             conn
             |> put_flash(:info, "成功加入 #{group.name} 小组")
           {:error, _changeset} ->
@@ -74,6 +78,9 @@ defmodule Zizhixi.GroupMemberController do
         # it to always work (and if it does not, it will raise).
         Repo.delete!(group_member)
         Group |> dec(group, :member_count)
+
+        group_user = GroupUser.get(current_user.id)
+        GroupUser |> dec(group_user, :group_count)
 
         conn
         |> put_flash(:info, "已退出 #{group.name} 小组")

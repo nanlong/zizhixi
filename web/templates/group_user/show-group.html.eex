@@ -26,7 +26,7 @@
           </figure>
           <div class="media-content">
             <div class="content">
-              <%= group.name %>
+              <%= link group.name, to: group_path(@conn, :show, group) %>
               <nav class="level">
                 <div class="">
                   <div class="level-item">

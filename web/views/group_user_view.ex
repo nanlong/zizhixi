@@ -16,7 +16,7 @@ defmodule Zizhixi.GroupUserView do
       },
       {
         "group",
-        "加入的小组 (0)",
+        "加入的小组 (#{group_user.group_count})",
         group_user_path(conn, :show, user.username, tab: "group")
       },
       {
@@ -36,7 +36,7 @@ defmodule Zizhixi.GroupUserView do
       },
       {
         "praise",
-        "赞过 (0)",
+        "赞过 (#{group_user.praise_count})",
         group_user_path(conn, :show, user.username, tab: "praise")
       },
     ]
