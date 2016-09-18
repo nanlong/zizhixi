@@ -51,6 +51,8 @@ defmodule Zizhixi.Router do
       resources "/topics", GroupTopicController, as: :topic, only: [:index, :new, :create]
     end
 
+    resources "/group_users", GroupUserController, param: "username", only: [:show]
+
     resources "/group_posts", GroupPostController, only: [:show, :edit, :update] do
       resources "/praise", GroupPostPraiseController, as: :praise, only: [:create, :delete], singleton: true
       resources "/collect", GroupPostCollectController, as: :collect, only: [:create, :delete], singleton: true

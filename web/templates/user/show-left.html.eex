@@ -39,17 +39,17 @@
       <div class="columns" style="margin-top: 0;">
         <div class="column btn-follow">
           <%= if follow?(@conn, @user) do %>
-          <%= link "取消关注",
-            to: user_follow_path(@conn, :delete, @user.username),
-            class: "button is-info is-fullwidth",
-            method: :delete
-          %>
+            <%= link "取消关注",
+              to: user_follow_path(@conn, :delete, @user.username),
+              class: "button is-info is-fullwidth",
+              method: :delete
+            %>
           <%= else %>
-          <%= link "关注",
-            to: user_follow_path(@conn, :create, @user.username),
-            class: "button is-info is-fullwidth",
-            method: :post
-          %>
+            <%= link "关注",
+              to: user_follow_path(@conn, :create, @user.username),
+              class: "button is-info is-fullwidth",
+              method: :post
+            %>
           <%= end %>
         </div>
         <!-- <div class="column">

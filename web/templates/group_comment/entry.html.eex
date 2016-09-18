@@ -18,7 +18,7 @@
   <div class="media-content">
     <div class="content">
       <div style="height: 30px;">
-        <%= link @comment.user.username, to: user_path(@conn, :show, @comment.user.username) %>
+        <%= link @comment.user.username, to: group_user_path(@conn, :show, @comment.user.username) %>
         ·
         <%= link "##{@index}", to: "#{group_post_path(@conn, :show, @comment.post_id)}##{@index}" %>
         ·

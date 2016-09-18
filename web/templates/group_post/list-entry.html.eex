@@ -1,9 +1,7 @@
 <article class="media">
-  <figure class="media-left">
-    <p class="image is-48x48">
-      <img src="<%= @post.user.avatar %>" alt="<%= @post.user.username %>" />
-    </p>
-  </figure>
+  <div class="media-left">
+
+  </div>
   <div class="media-content" style="padding-top: 5px;">
     <div class="content">
       <div class="title is-5">
@@ -28,7 +26,6 @@
         </small>
         <%= end %>
         <small class="level-item">
-          由 <%= link @post.user.username, to: group_user_path(@conn, :show, @post.user.username )%>
           于 <%= @post.inserted_at |> from_now %> 发布
         </small>
         <%= if @post.latest_user_id do %>
@@ -37,11 +34,9 @@
           于 <%= @post.latest_inserted_at |> from_now %> 回复
         </small>
         <%= end %>
-        <%= if @show_group do %>
         <small class="level-item">
           来自小组 <%= link @post.group.name, to: group_path(@conn, :show, @post.group) %>
         </small>
-        <%= end %>
       </div>
     </nav>
   </div>

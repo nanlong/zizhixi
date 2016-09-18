@@ -49,7 +49,11 @@ defmodule Zizhixi.GroupPostCollectController do
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(group_post_collect)
+
     GroupPost |> dec(group_post, :collect_count)
+
+    group_user = GroupUser.get(current_user.id)
+    GroupUser |> dec(group_user, :collect_count)
 
     conn
     |> put_flash(:info, "取消收藏成功.")

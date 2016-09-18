@@ -17,7 +17,7 @@
               </figure>
               <div class="media-content">
                 <div class="content">
-                  <%= link @group.user.username, to: user_path(@conn, :show, @group.user.username) %>
+                  <%= link @group.user.username, to: group_user_path(@conn, :show, @group.user.username) %>
                   <nav class="level">
                     <div class="level-left">
                       <div class="level-item">
@@ -51,7 +51,7 @@
               </figure>
               <div class="media-content">
                 <div class="content">
-                  <%= link m.user.username, to: user_path(@conn, :show, m.user.username) %>
+                  <%= link m.user.username, to: group_user_path(@conn, :show, m.user.username) %>
                   <nav class="level">
                     <div class="level-left">
                       <div class="level-item">

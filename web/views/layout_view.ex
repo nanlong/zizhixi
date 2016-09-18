@@ -5,6 +5,7 @@ defmodule Zizhixi.LayoutView do
     GroupController,
     GroupPostController,
     GroupCommentController,
+    GroupUserController,
     AskController,
     TutorialController,
     LinkController,
@@ -12,7 +13,7 @@ defmodule Zizhixi.LayoutView do
   }
 
   def navigation(conn) do
-    group_controllers = [GroupController, GroupPostController, GroupCommentController]
+    group_controllers = [GroupController, GroupUserController, GroupPostController, GroupCommentController]
     ask_controllers = [AskController]
     tutorial_controllers = [TutorialController]
     link_controllers = [LinkController]

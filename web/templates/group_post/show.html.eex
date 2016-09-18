@@ -33,7 +33,7 @@
 
     <div class="panel">
       <div class="panel-heading" style="padding: 10px;">
-        <a class="is-pulled-right" href="<%= user_path(@conn, :show, @group_post.user.username) %>">
+        <a class="is-pulled-right" href="<%= group_user_path(@conn, :show, @group_post.user.username) %>">
           <figure class="image is-32x32">
             <img src="<%= @group_post.user.avatar %>" alt="<%= @group_post.user.username %>" />
           </figure>
@@ -49,10 +49,10 @@
         </h1>
 
         <small>
-          <%= link @group_post.user.username, to: user_path(@conn, :show, @group_post.user.username) %>
+          <%= link @group_post.user.username, to: group_user_path(@conn, :show, @group_post.user.username) %>
           于 <%= @group_post.inserted_at |> from_now %>前发布
           <%= if @group_post.latest_user_id do %>
-          · 最后由 <%= link @group_post.latest_user.username, to: user_path(@conn, :show, @group_post.latest_user.username) %>
+          · 最后由 <%= link @group_post.latest_user.username, to: group_user_path(@conn, :show, @group_post.latest_user.username) %>
           于 <%= @group_post.latest_inserted_at |> from_now %>回复
           <%= end %>
         </small>

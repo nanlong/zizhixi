@@ -1,0 +1,73 @@
+<div class="columns">
+  <div class="column">
+    <%= render "user-card.html",
+      conn: @conn,
+      user: @user,
+      group_user: @group_user,
+      logged_in?: @logged_in?,
+      current_user: @current_user
+    %>
+
+    <%= render "tabs.html",
+      conn: @conn,
+      group_user: @group_user,
+      current_tab: @current_tab
+    %>
+
+    <%= if @pagination.total_entries > 0 do %>
+    <div class="box columns is-multiline">
+      <%= for group <- @pagination do %>
+      <div class="column is-4">
+        <article class="media">
+          <figure class="media-left">
+            <p class="image is-96x96">
+              <img src="<%= group.logo %>">
+            </p>
+          </figure>
+          <div class="media-content">
+            <div class="content">
+              <%= group.name %>
+              <nav class="level">
+                <div class="">
+                  <div class="level-item">
+                    <small><%= group.member_count %> 成员</small>
+                  </div>
+                  <div class="level-item">
+                    <small><%= group.post_count %> 帖子</small>
+                  </div>
+                  <div class="level-item">
+                    <%= if @logged_in? do %>
+                      <%= if group_member?(@conn, group) do %>
+                        <%= link "已加入 | 退出", to: group_member_path(@conn, :delete, group, next: group_user_path(@conn, :show, @user.username, tab: @current_tab)), method: :delete, class: "button is-small is-pulled-left" %>
+                      <%= else %>
+                        <%= link "加入小组", to: group_member_path(@conn, :create, group, next: group_user_path(@conn, :show, @user.username, tab: @current_tab)), method: :post, class: "button is-small is-pulled-left" %>
+                      <%= end %>
+                    <%= else %>
+                      <%= link "加入小组", to: group_member_path(@conn, :create, group, next: group_user_path(@conn, :show, @user.username, tab: @current_tab)), method: :post, class: "button is-small is-pulled-left" %>
+                    <%= end %>
+                  </div>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </article>
+      </div>
+      <%= end %>
+    </div>
+    <%= pagination_links @conn, @pagination, [@user.username], action: :show, path: &group_user_path/4, tab: @current_tab %>
+    <%= else %>
+    <section class="hero is-primary has-text-centered">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            还没有加入小组
+          </h1>
+        </div>
+      </div>
+    </section>
+    <%= end %>
+  </div>
+  <div class="column is-3">
+
+  </div>
+</div>
