@@ -1,6 +1,16 @@
-<h2>Edit group post</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: group_post_path(@conn, :update, @group, @group_post) %>
-
-<%= link "Back", to: group_post_path(@conn, :index, @group) %>
+<div class="columns">
+  <div class="column">
+    <div class="box box-form-edit">
+      <%= render "form.html",
+        changeset: @changeset,
+        group_topics: @group_topics,
+        action: group_post_path(@conn, :update, @group_post)
+      %>
+    </div>
+  </div>
+  <div class="column is-3">
+    <%= link to: group_post_path(@conn, :show, @group_post), class: "button is-link" do %>
+      <span>返回</span><span class="icon is-small"><i class="fa fa-arrow-right"></i></span>
+    <%= end %>
+  </div>
+</div>

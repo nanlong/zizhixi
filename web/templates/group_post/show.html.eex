@@ -62,6 +62,16 @@
           <%= raw @group_post.content %>
         </div>
       </div>
+      <%= if group_post_own?(@conn, @group_post) do %>
+      <div class="panel-block control is-grouped is-pulled-right">
+        <p class="control">
+          <%= link to: group_post_path(@conn, :edit, @group_post), class: "button is-success is-small" do %>
+            <span class="icon is-small"><i class="fa fa-pencil"></i></span>
+            <span>编辑</span>
+          <%= end %>
+        </p>
+      </div>
+      <%= end %>
       <div class="panel-block control is-grouped">
         <p class="control">
           <%= if praise?(@conn, @group_post) do %>

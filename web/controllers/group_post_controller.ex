@@ -86,38 +86,42 @@ defmodule Zizhixi.GroupPostController do
       comments: comments, changeset: changeset)
   end
 
-  # def edit(conn, %{"group_id" => group_id, "id" => _id} = params) do
-  #   group = Repo.get!(Group, group_id)
-  #   group_post = Repo.get_by!(GroupPost, params)
-  #   changeset = GroupPost.changeset(group_post)
-  #   render(conn, "edit.html", group: group, group_post: group_post, changeset: changeset)
-  # end
-  #
-  # def update(conn, %{"group_id" => group_id, "id" => id, "group_post" => group_post_params}) do
-  #   group = Repo.get!(Group, group_id)
-  #   group_post = Repo.get_by!(GroupPost, %{id: id, group_id: group.id})
-  #   changeset = GroupPost.changeset(group_post, group_post_params)
-  #
-  #   case Repo.update(changeset) do
-  #     {:ok, group_post} ->
-  #       conn
-  #       |> put_flash(:info, "Group post updated successfully.")
-  #       |> redirect(to: group_post_path(conn, :show, group_post))
-  #     {:error, changeset} ->
-  #       render(conn, "edit.html", group: group, group_post: group_post, changeset: changeset)
-  #   end
-  # end
-  #
-  # def delete(conn, %{"group_id" => group_id, "id" => _id} = params) do
-  #   group = Repo.get!(Group, group_id)
-  #   group_post = Repo.get_by!(GroupPost, params)
-  #
-  #   # Here we use delete! (with a bang) because we expect
-  #   # it to always work (and if it does not, it will raise).
-  #   Repo.delete!(group_post)
-  #
-  #   conn
-  #   |> put_flash(:info, "Group post deleted successfully.")
-  #   |> redirect(to: group_post_path(conn, :index, group))
-  # end
+  def edit(conn, %{"id" => id}) do
+    group_post = Repo.get!(GroupPost, id)
+    changeset = GroupPost.changeset(group_post)
+
+    group_topics = GroupTopic
+    |> where(group_id: ^group_post.group_id)
+    |> order_by([:sorted, :inserted_at])
+    |> Repo.all
+
+    conn
+    |> assign(:group_post, group_post)
+    |> assign(:group_topics, group_topics)
+    |> assign(:changeset, changeset)
+    |> render("edit.html")
+  end
+
+  def update(conn, %{"id" => id, "group_post" => group_post_params}) do
+    group_post = Repo.get!(GroupPost, id)
+    changeset = GroupPost.changeset(group_post, group_post_params)
+
+    case Repo.update(changeset) do
+      {:ok, group_post} ->
+        conn
+        |> put_flash(:info, "编辑成功.")
+        |> redirect(to: group_post_path(conn, :show, group_post))
+      {:error, changeset} ->
+        group_topics = GroupTopic
+        |> where(group_id: ^group_post.group_id)
+        |> order_by([:sorted, :inserted_at])
+        |> Repo.all
+
+        conn
+        |> assign(:group_post, group_post)
+        |> assign(:group_topics, group_topics)
+        |> assign(:changeset, changeset)
+        |> render("edit.html")
+    end
+  end
 end

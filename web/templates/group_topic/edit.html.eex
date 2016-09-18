@@ -1,16 +1,6 @@
-<style media="screen">
-  .box {
-    position: relative;
-  }
-  .box .link {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-  }
-</style>
 <div class="columns">
   <div class="column">
-    <div class="box">
+    <div class="box box-form-edit">
       <%= render "form.html",
         changeset: @changeset,
         action: group_topic_path(@conn, :update, @group_topic)

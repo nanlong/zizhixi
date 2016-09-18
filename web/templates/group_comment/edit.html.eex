@@ -1,16 +1,6 @@
-<style media="screen">
-  .box {
-    position: relative;
-  }
-  .box .link {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-  }
-</style>
 <div class="columns">
   <div class="column">
-    <div class="box">
+    <div class="box box-form-edit">
       <%= form_for @changeset, group_comment_path(@conn, :update, @comment), fn f -> %>
         <%= label f, :content, @post.title, class: "label" %>
         <p class="control">
@@ -34,7 +24,7 @@
   </div>
   <div class="column is-3">
     <%= link to: group_post_path(@conn, :show, @post), class: "button is-link" do %>
-      <span>返回帖子 <%= @post.title %></span><span class="icon is-small"><i class="fa fa-arrow-right"></i></span>
+      <span>返回</span><span class="icon is-small"><i class="fa fa-arrow-right"></i></span>
     <%= end %>
   </div>
 </div>
