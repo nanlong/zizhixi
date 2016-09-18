@@ -105,7 +105,7 @@ defmodule Zizhixi.GroupController do
     |> Repo.all
 
     query = case tab do
-      "全部" -> GroupPost
+      "全部" -> GroupPost |> order_by([desc: :is_top, desc: :latest_inserted_at, desc: :inserted_at])
       # "热门" -> GroupPost
       "精华" -> GroupPost |> where(is_elite: true)
       _ -> GroupPost |> join(:inner, [p], t in GroupTopic, p.topic_id == t.id and t.name == ^tab)

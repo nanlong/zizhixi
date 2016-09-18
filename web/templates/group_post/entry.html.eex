@@ -8,10 +8,13 @@
     <div class="content">
       <div class="title is-5">
         <%= link to: group_post_path(@conn, :show, @post) do %>
-          <%= if @post.is_elite do %>
-          <span class="icon is-danger is-small" title="精华"><i class="fa fa-diamond"></i></span>
-          <%= end %>
           <%= @post.title %>
+        <%= end %>
+        <%= if @post.is_elite do %>
+        <span class="icon is-danger is-small" title="精华"><i class="fa fa-diamond"></i></span>
+        <%= end %>
+        <%= if @post.is_top do %>
+        <span class="icon is-small" title="置顶"><i class="fa fa-thumb-tack"></i></span>
         <%= end %>
       </div>
     </div>

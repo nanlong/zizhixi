@@ -11,7 +11,7 @@
           <div class="content">
             <%= link "发新帖", to: group_post_path(@conn, :new, @group), class: "button is-info is-pulled-right" %>
             <div class="is-clearfix">
-              <%= link @group.name, to: group_path(@conn, :show, @group), target: "_blank", class: "is-pulled-left", style: "margin-right: 20px;" %>
+              <%= link @group.name, to: group_path(@conn, :show, @group), class: "is-pulled-left", style: "margin-right: 20px;" %>
 
               <%= if @logged_in? do %>
                 <%= if not group_own?(@conn, @group) do %>
@@ -39,17 +39,20 @@
           </figure>
         </a>
         <h1 class="title is-4 is-marginless">
-          <%= if @group_post.is_elite do %>
-          <span class="icon is-danger" title="精华"><i class="fa fa-diamond"></i></span>
-          <%= end %>
           <%= @group_post.title %>
+          <%= if @group_post.is_elite do %>
+            <span class="icon is-danger" title="精华"><i class="fa fa-diamond"></i></span>
+          <%= end %>
+          <%= if @group_post.is_top do %>
+            <span class="icon" title="置顶"><i class="fa fa-thumb-tack"></i></span>
+          <%= end %>
         </h1>
 
         <small>
-          <%= link @group_post.user.username, to: user_path(@conn, :show, @group_post.user.username), target: "_blank" %>
+          <%= link @group_post.user.username, to: user_path(@conn, :show, @group_post.user.username) %>
           于 <%= @group_post.inserted_at |> from_now %>前发布
           <%= if @group_post.latest_user_id do %>
-          · 最后由 <%= link @group_post.latest_user.username, to: user_path(@conn, :show, @group_post.latest_user.username), target: "_blank" %>
+          · 最后由 <%= link @group_post.latest_user.username, to: user_path(@conn, :show, @group_post.latest_user.username) %>
           于 <%= @group_post.latest_inserted_at |> from_now %>回复
           <%= end %>
         </small>
@@ -102,6 +105,18 @@
           <%= else %>
             <%= link to: group_post_elite_path(@conn, :create, @group_post), class: "button is-warning is-small", method: :post do %>
               <span class="icon is-small"><i class="fa fa-diamond"></i></span><span>加精</span>
+            <%= end %>
+          <%= end %>
+        </p>
+
+        <p class="control">
+          <%= if @group_post.is_top do %>
+            <%= link to: group_post_top_path(@conn, :create, @group_post), class: "button is-danger is-small", method: :delete do %>
+              <span class="icon is-small"><i class="fa fa-thumb-tack"></i></span><span>取消置顶</span>
+            <%= end %>
+          <%= else %>
+            <%= link to: group_post_top_path(@conn, :create, @group_post), class: "button is-warning is-small", method: :post do %>
+              <span class="icon is-small"><i class="fa fa-thumb-tack"></i></span><span>置顶</span>
             <%= end %>
           <%= end %>
         </p>
