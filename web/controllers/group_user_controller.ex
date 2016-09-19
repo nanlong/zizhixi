@@ -111,13 +111,13 @@ defmodule Zizhixi.GroupUserController do
     |> where(user_id: ^group_user.user_id)
     |> order_by([desc: :inserted_at])
     |> preload([:user, :topic, :group, :latest_user])
-    |> Repo.paginate(%{page: 1, page_size: 10})
+    |> Repo.paginate(%{page: 1, page_size: 3})
 
     praises = GroupPost
     |> join(:inner, [p], c in GroupPostPraise, c.user_id == ^user.id and c.post_id == p.id)
     |> order_by([desc: :inserted_at])
     |> preload([:user, :topic, :group, :latest_user])
-    |> Repo.paginate(%{page: 1, page_size: 10})
+    |> Repo.paginate(%{page: 1, page_size: 3})
 
     conn
     |> assign(:title, "#{user.username} 的小组主页")
