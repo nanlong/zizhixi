@@ -182,7 +182,7 @@ $(function() {
 
     app.filter("format", ['$sce', function($sce) {
       return function(date){
-        return moment(date).format("hh:mm:ss");
+        return moment(date).format("HH:mm:ss");
       }
     }]);
 
