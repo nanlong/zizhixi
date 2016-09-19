@@ -29,12 +29,12 @@
         <%= end %>
         <small class="level-item">
           由 <%= link @post.user.username, to: group_user_path(@conn, :show, @post.user.username )%>
-          于 <%= @post.inserted_at |> from_now %> 发布
+          于 <small class="phoenix-moment" data-timestamp="<%= @post.inserted_at %>" data-refresh="10000"></small> 发布
         </small>
         <%= if @post.latest_user_id do %>
         <small class="level-item">
           最后由 <%= link @post.latest_user.username, to: group_user_path(@conn, :show, @post.latest_user.username )%>
-          于 <%= @post.latest_inserted_at |> from_now %> 回复
+          于 <small class="phoenix-moment" data-timestamp="<%= @post.latest_inserted_at %>" data-refresh="10000"></small> 回复
         </small>
         <%= end %>
         <%= if @show_group do %>

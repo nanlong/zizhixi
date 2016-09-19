@@ -22,7 +22,7 @@
         ·
         <%= link "##{@index}", to: "#{group_post_path(@conn, :show, @comment.post_id)}##{@index}" %>
         ·
-        <small><%= @comment.inserted_at |> from_now %></small>
+        <small class="phoenix-moment" data-timestamp="<%= @comment.inserted_at %>" data-refresh="10000"></small>
       </div>
       <div><%= raw @comment.content %></div>
     </div>

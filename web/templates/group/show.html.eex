@@ -103,7 +103,7 @@
                 <div class="content">
                   <%= link @group.user.username, to: group_user_path(@conn, :show, @group.user.username) %>
                   <div class="">
-                    <small>创建时间 <%= @group.inserted_at |> from_now %></small>
+                    <small>创建时间 <small class="phoenix-moment" data-timestamp="<%= @group.inserted_at %>" data-refresh="10000"></small></small>
                   </div>
                 </div>
               </div>
