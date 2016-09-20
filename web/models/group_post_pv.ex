@@ -29,7 +29,8 @@ defmodule Zizhixi.GroupPostPV do
   end
 
   def create(conn, post_id, user_id) do
-    ip_address = conn.remote_ip |> Tuple.to_list |> Enum.join(".")
+    # ip_address = conn.remote_ip |> Tuple.to_list |> Enum.join(".")
+    ip_address = Plug.Conn.get_req_header(conn, "x-forwarded-for") |> List.first
 
     params = %{
       day: Timex.today,
