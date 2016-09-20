@@ -59,7 +59,7 @@
         </small>
       </div>
       <div class="panel-block">
-        <div class="content">
+        <div class="content" style="padding: 10px 0;">
           <%= raw @group_post.content %>
         </div>
       </div>
