@@ -27,8 +27,6 @@ defmodule Zizhixi.UserNotificationController do
   end
 
   def delete(conn, %{"id" => id}) do
-    IO.inspect id
-
     current_user = current_resource(conn)
 
     notification = Repo.get_by!(UserNotification, %{id: id, user_id: current_user.id})
