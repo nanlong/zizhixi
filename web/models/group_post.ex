@@ -9,6 +9,7 @@ defmodule Zizhixi.GroupPost do
     field :praise_count, :integer, default: 0
     field :watch_count, :integer, default: 0
     field :collect_count, :integer, default: 0
+    field :pv, :integer, default: 0
     field :is_elite, :boolean, default: false
     field :is_top, :boolean, default: false
     field :is_deleted, :boolean, default: false

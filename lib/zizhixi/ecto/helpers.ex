@@ -14,6 +14,10 @@ defmodule Zizhixi.Ecto.Helpers do
   设置某个字段的值
   """
   def set(model, %{:id => id}, column, value) do
+    set(model, id, column, value)
+  end
+
+  def set(model, id, column, value) do
     opts = [] |> Keyword.put(column, value)
 
     model
@@ -26,6 +30,10 @@ defmodule Zizhixi.Ecto.Helpers do
   递增某个字段的值
   """
   def inc(model, %{:id => id}, column) do
+    inc(model, id, column)
+  end
+
+  def inc(model, id, column) do
     model
     |> where(id: ^id)
     |> inc_or_dec(:inc, column)
@@ -35,6 +43,10 @@ defmodule Zizhixi.Ecto.Helpers do
   递减某个字段的值
   """
   def dec(model, %{:id => id}, column) do
+    dec(model, id, column)
+  end
+
+  def dec(model, id, column) do
     model
     |> where(id: ^id)
     |> inc_or_dec(:dec, column)

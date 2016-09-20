@@ -40,6 +40,10 @@ Enum.map(Repo.all(GroupPost), fn post ->
   if is_nil(post.is_top) do
     GroupPost |> set(post, :is_top, false)
   end
+
+  if is_nil(post.pv) do
+    GroupPost |> set(post, :pv, 0)
+  end
 end)
 
 Enum.map(Repo.all(GroupMember), fn member ->

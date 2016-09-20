@@ -55,6 +55,7 @@
           · 最后由 <%= link @group_post.latest_user.username, to: group_user_path(@conn, :show, @group_post.latest_user.username) %>
           于 <small class="phoenix-moment" data-timestamp="<%= @group_post.latest_inserted_at %>" data-refresh="10000"></small> 回复
           <%= end %>
+          · <%= @group_post.pv %>次阅读
         </small>
       </div>
       <div class="panel-block">

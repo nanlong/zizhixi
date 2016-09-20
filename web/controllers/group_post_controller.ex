@@ -1,8 +1,10 @@
 defmodule Zizhixi.GroupPostController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupUser, GroupMember, GroupTopic, GroupPost, GroupComment, UserTimeline}
+  alias Zizhixi.{Group, GroupUser, GroupMember, GroupTopic, GroupPost, GroupPostPV,
+    GroupComment, UserTimeline}
 
+  import Guardian.Plug, only: [current_resource: 1]
   import Zizhixi.Ecto.Helpers, only: [inc: 3]
   import Zizhixi.GroupView, only: [group_member?: 2]
 
@@ -73,9 +75,14 @@ defmodule Zizhixi.GroupPostController do
   end
 
   def show(conn, %{"id" => id}) do
+    current_user = current_resource(conn)
+
     group_post = GroupPost
     |> preload([:group, :user, :latest_user])
     |> Repo.get_by!(%{id: id})
+
+    # 更新pv
+    GroupPostPV.create(conn, group_post, current_user)
 
     group = group_post.group
 
