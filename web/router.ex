@@ -22,6 +22,11 @@ defmodule Zizhixi.Router do
   pipeline :api do
     plug :accepts, ["json"]
   end
+  scope "/", Zizhixi do
+    pipe_through [:api]
+
+    post "/editor/upload", PageController, :editor_upload
+  end
 
   scope "/", Zizhixi do
     pipe_through [:browser, :browser_session] # Use the default browser stack

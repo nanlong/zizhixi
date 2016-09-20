@@ -11,4 +11,12 @@ defmodule Zizhixi.PageController do
     {:ok, response} = Qiniu.upload(file)
     conn |> json(response)
   end
+
+  def editor_upload(conn, %{"file" => file}) do
+    {:ok, response} = Qiniu.upload(file)
+    conn |> json(%{
+      success: true,
+      file_path: response.url
+    })
+  end
 end

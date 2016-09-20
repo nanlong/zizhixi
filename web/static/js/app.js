@@ -20,6 +20,7 @@ import "angular-events-calendar";
 import moment from "moment";
 import "moment/locale/zh-cn";
 
+
 (function() {
   function phoenix_moment_render(elem) {
     let from_now = moment($(elem).data('timestamp'), $(elem).data('format')).fromNow();
@@ -43,67 +44,6 @@ import "moment/locale/zh-cn";
   $(document).ready(function() {
       phoenix_moment_render_all();
   });
-})();
-
-(function() {
-  if ($('#settings-profile').length <= 0) {
-    return;
-  }
-
-  let app = angular.module('fileUpload', ['ngFileUpload']);
-
-  app.controller('SettingsProfileCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
-
-    $scope.upload = function(file) {
-      if (! file) {
-        return;
-      }
-      Upload.upload({
-          url: '/upload',
-          headers: {"X-CSRF-TOKEN": $("meta[name=csrf]").attr("content")},
-          data: {file: file}
-      }).then(function (resp) {
-        var avatar_url = resp.data.url + '?imageView2/1/w/200/h/200';
-        $('#user_avatar').val(avatar_url);
-        $('#user-avatar').attr('src', avatar_url);
-      }, function (resp) {
-        alert("上传失败")
-      });
-    }
-  }]);
-
-  angular.bootstrap(document, ['fileUpload']);
-})();
-
-
-(function() {
-  if ($('#groups-new').length <= 0) {
-    return;
-  }
-
-  let app = angular.module('fileUpload', ['ngFileUpload']);
-
-  app.controller('GroupsNewCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
-
-    $scope.upload = function(file) {
-      if (! file) {
-        return;
-      }
-      Upload.upload({
-          url: '/upload',
-          headers: {"X-CSRF-TOKEN": $("meta[name=csrf]").attr("content")},
-          data: {file: file}
-      }).then(function (resp) {
-        var img_url = resp.data.url + '?imageView2/1/w/200/h/200';
-        $('#group_logo').val(img_url);
-        $('#group-logo').attr('src', img_url);
-      }, function (resp) {
-        alert("上传失败")
-      });
-    }
-  }]);
-
-  angular.bootstrap(document, ['fileUpload']);
 })();
 
 $(function() {
@@ -131,7 +71,12 @@ $(function() {
     }
 
     let editor = new Simditor({
-      textarea: $textarea
+      textarea: $textarea,
+      imageButton: 'upload',
+      upload: {
+        url: "/editor/upload",
+        fileKey: "file"
+      }
     });
 
     editor.focus();
@@ -152,7 +97,12 @@ $(function() {
 
     let editor = new Simditor({
       textarea: $textarea,
-      toolbar: ['bold', 'ol', 'ul', 'blockquote','link', 'image']
+      toolbar: ['bold', 'ol', 'ul', 'blockquote','link', 'image'],
+      imageButton: 'upload',
+      upload: {
+        url: "/editor/upload",
+        fileKey: "file"
+      }
     });
 
     $('.media').on('mouseenter', function() {
@@ -237,6 +187,67 @@ $(function() {
     }]);
 
     angular.bootstrap(document, ['UserShowProfile']);
+  })();
+
+  (function() {
+    if ($('#settings-profile').length <= 0) {
+      return;
+    }
+
+    let app = angular.module('fileUpload', ['ngFileUpload']);
+
+    app.controller('SettingsProfileCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
+
+      $scope.upload = function(file) {
+        if (! file) {
+          return;
+        }
+        Upload.upload({
+            url: '/upload',
+            headers: {"X-CSRF-TOKEN": $("meta[name=csrf]").attr("content")},
+            data: {file: file}
+        }).then(function (resp) {
+          var avatar_url = resp.data.url + '?imageView2/1/w/200/h/200';
+          $('#user_avatar').val(avatar_url);
+          $('#user-avatar').attr('src', avatar_url);
+        }, function (resp) {
+          alert("上传失败")
+        });
+      }
+    }]);
+
+    angular.bootstrap(document, ['fileUpload']);
+  })();
+
+
+  (function() {
+    if ($('#groups-new').length <= 0) {
+      return;
+    }
+
+    let app = angular.module('fileUpload', ['ngFileUpload']);
+
+    app.controller('GroupsNewCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
+
+      $scope.upload = function(file) {
+        if (! file) {
+          return;
+        }
+        Upload.upload({
+            url: '/upload',
+            headers: {"X-CSRF-TOKEN": $("meta[name=csrf]").attr("content")},
+            data: {file: file}
+        }).then(function (resp) {
+          var img_url = resp.data.url + '?imageView2/1/w/200/h/200';
+          $('#group_logo').val(img_url);
+          $('#group-logo').attr('src', img_url);
+        }, function (resp) {
+          alert("上传失败")
+        });
+      }
+    }]);
+
+    angular.bootstrap(document, ['fileUpload']);
   })();
 })
 
