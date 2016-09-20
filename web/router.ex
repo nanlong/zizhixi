@@ -43,6 +43,8 @@ defmodule Zizhixi.Router do
 
     get "/signout", SessionController, :delete
 
+    resources "/notifications", UserNotificationController, except: [:new, :create, :edit, :update], singleton: true
+
     resources "/users", UserController, param: "username", only: [:show] do
       resources "/follow", UserFollowController, as: :follow, only: [:create, :delete], singleton: true
       resources "/events", UserEventController, as: :event, only: [:index]
