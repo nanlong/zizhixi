@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupMemberController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Group, GroupUser, GroupMember}
+  alias Zizhixi.{Group, GroupUser, GroupMember, UserNotification}
 
   import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
 
@@ -30,7 +30,7 @@ defmodule Zizhixi.GroupMemberController do
 
   def create(conn, %{"group_id" => group_id}) do
     current_user = Guardian.Plug.current_resource(conn)
-    group = Repo.get!(Group, group_id)
+    group = Group |> preload([:user]) |> Repo.get!(group_id)
     params = %{group_id: group.id, user_id: current_user.id}
     changeset = GroupMember.changeset(%GroupMember{}, params)
 
@@ -44,6 +44,14 @@ defmodule Zizhixi.GroupMemberController do
 
             group_user = GroupUser.get(current_user.id)
             GroupUser |> inc(group_user, :group_count)
+
+            UserNotification.create(conn,
+              user: group.user,
+              who: current_user,
+              where: nil,
+              action: "加入了",
+              what: group
+            )
 
             conn
             |> put_flash(:info, "成功加入 #{group.name} 小组")

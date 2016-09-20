@@ -1,7 +1,8 @@
 defmodule Zizhixi.GroupCommentController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{GroupUser, GroupMember, GroupPost, GroupComment, UserTimeline}
+  alias Zizhixi.{GroupUser, GroupMember, GroupPost, GroupComment, UserTimeline,
+    UserNotification}
 
   import Zizhixi.Ecto.Helpers, only: [set: 4, inc: 3]
 
@@ -14,7 +15,7 @@ defmodule Zizhixi.GroupCommentController do
   # todo: 验证当前用户是否为小组成员
   def create(conn, %{"group_post_id" => post_id, "group_comment" => comment_params}) do
     current_user = Guardian.Plug.current_resource(conn)
-    post = Repo.get!(GroupPost, post_id)
+    post = GroupPost |> preload([:user, :group]) |> Repo.get!(post_id)
     params = comment_params
     |> Map.put_new("post_id", post.id)
     |> Map.put_new("user_id", current_user.id)
@@ -33,6 +34,14 @@ defmodule Zizhixi.GroupCommentController do
         GroupMember |> inc(group_member, :comment_count)
 
         UserTimeline.add(conn, group_comment)
+
+        UserNotification.create(conn,
+          user: post.user,
+          who: current_user,
+          where: post.group,
+          action: "回复了",
+          what: post
+        )
 
         conn |> put_flash(:info, "评论成功.")
       {:error, _changeset} ->

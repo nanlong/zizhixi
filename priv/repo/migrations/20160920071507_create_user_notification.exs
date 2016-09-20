@@ -1,12 +1,12 @@
-defmodule Zizhixi.Repo.Migrations.CreateUserNotificaiton do
+defmodule Zizhixi.Repo.Migrations.CreateUserNotification do
   use Ecto.Migration
 
   def change do
     create table(:user_notifications, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :where, :text
-      add :do, :string
-      add :waht, :text
+      add :action, :string
+      add :what, :text
       add :user_id, references(:users, on_delete: :nothing, type: :binary_id)
       add :who_id, references(:users, on_delete: :nothing, type: :binary_id)
 

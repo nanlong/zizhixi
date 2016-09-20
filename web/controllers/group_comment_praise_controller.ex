@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupCommentPraiseController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Repo, GroupComment, GroupCommentPraise}
+  alias Zizhixi.{Repo, GroupComment, GroupCommentPraise, UserNotification}
 
   import Guardian.Plug, only: [current_resource: 1]
   import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
@@ -11,7 +11,9 @@ defmodule Zizhixi.GroupCommentPraiseController do
 
   def create(conn, %{"group_comment_id" => id}) do
     current_user = current_resource(conn)
-    group_comment = Repo.get!(GroupComment, id)
+    group_comment = GroupComment
+    |> preload([:user, :post, post: :group])
+    |> Repo.get!(id)
 
     params = %{
       comment_id: id,
@@ -23,6 +25,15 @@ defmodule Zizhixi.GroupCommentPraiseController do
     conn = case Repo.insert(changeset) do
       {:ok, _group_comment_praise} ->
         GroupComment |> inc(group_comment, :praise_count)
+
+        UserNotification.create(conn,
+          user: group_comment.user,
+          who: current_user,
+          where: group_comment.post.group,
+          action: "赞了",
+          what: group_comment
+        )
+
         conn |> put_flash(:info, "评论点赞成功.")
       {:error, _changeset} ->
         conn |> put_flash(:info, "评论点赞失败.")

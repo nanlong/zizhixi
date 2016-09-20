@@ -1,4 +1,4 @@
-defmodule Zizhixi.UserNotificaitonTest do
+defmodule Zizhixi.UserNotificationTest do
   use Zizhixi.ModelCase
 
   alias Zizhixi.UserNotificaiton

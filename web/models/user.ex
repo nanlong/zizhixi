@@ -14,6 +14,8 @@ defmodule Zizhixi.User do
     field :description, :string  # 个人简介
     field :followers_count, :integer, default: 0
     field :following_count, :integer, default: 0
+    field :notification_count, :integer, default: 0
+    field :noread_notification_count, :integer, default: 0
 
     field :account, :string, virtual: true
     field :password, :string, virtual: true

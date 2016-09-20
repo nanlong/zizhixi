@@ -20,7 +20,7 @@
       <div style="height: 30px;">
         <%= link @comment.user.username, to: group_user_path(@conn, :show, @comment.user.username) %>
         ·
-        <%= link "##{@index}", to: "#{group_post_path(@conn, :show, @comment.post_id)}##{@index}" %>
+        <%= link "##{@index}", to: "#{group_post_path(@conn, :show, @comment.post_id)}#reply#{@index}" %>
         ·
         <small class="phoenix-moment" data-timestamp="<%= @comment.inserted_at %>" data-refresh="10000"></small>
       </div>

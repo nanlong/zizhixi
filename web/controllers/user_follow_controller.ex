@@ -1,7 +1,7 @@
 defmodule Zizhixi.UserFollowController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{User, UserFollow}
+  alias Zizhixi.{User, UserFollow, UserNotification}
 
   import Guardian.Plug, only: [current_resource: 1]
   import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
@@ -33,6 +33,15 @@ defmodule Zizhixi.UserFollowController do
       {:ok, _user_follow} ->
         User |> inc(current_user, :following_count)
         User |> inc(follow_user, :followers_count)
+
+        UserNotification.create(conn,
+          user: follow_user,
+          who: current_user,
+          where: nil,
+          action: "关注了",
+          what: follow_user
+        )
+
         conn |> put_flash(:info, "关注成功.")
       {:error, _changeset} ->
         conn |> put_flash(:error, "关注失败.")

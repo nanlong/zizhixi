@@ -1,7 +1,7 @@
 defmodule Zizhixi.GroupPostPraiseController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{GroupUser, GroupPost, GroupPostPraise}
+  alias Zizhixi.{GroupUser, GroupPost, GroupPostPraise, UserNotification}
 
   import Guardian.Plug, only: [current_resource: 1]
   import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
@@ -11,7 +11,7 @@ defmodule Zizhixi.GroupPostPraiseController do
 
   def create(conn, %{"group_post_id" => id}) do
     current_user = current_resource(conn)
-    group_post = Repo.get!(GroupPost, id)
+    group_post = GroupPost |> preload([:user, :group]) |> Repo.get!(id)
 
     params = %{
       post_id: group_post.id,
@@ -26,6 +26,14 @@ defmodule Zizhixi.GroupPostPraiseController do
 
         group_user = GroupUser.get(current_user.id)
         GroupUser |> inc(group_user, :praise_count)
+
+        UserNotification.create(conn,
+          user: group_post.user,
+          who: current_user,
+          where: group_post.group,
+          action: "赞了",
+          what: group_post
+        )
 
         conn |> put_flash(:info, "点赞成功.")
       {:error, _changeset} ->
