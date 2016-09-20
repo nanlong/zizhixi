@@ -15,7 +15,7 @@ defmodule Zizhixi.Repo.Migrations.CreateGroupPostPV do
     create index(:group_posts_pv, [:ip])
     create index(:group_posts_pv, [:post_id])
     create index(:group_posts_pv, [:user_id])
-    create unique_index(:group_posts_pv, [:day, :ip, :post_id], name: :group_posts_pv_ux)
+    create unique_index(:group_posts_pv, [:day, :ip, :post_id, :user_id], name: :group_posts_pv_ux)
 
     alter table(:group_posts) do
       add :pv, :integer, defalut: 0
