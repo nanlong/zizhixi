@@ -1,0 +1,56 @@
+<style media="screen">
+  .panel-heading .link {
+    float: right;
+  }
+</style>
+<div class="columns">
+  <div class="column is-8">
+    <div class="panel">
+      <div class="panel-heading">
+        <%= link to: user_notification_path(@conn, :delete), class: "button is-danger is-small", method: :delete do %>
+          清空
+        <%= end %>
+        <span>所有通知</span>
+      </div>
+
+      <div class="panel-block">
+        <%= if @pagination.total_entries > 0 do %>
+          <%= for notification <- @pagination do %>
+          <article class="media" style="padding: 10px 0; margin: 0;">
+            <figure class="media-left">
+              <p class="image is-24x24">
+                <img src="<%= notification.who.avatar %>">
+              </p>
+            </figure>
+            <div class="media-content">
+              <div class="content">
+                <small class="phoenix-moment" data-timestamp="<%= notification.inserted_at %>"></small>
+                <%= link notification.who.username, to: user_path(@conn, :show, notification.who.username) %>
+                <%= if notification.where do %>
+                  在 <%= raw notification.where %>
+                <%= end %>
+                <%= notification.action %>
+                <%= raw notification.what %>
+              </div>
+            </div>
+            <div style="padding-top: 5px;">
+              <%= link to: user_notification_path(@conn, :delete, id: notification.id), method: :delete do %>
+                <span class="icon is-small is-danger">
+                  <i class="fa fa-close"></i>
+                </span>
+              <%= end %>
+            </div>
+          </article>
+          <%= end %>
+        <%= else %>
+        <div class="title is-5">
+          没有通知
+        </div>
+        <%= end %>
+      </div>
+    </div>
+    <%= if @pagination.total_pages > 1 do %>
+      <%= pagination_links @conn, @pagination, action: :show%>
+    <%= end %>
+  </div>
+</div>

@@ -11,11 +11,14 @@ defmodule Zizhixi.UserNotificationController do
 
   def show(conn, params) do
     current_user = current_resource(conn)
+
     pagination = UserNotification
     |> where(user_id: ^current_user.id)
     |> order_by([desc: :inserted_at])
     |> preload([:who])
     |> Repo.paginate(params)
+
+    User |> set(current_user, :noread_notification_count, 0)
 
     conn
     |> assign(:title, "所有通知")
@@ -24,6 +27,8 @@ defmodule Zizhixi.UserNotificationController do
   end
 
   def delete(conn, %{"id" => id}) do
+    IO.inspect id
+
     current_user = current_resource(conn)
 
     notification = Repo.get_by!(UserNotification, %{id: id, user_id: current_user.id})
