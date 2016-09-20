@@ -4,7 +4,9 @@ defmodule Zizhixi.LinkController do
   # alias Zizhixi.Link
 
   def index(conn, _params) do
-    render(conn, "index.html")
+    conn
+    |> assign(:title, "司南车")
+    |> render("index.html")
   end
 
   # def new(conn, _params) do

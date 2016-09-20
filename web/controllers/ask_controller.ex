@@ -4,8 +4,9 @@ defmodule Zizhixi.AskController do
   # alias Zizhixi.Ask
 
   def index(conn, _params) do
-
-    render(conn, "index.html")
+    conn
+    |> assign(:title, "问答")
+    |> render("index.html")
   end
 
   # def new(conn, _params) do

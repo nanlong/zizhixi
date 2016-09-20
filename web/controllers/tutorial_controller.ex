@@ -4,7 +4,9 @@ defmodule Zizhixi.TutorialController do
   # alias Zizhixi.Tutorial
 
   def index(conn, _params) do
-    render(conn, "index.html")
+    conn
+    |> assign(:title, "天工")
+    |> render("index.html")
   end
 
   # def new(conn, _params) do

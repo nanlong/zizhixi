@@ -4,7 +4,9 @@ defmodule Zizhixi.MarketController do
   # alias Zizhixi.Market
 
   def index(conn, _params) do
-    render(conn, "index.html")
+    conn
+    |> assign(:title, "五杂市集")
+    |> render("index.html")
   end
 
   # def new(conn, _params) do
