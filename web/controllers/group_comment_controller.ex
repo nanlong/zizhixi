@@ -19,10 +19,12 @@ defmodule Zizhixi.GroupCommentController do
     params = comment_params
     |> Map.put_new("post_id", post.id)
     |> Map.put_new("user_id", current_user.id)
+    |> Map.put_new("index", post.comment_count + 1)
     changeset = GroupComment.changeset(%GroupComment{}, params)
 
     conn = case Repo.insert(changeset) do
       {:ok, group_comment} ->
+        group_comment = Repo.preload(group_comment, :post)
         GroupPost |> inc(post, :comment_count)
         GroupPost |> set(post, :latest_inserted_at, group_comment.inserted_at)
         GroupPost |> set(post, :latest_user_id, group_comment.user_id)
@@ -33,14 +35,18 @@ defmodule Zizhixi.GroupCommentController do
         group_member = Repo.get_by(GroupMember, %{group_id: post.group_id, user_id: current_user.id})
         GroupMember |> inc(group_member, :comment_count)
 
-        UserTimeline.add(conn, group_comment)
+        UserTimeline.create(conn,
+          where: post.group,
+          action: "回复了",
+          what: group_comment
+        )
 
         UserNotification.create(conn,
           user: post.user,
           who: current_user,
           where: post.group,
           action: "回复了",
-          what: post
+          what: group_comment
         )
 
         conn |> put_flash(:info, "评论成功.")

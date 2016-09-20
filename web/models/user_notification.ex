@@ -84,13 +84,13 @@ defmodule Zizhixi.UserNotification do
     |> safe_to_string
   end
 
-  def format_what(conn, %GroupComment{post: post}) do
+  def format_what(conn, %GroupComment{post: post, index: index}) do
     "你在 #{post.title} 的评论"
-    |> link(to: group_post_path(conn, :show, post.id))
+    |> link(to: group_post_path(conn, :show, post.id) <> "#reply" <> Integer.to_string(index))
     |> safe_to_string
   end
 
-  def format_what(conn, %User{}) do
+  def format_what(_conn, %User{}) do
     "你"
   end
 end

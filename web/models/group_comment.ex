@@ -3,6 +3,7 @@ defmodule Zizhixi.GroupComment do
 
   schema "group_comments" do
     field :content, :string
+    field :index, :integer, default: 0
     field :is_deleted, :boolean, default: false
     field :praise_count, :integer, default: 0
 
@@ -17,7 +18,7 @@ defmodule Zizhixi.GroupComment do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:content, :post_id, :user_id])
+    |> cast(params, [:content, :post_id, :user_id], [:index])
     |> validate_required([:content, :post_id, :user_id])
     |> validate_length(:content, max: 240)
   end

@@ -1,15 +1,15 @@
 <%= if @comment.is_deleted do %>
 <div class="media">
-  <a name="reply<%= @index %>"></a>
+  <a name="reply<%= @comment.index %>"></a>
   <div class="media-content">
     <div class="has-text-centered">
-      <strike><%= @index %>楼 已删除</strike>
+      <strike><%= @comment.index %>楼 已删除</strike>
     </div>
   </div>
 </div>
 <%= else %>
 <article class="media">
-  <a name="reply<%= @index %>"></a>
+  <a name="reply<%= @comment.index %>"></a>
   <figure class="media-left">
     <p class="image is-32x32">
       <img src="<%= @comment.user.avatar %>">
@@ -20,7 +20,7 @@
       <div style="height: 30px;">
         <%= link @comment.user.username, to: group_user_path(@conn, :show, @comment.user.username) %>
         ·
-        <%= link "##{@index}", to: "#{group_post_path(@conn, :show, @comment.post_id)}#reply#{@index}" %>
+        <%= link "##{@comment.index}", to: "#{group_post_path(@conn, :show, @comment.post_id)}#reply#{@comment.index}" %>
         ·
         <small class="phoenix-moment" data-timestamp="<%= @comment.inserted_at %>" data-refresh="10000"></small>
       </div>
@@ -34,7 +34,7 @@
           <span class="icon is-small"><i class="fa fa-pencil"></i></span><span>编辑</span>
         <%= end %>
       <%= else %>
-        <%= link to: "#reply", class: "button is-link is-small btn-reply is-hidden", data_username: @comment.user.username, data_floor: @index do %>
+        <%= link to: "#reply", class: "button is-link is-small btn-reply is-hidden", data_username: @comment.user.username, data_floor: @comment.index do %>
           <span class="icon is-small"><i class="fa fa-reply"></i></span><span>回复</span>
         <%= end %>
       <%= end %>

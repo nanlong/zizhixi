@@ -27,57 +27,28 @@ defmodule Zizhixi.UserTimeline do
     |> validate_required([:day, :on, :action, :resource, :user_id])
   end
 
-  def add(conn, %GroupPost{} = group_post) do
-    group_post = Repo.preload(group_post, [:group])
-
-    on_url = group_path(conn, :show, group_post.group)
-
-    on = group_post.group.name
-    |> link(to: on_url)
-    |> safe_to_string
-
-    resource_url = group_post_path(conn, :show, group_post)
-
-    resource = group_post.title
-    |> link(to: resource_url)
-    |> safe_to_string
-
-    %__MODULE__{
+  def create(conn, [where: where, action: action, what: what]) do
+    %Zizhixi.UserTimeline{
       day: Timex.today,
-      on: on,
-      action: "发布了",
-      resource: resource,
-      user_id: group_post.user_id
+      on: Zizhixi.UserNotification.format_where(conn, where),
+      action: action,
+      resource: format_what(conn, what),
+      user_id: what.user_id
     }
     |> Repo.insert
 
-    UserEvent.inc(group_post.user_id)
+    UserEvent.inc(what.user_id)
   end
 
-  def add(conn, %GroupComment{} = group_comment) do
-    group_comment = Repo.preload(group_comment, [:post, post: :group])
-
-    on_url = group_path(conn, :show, group_comment.post.group)
-
-    on = group_comment.post.group.name
-    |> link(to: on_url)
+  def format_what(conn, %GroupComment{post: post, index: index}) do
+    post.title
+    |> link(to: group_post_path(conn, :show, post.id) <> "#reply" <> Integer.to_string(index))
     |> safe_to_string
+  end
 
-    resource_url = group_post_path(conn, :show, group_comment.post)
-
-    resource = group_comment.post.title
-    |> link(to: resource_url)
+  def format_what(conn, %GroupPost{id: id, title: title}) do
+    title
+    |> link(to: group_post_path(conn, :show, id))
     |> safe_to_string
-
-    %__MODULE__{
-      day: Timex.today,
-      on: on,
-      action: "回复了",
-      resource: resource,
-      user_id: group_comment.user_id
-    }
-    |> Repo.insert
-
-    UserEvent.inc(group_comment.user_id)
   end
 end

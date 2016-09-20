@@ -57,7 +57,11 @@ defmodule Zizhixi.GroupPostController do
         group_member = Repo.get_by(GroupMember, %{group_id: group.id, user_id: current_user.id})
         GroupMember |> inc(group_member, :post_count)
 
-        UserTimeline.add(conn, group_post)
+        UserTimeline.create(conn,
+          where: group,
+          action: "发布了",
+          what: group_post
+        )
 
         conn
         |> put_flash(:info, "发表帖子成功.")

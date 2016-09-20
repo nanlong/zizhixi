@@ -70,3 +70,12 @@ Enum.map(Repo.all(User), fn user ->
     User |> set(user, :noread_notification_count, 0)
   end
 end)
+
+Enum.map(Repo.all(GroupComment), fn comment ->
+  if is_nil(comment.index) or comment.index == 0 do
+    index = comment_count = (from c in GroupComment,
+      where: c.post_id == ^comment.post_id and c.inserted_at <= ^comment.inserted_at,
+      select: count(c.id)) |> Repo.one
+    GroupComment |> set(comment, :index, index)
+  end
+end)

@@ -140,13 +140,12 @@
     </div>
 
     <div class="box">
-    <%= for {comment, index} <- @comments |> Enum.with_index(1) |> Enum.to_list do %>
+    <%= for comment <- @comments do %>
       <%= render Zizhixi.GroupCommentView, "entry.html",
         logged_in?: @logged_in?,
         current_user: @current_user,
         conn: @conn,
-        comment: comment,
-        index: index
+        comment: comment
       %>
     <%= end %>
     </div>
