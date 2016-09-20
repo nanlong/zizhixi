@@ -12,7 +12,7 @@ defmodule Zizhixi.GroupMemberController do
   # plug Zizhixi.Plug.VerifyRequest, [model: GroupMember, action: "is_owner"]
   #   when action in [:delete]
 
-  def index(conn, %{"group_id" => group_id} = params) do
+  def index(conn, %{"group_id" => group_id}) do
     group = Group |> preload([:user]) |> Repo.get!(group_id)
 
     group_members  = GroupMember

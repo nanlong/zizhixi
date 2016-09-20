@@ -22,24 +22,29 @@ defmodule Zizhixi.GroupPostPV do
     |> validate_required([:day, :ip, :post_id])
   end
 
-  def create(conn, post_id, user_id \\ nil)
-
   def create(conn, %GroupPost{id: post_id}, %User{id: user_id}) do
     create(conn, post_id, user_id)
   end
 
+  def create(conn, %GroupPost{id: post_id}, nil) do
+    nil
+  end
+
   def create(conn, post_id, user_id) do
-    # ip_address = conn.remote_ip |> Tuple.to_list |> Enum.join(".")
     ip_address = Plug.Conn.get_req_header(conn, "x-forwarded-for") |> List.first
 
     params = %{
       day: Timex.today,
-      ip: ip_address,
       post_id: post_id,
       user_id: user_id
     }
 
-    res = case Repo.get_by(__MODULE__, params) do
+    params = case is_nil(ip_address) do
+      true -> Map.put_new(params, :ip, "127.0.0.1")
+      false -> Map.put_new(params, :ip, ip_address)
+    end
+
+    case Repo.get_by(__MODULE__, params) do
       nil ->
         GroupPost |> inc(post_id, :pv)
         %__MODULE__{}
@@ -47,6 +52,7 @@ defmodule Zizhixi.GroupPostPV do
     end
     |> changeset(params)
     |> Repo.insert_or_update
+
   end
 
 end
