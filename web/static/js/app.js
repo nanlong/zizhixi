@@ -73,6 +73,7 @@ $(function() {
     let editor = new Simditor({
       textarea: $textarea,
       imageButton: 'upload',
+      pasteImage: true,
       upload: {
         url: "/editor/upload",
         fileKey: "file"
@@ -99,6 +100,7 @@ $(function() {
       textarea: $textarea,
       toolbar: ['bold', 'ol', 'ul', 'blockquote','link', 'image'],
       imageButton: 'upload',
+      pasteImage: true,
       upload: {
         url: "/editor/upload",
         fileKey: "file"
