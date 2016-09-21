@@ -32,14 +32,14 @@ defmodule Zizhixi.GroupComment do
     new_content = Regex.replace(~r/@(\S+)\s?/, content, fn str, username ->
       case Repo.get_by(User, %{username: username}) do
         nil -> str
-        user -> "<a href='/users/#{username}'>@#{username}</a> "
+        _ -> "<a href='/users/#{username}'>@#{username}</a> "
       end
     end)
 
     changeset |> put_change(:content, new_content)
   end
 
-  def replace_at_user(%Ecto.Changeset{valid?: false} = changeset, field) do
+  def replace_at_user(%Ecto.Changeset{valid?: false} = changeset, _field) do
     changeset
   end
 

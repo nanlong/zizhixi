@@ -43,6 +43,10 @@ config :qiniu, Qiniu,
   access_key: "TclBVGU4r4VVciPqHuUMyEev5COSNg8ikfl7-duS",
   secret_key: "kO6GQq13bE-qRrXJ53gdC6xdiXFr0HlQS2HXVlmF"
 
+config :aliyun_direct_mail, AliyunDirectMail,
+  access_key_id: "LTAItVgpcvajonWo",
+  access_key_secret: "2ltc7OnwcIKFf88RGmLsl011wBDOp6"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

@@ -48,6 +48,7 @@ defmodule Zizhixi.Mixfile do
       {:scrivener_ecto, "~> 1.0"},
       {:scrivener_html, "~> 1.1"},
       {:qiniu, "~> 0.3.0"},
+      {:aliyun_direct_mail, github: "nanlong/aliyun_direct_mail"},
    ]
   end
 

@@ -26,7 +26,7 @@ defmodule Zizhixi.GroupPostPV do
     create(conn, post_id, user_id)
   end
 
-  def create(conn, %GroupPost{id: _post_id}, nil) do
+  def create(_conn, %GroupPost{id: _post_id}, nil) do
     nil
   end
 
