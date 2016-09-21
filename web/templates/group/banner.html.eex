@@ -1,0 +1,12 @@
+<section class="hero is-small is-primary is-bold has-text-centered" style="margin-bottom: 20px;">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        小组
+      </h1>
+      <h2 class="subtitle">
+        
+      </h2>
+    </div>
+  </div>
+</section>
