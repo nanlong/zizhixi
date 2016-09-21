@@ -119,7 +119,7 @@ $(function() {
       let floor = $(this).data('floor');
       let username = $(this).data('username');
       let content = editor.getValue();
-      let new_content = `${$.trim(content)? content + '\n' : ''}#${floor}楼 @${username} <b>Hi</b>!`;
+      let new_content = `${$.trim(content)? content + '\n' : ''}#${floor}楼 @${username}&nbsp;`;
 
       editor.setValue(new_content);
 

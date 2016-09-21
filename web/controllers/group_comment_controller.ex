@@ -49,6 +49,8 @@ defmodule Zizhixi.GroupCommentController do
           what: group_comment
         )
 
+        GroupComment.at_user(conn, group_comment)
+
         conn |> put_flash(:info, "评论成功.")
       {:error, _changeset} ->
         conn |> put_flash(:error, "评论失败.")

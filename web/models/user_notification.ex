@@ -58,9 +58,7 @@ defmodule Zizhixi.UserNotification do
   # who 关注了 你
   # who 在 xxx小组 回复了 xxx 帖子
   # who 在 xxx小组 赞了 xxx 帖子
-
   # who 在 xxx小组 赞了 xxx 帖子的评论
-
   # who 加入了 xxx小组
   # who 在 xxx小组 加精了 xxx帖子
   # who 在 xxx小组 置顶了 xxx帖子
@@ -72,6 +70,10 @@ defmodule Zizhixi.UserNotification do
     name
     |> link(to: group_path(conn, :show, id))
     |> safe_to_string
+  end
+
+  def format_where(conn, %GroupComment{} = group_comment) do
+    format_what(conn, group_comment)
   end
 
   def format_what(conn, %Group{} = group) do
