@@ -1,23 +1,18 @@
 <%= form_for @changeset, @action, fn f -> %>
-  <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
-    </div>
-  <% end %>
-
-  <div class="form-group">
-    <%= label f, :title, class: "control-label" %>
-    <%= text_input f, :title, class: "form-control" %>
+  <%= label f, :title, "标题", class: "label" %>
+  <p class="control">
+    <%= text_input f, :title, class: "input" %>
     <%= error_tag f, :title %>
-  </div>
+  </p>
 
-  <div class="form-group">
-    <%= label f, :content, class: "control-label" %>
-    <%= textarea f, :content, class: "form-control" %>
+  <%= label f, :content, "正文", class: "label" %>
+  <p class="control">
+    <%= textarea f, :content, class: "textarea simditor-textarea" %>
     <%= error_tag f, :content %>
-  </div>
+  </p>
 
-  <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
-  </div>
+  <p class="control">
+    <button class="button is-info" type="submit">确定</button>
+    <button class="button is-link" type="reset">取消</button>
+  </p>
 <% end %>

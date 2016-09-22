@@ -3,38 +3,76 @@ defmodule Zizhixi.ArticleController do
 
   alias Zizhixi.Article
 
-  def index(conn, _params) do
-    articles = Repo.all(Article)
-    render(conn, "index.html", articles: articles)
+  import Guardian.Plug, only: [current_resource: 1]
+
+  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
+    when action in [:new, :create, :update, :delete]
+
+  plug Zizhixi.Plug.VerifyRequest, [model: Article, action: "is_owner"]
+    when action in [:edit, :update, :delete]
+
+  def index(conn, params) do
+    pagination = Article
+    |> order_by([desc: :inserted_at])
+    |> preload([:user])
+    |> Repo.paginate(params)
+
+    conn
+    |> assign(:title, "天工")
+    |> assign(:pagination, pagination)
+    |> render("index.html")
   end
 
   def new(conn, _params) do
     changeset = Article.changeset(%Article{})
-    render(conn, "new.html", changeset: changeset)
+
+    conn
+    |> assign(:title, "天工发帖")
+    |> assign(:changeset, changeset)
+    |> render("new.html")
   end
 
   def create(conn, %{"article" => article_params}) do
-    changeset = Article.changeset(%Article{}, article_params)
+    current_user = current_resource(conn)
+
+    params = article_params
+    |> Map.put_new("user_id", current_user.id)
+
+    changeset = Article.changeset(%Article{}, params)
 
     case Repo.insert(changeset) do
       {:ok, _article} ->
         conn
-        |> put_flash(:info, "Article created successfully.")
+        |> put_flash(:info, "发帖成功.")
         |> redirect(to: article_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        conn
+        |> assign(:title, "天工发帖")
+        |> assign(:changeset, changeset)
+        |> render("new.html")
     end
   end
 
   def show(conn, %{"id" => id}) do
-    article = Repo.get!(Article, id)
-    render(conn, "show.html", article: article)
+    article = Article
+    |> preload([:user])
+    |> Repo.get!(id)
+
+    conn
+    |> assign(:title, article.title)
+    |> assign(:article, article)
+    |> render("show.html")
   end
 
   def edit(conn, %{"id" => id}) do
     article = Repo.get!(Article, id)
     changeset = Article.changeset(article)
-    render(conn, "edit.html", article: article, changeset: changeset)
+
+    conn
+    |> assign(:title, "编辑")
+    |> assign(:article, article)
+    |> assign(:changeset, changeset)
+    |> render("edit.html")
   end
 
   def update(conn, %{"id" => id, "article" => article_params}) do
@@ -44,10 +82,14 @@ defmodule Zizhixi.ArticleController do
     case Repo.update(changeset) do
       {:ok, article} ->
         conn
-        |> put_flash(:info, "Article updated successfully.")
+        |> put_flash(:info, "更新成功.")
         |> redirect(to: article_path(conn, :show, article))
       {:error, changeset} ->
-        render(conn, "edit.html", article: article, changeset: changeset)
+        conn
+        |> assign(:title, "编辑")
+        |> assign(:article, article)
+        |> assign(:changeset, changeset)
+        |> render("edit.html")
     end
   end
 
@@ -59,7 +101,7 @@ defmodule Zizhixi.ArticleController do
     Repo.delete!(article)
 
     conn
-    |> put_flash(:info, "Article deleted successfully.")
+    |> put_flash(:info, "删除成功.")
     |> redirect(to: article_path(conn, :index))
   end
 end

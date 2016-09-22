@@ -1,23 +1,60 @@
-<h2>Show article</h2>
+<div class="columns">
+  <div class="column">
+    <div class="panel">
+      <div class="panel-heading" style="padding: 10px;">
+        <a class="is-pulled-right" href="<%= group_user_path(@conn, :show, @article.user.username) %>">
+          <figure class="image is-32x32">
+            <img src="<%= @article.user.avatar %>" alt="<%= @article.user.username %>" />
+          </figure>
+        </a>
+        <h1 class="title is-4 is-marginless">
+          <%= @article.title %>
+        </h1>
 
-<ul>
+        <div style="padding-top: 5px;">
+          <small>
+            <%= link @article.user.username, to: user_path(@conn, :show, @article.user.username) %>
+            于 <small class="phoenix-moment" data-timestamp="<%= @article.inserted_at %>" data-refresh="10000"></small> 发布
+            · 0次阅读
+          </small>
+        </div>
 
-  <li>
-    <strong>Title:</strong>
-    <%= @article.title %>
-  </li>
+      </div>
+      <div class="panel-block">
+        <div class="content" style="padding: 10px 0;">
+          <%= raw @article.content %>
+        </div>
+      </div>
 
-  <li>
-    <strong>Content:</strong>
-    <%= @article.content %>
-  </li>
+      <div class="panel-block control is-grouped">
+        <p class="control">
 
-  <li>
-    <strong>User:</strong>
-    <%= @article.user_id %>
-  </li>
+        </p>
 
-</ul>
+      </div>
+    </div>
 
-<%= link "Edit", to: article_path(@conn, :edit, @article) %>
-<%= link "Back", to: article_path(@conn, :index) %>
+  </div>
+  <div class="column is-3">
+
+    <%= if @logged_in? and @current_user == @article.user do %>
+    <div class="panel">
+      <div class="panel-heading">
+        操作
+      </div>
+      <div class="panel-block">
+        <aside class="menu">
+          <ul class="menu-list">
+            <li>
+              <%= link to: article_path(@conn, :edit, @article) do %>
+                <span>编辑</span>
+              <%= end %>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+    <%= end %>
+
+  </div>
+</div>

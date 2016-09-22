@@ -14,7 +14,8 @@ defmodule Zizhixi.Article do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :content])
-    |> validate_required([:title, :content])
+    |> cast(params, [:title, :content, :user_id])
+    |> validate_required([:title, :content, :user_id])
+    |> validate_length(:title, max: 240)
   end
 end

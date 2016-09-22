@@ -1,30 +1,97 @@
-<h2>Listing articles</h2>
+<section class="hero is-small is-primary is-bold has-text-centered" style="margin-bottom: 20px;">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        天工
+      </h1>
+      <h2 class="subtitle">
+        天覆地载，物数号万，而事亦因之，曲成而不遗，岂人力也哉？
+      </h2>
+    </div>
+  </div>
+</section>
+<div class="columns">
+  <div class="column">
+    <div class="panel">
+      <div class="panel-block">
+        <%= for article <- @pagination do %>
+        <article class="media">
+          <div class="media-content">
+            <div class="content">
+              <%= link to: article_path(@conn, :show, article), class: "title is-5" do %>
+                <span class="icon is-small"><i class="fa fa-file-text-o"></i></span>
+                <!-- <span class="icon is-small"><i class="fa fa-files-o"></i></span> -->
+                <%= article.title %>
+              <%= end %>
+            </div>
+            <nav class="level">
+              <div class="level-left">
+                <%= link to: user_path(@conn, :show, article.user.username), class: "level-item" do %>
+                  <%= article.user.username %>
+                <%= end %>
+                <span class="level-item">
+                  发布于 <small class="phoenix-moment" data-timestamp="<%= article.inserted_at %>" data-refresh="10000"></small>
+                </span>
+                <%= link to: "", class: "level-item" do %>
+                  <span class="icon is-small"><i class="fa fa-comments-o"></i></span>
+                  <span>0</span>
+                <%= end %>
+              </div>
+            </nav>
+            <div class="content">
+              <%= link to: article_path(@conn, :show, article) do %>
+                显示全文
+              <%= end %>
+            </div>
+          </div>
+        </article>
+        <%= end %>
+      </div>
+    </div>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Content</th>
-      <th>User</th>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for article <- @articles do %>
-    <tr>
-      <td><%= article.title %></td>
-      <td><%= article.content %></td>
-      <td><%= article.user_id %></td>
+  </div>
 
-      <td class="text-right">
-        <%= link "Show", to: article_path(@conn, :show, article), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: article_path(@conn, :edit, article), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: article_path(@conn, :delete, article), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
+  <div class="column is-3">
+    <%= if @logged_in? do %>
+    <div class="card" style="margin-bottom: 20px;">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-32x32">
+              <img src="<%= @current_user.avatar %>" alt="<%= @current_user.username %>">
+            </figure>
+          </div>
+          <div class="media-content">
+            <p class="title is-5"><%= @current_user.username %></p>
+            <p class="subtitle is-6"></p>
+          </div>
+        </div>
+        <div class="content">
+          <p>
+            <%= @current_user.description %>
+          </p>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <div class="card-footer-item">
+          <%= link to: "", class: "button-is-multiline has-text-centered" do %>
+            <span>0</span>
+            <small>发帖</small>
+          <%= end %>
 
-<%= link "New article", to: article_path(@conn, :new) %>
+        </div>
+      </footer>
+
+      <footer class="card-footer">
+        <div class="card-footer-item">
+          <%= link to: article_path(@conn, :new), class: "button is-fullwidth" do %>
+            发帖
+          <%= end %>
+        </div>
+      </footer>
+    </div>
+    <%= end %>
+
+  </div>
+</div>
