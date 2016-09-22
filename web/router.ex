@@ -77,7 +77,7 @@ defmodule Zizhixi.Router do
     end
 
     resources "/asks", AskController
-    resources "/tutorials", TutorialController
+    resources "/articles", ArticleController
     resources "/links", LinkController
     resources "/markets", MarketController
   end
