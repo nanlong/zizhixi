@@ -1,7 +1,7 @@
 defmodule Zizhixi.ArticleController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.Article
+  alias Zizhixi.{Article, ArticleSection}
 
   import Guardian.Plug, only: [current_resource: 1]
 
@@ -57,6 +57,7 @@ defmodule Zizhixi.ArticleController do
     article = Article
     |> preload([:user])
     |> Repo.get!(id)
+    |> Repo.preload(sections: from(ArticleSection, order_by: [:inserted_at]))
 
     conn
     |> assign(:title, article.title)

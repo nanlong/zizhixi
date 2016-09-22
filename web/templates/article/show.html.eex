@@ -23,6 +23,28 @@
       <div class="panel-block">
         <div class="content" style="padding: 10px 0;">
           <%= raw @article.content %>
+
+          <%= for section <- @article.sections do %>
+          <div class="article-section">
+            <%= if @logged_in? and @current_user == @article.user do %>
+              <div class="article-section-edit-box">
+                <%= link to: article_section_path(@conn, :edit, @article, section), class: "button is-info is-small is-pulled-right" do %>
+                  编辑
+                <%= end %>
+              </div>
+            <%= end %>
+            <h2 class="title is-5"><%= section.title %></h2>
+            <%= raw section.content %>
+            <small style="color: #999;">
+              <span class="icon is-small">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              <span class="phoenix-moment" data-timestamp="<%= section.inserted_at %>" data-refresh="10000"></span>
+              <span>补充</span>
+            </small>
+
+          </div>
+          <%= end %>
         </div>
       </div>
 
@@ -48,6 +70,12 @@
             <li>
               <%= link to: article_path(@conn, :edit, @article) do %>
                 <span>编辑</span>
+              <%= end %>
+            </li>
+
+            <li>
+              <%= link to: article_section_path(@conn, :new, @article) do %>
+                <span>补充</span>
               <%= end %>
             </li>
           </ul>

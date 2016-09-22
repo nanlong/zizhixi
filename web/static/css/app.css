@@ -132,3 +132,19 @@ strike {
   bottom: 20px;
   right: 20px;
 }
+.article-section {
+  border-top: 1px solid #ddd;
+  padding: 20px 0;
+}
+.article-section h2 {
+  margin: 0 0 10px !important;
+}
+.article-section .button {
+  display: none;
+}
+.article-section:hover .button {
+  display: flex;
+}
+.article-content {
+  padding: 20px 0;
+}

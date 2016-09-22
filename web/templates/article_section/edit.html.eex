@@ -1,16 +1,10 @@
 <div class="columns">
   <div class="column">
-    <div class="box box-form-edit">
+    <div class="box">
       <%= render "form.html",
         changeset: @changeset,
-        action: article_path(@conn, :update, @article)
+        action: article_section_path(@conn, :update, @article, @article_section)
       %>
-      <!-- <%= link "删除",
-        to: article_path(@conn, :delete, @article),
-        class: "button is-danger is-pulled-right",
-        method: :delete,
-        data: [confirm: "确定要删除嘛？"]
-      %> -->
     </div>
   </div>
   <div class="column is-3">

@@ -52,6 +52,7 @@ defmodule Zizhixi.Router do
       resources "/timelines", UserTimelineController, as: :timeline, only: [:index]
     end
 
+    # 小组 begin
     resources "/groups", GroupController do
       resources "/members", GroupMemberController, as: :member, only: [:index]
       resources "/members", GroupMemberController, as: :member, only: [:create, :delete], singleton: true
@@ -75,9 +76,16 @@ defmodule Zizhixi.Router do
     resources "/group_comments", GroupCommentController, only: [:edit, :update, :delete] do
       resources "/praise", GroupCommentPraiseController, as: :praise, only: [:create, :delete], singleton: true
     end
+    # 小组 end
+
+    # 天工 begin
+    resources "/articles", ArticleController do
+      resources "/sections", ArticleSectionController, as: :section, only: [:new, :create, :edit, :update]
+    end
+    # 天工 end
 
     resources "/asks", AskController
-    resources "/articles", ArticleController
+
     resources "/links", LinkController
     resources "/markets", MarketController
   end

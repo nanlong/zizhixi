@@ -1,12 +1,11 @@
-defmodule Zizhixi.Article do
+defmodule Zizhixi.ArticleSection do
   use Zizhixi.Web, :model
 
-  schema "articles" do
+  schema "article_sections" do
     field :title, :string
     field :content, :string
-
+    belongs_to :article, Zizhixi.Article
     belongs_to :user, Zizhixi.User
-    has_many :sections, Zizhixi.ArticleSection
 
     timestamps()
   end
@@ -16,8 +15,7 @@ defmodule Zizhixi.Article do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :content, :user_id])
-    |> validate_required([:title, :content, :user_id])
-    |> validate_length(:title, max: 240)
+    |> cast(params, [:title, :content, :article_id, :user_id])
+    |> validate_required([:title, :content, :article_id, :user_id])
   end
 end
