@@ -1,4 +1,4 @@
-<div class="columns" style="margin-top: 1px;">
+<div class="columns">
   <div class="column is-4 is-offset-4">
     <div class="box">
       <%= form_for @changeset, session_path(@conn, :create), fn f -> %>
@@ -9,6 +9,9 @@
           <%= error_tag f, :account %>
         </p>
 
+        <%= link to: password_reset_path(@conn, :show), class: "is-pulled-right" do %>
+          忘记密码？
+        <%= end %>
         <%= label f, :password, "密码", class: "label" %>
         <p class="control">
           <%= password_input f, :password, class: "input" %>
@@ -16,8 +19,7 @@
         </p>
 
         <p class="control">
-          <button class="button is-info" type="submit">登录</button>
-          <button class="button is-link" type="reset">取消</button>
+          <button class="button is-info is-fullwidth" type="submit">登录</button>
         </p>
       <% end %>
     </div>

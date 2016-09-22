@@ -19,6 +19,7 @@ defmodule Zizhixi.User do
 
     field :account, :string, virtual: true
     field :password, :string, virtual: true
+    field :password_confirmation, :string, virtual: true
 
     # for settings account
     field :old_password, :string, virtual: true
@@ -78,8 +79,25 @@ defmodule Zizhixi.User do
     |> cast(params, [:old_password, :new_password, :new_password_confirmation])
     |> validate_required([:old_password, :new_password, :new_password_confirmation])
     |> validate_password(:old_password)
+    |> validate_length(:new_password, mix: 6, max: 128)
     |> validate_confirmation(:new_password)
     |> put_password_hash(:new_password, :password_hash)
+  end
+
+  def changeset(:password_reset_for_email, struct, params) do
+    struct
+    |> cast(params, [:email])
+    |> validate_required([:email])
+    |> load_user(:email)
+  end
+
+  def changeset(:password_reset, struct, params) do
+    struct
+    |> cast(params, [:password, :password_confirmation])
+    |> validate_required([:password, :password_confirmation])
+    |> validate_length(:password, mix: 6, max: 128)
+    |> validate_confirmation(:password)
+    |> put_password_hash(:password, :password_hash)
   end
 
   @doc """
@@ -168,5 +186,13 @@ defmodule Zizhixi.User do
 
   def load_user(%Changeset{valid?: false} = changeset, _field) do
     changeset
+  end
+
+  def generate_token(user, token_name \\ "user_id") do
+    Phoenix.Token.sign(Zizhixi.Endpoint, token_name, user.id)
+  end
+
+  def validate_token(token, token_name \\ "user_id", max_age \\ 60 * 60 * 12) do
+    Phoenix.Token.verify(Zizhixi.Endpoint, token_name, token, max_age: max_age)
   end
 end
