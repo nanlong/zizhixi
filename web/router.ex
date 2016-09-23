@@ -82,6 +82,7 @@ defmodule Zizhixi.Router do
     resources "/articles", ArticleController do
       resources "/sections", ArticleSectionController, as: :section, only: [:new, :create, :edit, :update]
       resources "/comments", ArticleCommentController, as: :comment, only: [:create, :edit, :update, :delete]
+      resources "/praise", ArticlePraiseController, as: :praise, only: [:create, :delete], singleton: true
     end
     # 天工 end
 

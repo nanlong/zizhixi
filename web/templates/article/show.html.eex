@@ -51,10 +51,20 @@
 
       <div class="panel-block control is-grouped">
         <p class="control">
-          <%= link to: "" do %>
-          <span class="icon is-small is-dark">
-            <i class="fa fa-heart-o"></i>
-          </span>
+          <%= if praise?(@conn, @article) do %>
+            <%= link to: article_praise_path(@conn, :delete, @article), method: :delete do %>
+              <span class="icon is-small is-danger">
+                <i class="fa fa-heart-o"></i>
+              </span>
+              <%= praise_count(@article) %>
+            <%= end %>
+          <%= else %>
+            <%= link to: article_praise_path(@conn, :create, @article), method: :post do %>
+              <span class="icon is-small is-dark">
+                <i class="fa fa-heart-o"></i>
+              </span>
+              <%= praise_count(@article) %>
+            <%= end %>
           <%= end %>
         </p>
       </div>
