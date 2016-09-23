@@ -261,3 +261,4 @@ $(function() {
 // import socket from "./socket"
 
 import "./simditor";
+import "./article_show"

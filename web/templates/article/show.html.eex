@@ -54,7 +54,7 @@
           <%= if praise?(@conn, @article) do %>
             <%= link to: article_praise_path(@conn, :delete, @article), method: :delete, class: "button is-light is-small", title: "赞" do %>
               <span class="icon is-small is-danger">
-                <i class="fa fa-heart-o"></i>
+                <i class="fa fa-heart"></i>
               </span>
               <span>
                 <%= praise_count(@article) %>
@@ -118,26 +118,28 @@
                 </div>
                 <%= if not comment.is_deleted do %>
                 <div class="is-pulled-right">
-                  <%= link to: "", class: "button is-light is-small" do %>
-                    <span class="icon is-small is-dark">
-                      <i class="fa fa-reply"></i>
-                    </span>
-                    <span>回复</span>
-                  <%= end %>
-
-                  <%= if @logged_in? and @current_user == comment.user do %>
-                    <%= link to: article_comment_path(@conn, :edit, @article, comment), class: "button is-light is-small" do %>
-                      <span class="icon is-small is-dark">
-                        <i class="fa fa-pencil"></i>
-                      </span>
-                      <span>编辑</span>
+                  <%= if @logged_in? do %>
+                    <%= if @current_user == comment.user do %>
+                      <%= link to: article_comment_path(@conn, :edit, @article, comment), class: "button is-light is-small btn-edit is-hidden", title: "编辑" do %>
+                        <span class="icon is-small is-dark">
+                          <i class="fa fa-pencil"></i>
+                        </span>
+                        <span>编辑</span>
+                      <%= end %>
+                    <%= else %>
+                      <%= link to: "javascript:void(0);", class: "button is-light is-small btn-reply is-hidden", title: "回复" do %>
+                        <span class="icon is-small is-dark">
+                          <i class="fa fa-reply"></i>
+                        </span>
+                        <span>回复</span>
+                      <%= end %>
                     <%= end %>
                   <%= end %>
 
                   <%= if praise?(@conn, comment) do %>
                     <%= link to: article_comment_praise_path(@conn, :delete, comment), method: :delete, class: "button is-light is-small", title: "赞" do %>
                       <span class="icon is-small is-danger">
-                        <i class="fa fa-heart-o"></i>
+                        <i class="fa fa-heart"></i>
                       </span>
                       <span>
                         <%= praise_count(comment) %>
