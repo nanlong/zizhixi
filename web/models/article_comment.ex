@@ -5,6 +5,8 @@ defmodule Zizhixi.ArticleComment do
     field :content, :string
     field :index, :integer, default: 0
     field :is_deleted, :boolean, default: false
+    field :praise_count, :integer, default: 0
+    
     belongs_to :article, Zizhixi.Article
     belongs_to :user, Zizhixi.User
 

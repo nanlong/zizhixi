@@ -85,6 +85,10 @@ defmodule Zizhixi.Router do
       resources "/praise", ArticlePraiseController, as: :praise, only: [:create, :delete], singleton: true
       resources "/collect", ArticleCollectController, as: :collect, only: [:create, :delete], singleton: true
     end
+
+    resources "/article_comments", ArticleCommentController, only: [] do
+      resources "/praise", ArticleCommentPraiseController, as: :praise, only: [:create, :delete], singleton: true
+    end
     # 天工 end
 
     resources "/asks", AskController

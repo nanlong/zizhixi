@@ -117,24 +117,40 @@
                 </div>
                 <%= if not comment.is_deleted do %>
                 <div class="is-pulled-right">
-                  <%= link to: "" do %>
+                  <%= link to: "", class: "button is-light is-small" do %>
                     <span class="icon is-small is-dark">
                       <i class="fa fa-reply"></i>
                     </span>
+                    <span>回复</span>
                   <%= end %>
 
                   <%= if @logged_in? and @current_user == comment.user do %>
-                    <%= link to: article_comment_path(@conn, :edit, @article, comment) do %>
+                    <%= link to: article_comment_path(@conn, :edit, @article, comment), class: "button is-light is-small" do %>
                       <span class="icon is-small is-dark">
                         <i class="fa fa-pencil"></i>
                       </span>
+                      <span>编辑</span>
                     <%= end %>
                   <%= end %>
 
-                  <%= link to: "" do %>
-                  <span class="icon is-small is-dark">
-                    <i class="fa fa-heart-o"></i>
-                  </span>
+                  <%= if praise?(@conn, comment) do %>
+                    <%= link to: article_comment_praise_path(@conn, :delete, comment), method: :delete, class: "button is-light is-small", title: "赞" do %>
+                      <span class="icon is-small is-danger">
+                        <i class="fa fa-heart-o"></i>
+                      </span>
+                      <span>
+                        <%= praise_count(comment) %>
+                      </span>
+                    <%= end %>
+                  <%= else %>
+                    <%= link to: article_comment_praise_path(@conn, :create, comment), method: :post, class: "button is-light is-small", title: "赞" do %>
+                      <span class="icon is-small is-dark">
+                        <i class="fa fa-heart-o"></i>
+                      </span>
+                      <span>
+                        <%= praise_count(comment) %>
+                      </span>
+                    <%= end %>
                   <%= end %>
                 </div>
                 <%= end %>
