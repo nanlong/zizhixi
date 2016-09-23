@@ -2,7 +2,7 @@ defmodule Zizhixi.GroupPostWatch do
   use Zizhixi.Web, :model
 
   schema "group_post_watchs" do
-    belongs_to :post, Zizhixi.Post
+    belongs_to :post, Zizhixi.GroupPost
     belongs_to :user, Zizhixi.User
 
     timestamps()

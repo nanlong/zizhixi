@@ -2,7 +2,7 @@ defmodule Zizhixi.GroupCommentPraise do
   use Zizhixi.Web, :model
 
   schema "group_comment_praises" do
-    belongs_to :comment, Zizhixi.Comment
+    belongs_to :comment, Zizhixi.GroupComment
     belongs_to :user, Zizhixi.User
 
     timestamps()
