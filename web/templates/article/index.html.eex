@@ -48,8 +48,7 @@
         <%= end %>
       </div>
     </div>
-
-
+    <%= pagination_links @conn, @pagination %>
   </div>
 
   <div class="column is-3">
