@@ -2,7 +2,7 @@
   <div class="column">
     <div class="panel">
       <div class="panel-heading" style="padding: 10px;">
-        <a class="is-pulled-right" href="<%= group_user_path(@conn, :show, @article.user.username) %>">
+        <a class="is-pulled-right" href="<%= user_path(@conn, :show, @article.user.username) %>">
           <figure class="image is-32x32">
             <img src="<%= @article.user.avatar %>" alt="<%= @article.user.username %>" />
           </figure>
