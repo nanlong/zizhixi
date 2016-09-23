@@ -85,6 +85,7 @@
               <span class="icon is-small is-dark">
                 <i class="fa fa-bookmark"></i>
               </span>
+              <span>收藏</span>
             <%= end %>
           <%= end %>
         </p>
