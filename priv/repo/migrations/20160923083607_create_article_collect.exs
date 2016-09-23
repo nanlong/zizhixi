@@ -11,6 +11,7 @@ defmodule Zizhixi.Repo.Migrations.CreateArticleCollect do
     end
     create index(:article_collects, [:article_id])
     create index(:article_collects, [:user_id])
+    create unique_index(:article_collects, [:article_id, :user_id], name: :article_collects_ux)
 
     alter table(:articles) do
       add :collect_count, :integer, default: 0

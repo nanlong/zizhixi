@@ -11,6 +11,7 @@ defmodule Zizhixi.Repo.Migrations.CreateArticleCommentPraise do
     end
     create index(:article_comment_praises, [:comment_id])
     create index(:article_comment_praises, [:user_id])
+    create unique_index(:article_comment_praises, [:comment_id, :user_id], name: :article_comment_praises_ux)
 
     alter table(:article_comments) do
       add :praise_count, :integer, default: 0

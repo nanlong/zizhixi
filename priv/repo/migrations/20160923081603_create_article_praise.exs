@@ -11,6 +11,7 @@ defmodule Zizhixi.Repo.Migrations.CreateArticlePraise do
     end
     create index(:article_praises, [:article_id])
     create index(:article_praises, [:user_id])
+    create unique_index(:article_praises, [:article_id, :user_id], name: :article_praises_ux)
 
     alter table(:articles) do
       add :praise_count, :integer, default: 0
