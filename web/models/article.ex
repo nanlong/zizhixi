@@ -6,6 +6,7 @@ defmodule Zizhixi.Article do
     field :content, :string
     field :comment_count, :integer, default: 0
     field :praise_count, :integer, default: 0
+    field :collect_count, :integer, default: 0
     field :latest_inserted_at, Timex.Ecto.DateTime
 
     belongs_to :user, Zizhixi.User

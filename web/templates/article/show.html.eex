@@ -52,18 +52,39 @@
       <div class="panel-block control is-grouped">
         <p class="control">
           <%= if praise?(@conn, @article) do %>
-            <%= link to: article_praise_path(@conn, :delete, @article), method: :delete do %>
+            <%= link to: article_praise_path(@conn, :delete, @article), method: :delete, class: "button is-light is-small", title: "赞" do %>
               <span class="icon is-small is-danger">
                 <i class="fa fa-heart-o"></i>
               </span>
-              <%= praise_count(@article) %>
+              <span>
+                <%= praise_count(@article) %>
+              </span>
             <%= end %>
           <%= else %>
-            <%= link to: article_praise_path(@conn, :create, @article), method: :post do %>
+            <%= link to: article_praise_path(@conn, :create, @article), method: :post, class: "button is-light is-small", title: "赞" do %>
               <span class="icon is-small is-dark">
                 <i class="fa fa-heart-o"></i>
               </span>
-              <%= praise_count(@article) %>
+              <span>
+                <%= praise_count(@article) %>
+              </span>
+            <%= end %>
+          <%= end %>
+        </p>
+
+        <p class="control">
+          <%= if collect?(@conn, @article) do %>
+            <%= link to: article_collect_path(@conn, :delete, @article), method: :delete, class: "button is-light is-small", title: "收藏" do %>
+              <span class="icon is-small is-danger">
+                <i class="fa fa-bookmark"></i>
+              </span>
+              <span>收藏</span>
+            <%= end %>
+          <%= else %>
+            <%= link to: article_collect_path(@conn, :create, @article), method: :post, class: "button is-light is-small", title: "收藏" do %>
+              <span class="icon is-small is-dark">
+                <i class="fa fa-bookmark"></i>
+              </span>
             <%= end %>
           <%= end %>
         </p>
