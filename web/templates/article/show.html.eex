@@ -16,6 +16,7 @@
             <%= link @article.user.username, to: user_path(@conn, :show, @article.user.username) %>
             于 <small class="phoenix-moment" data-timestamp="<%= @article.inserted_at %>" data-refresh="10000"></small> 发布
             · 0次阅读
+            · <%= @article.comment_count %>条评论
           </small>
         </div>
 
@@ -50,12 +51,105 @@
 
       <div class="panel-block control is-grouped">
         <p class="control">
-
+          <%= link to: "" do %>
+          <span class="icon is-small is-dark">
+            <i class="fa fa-heart-o"></i>
+          </span>
+          <%= end %>
         </p>
-
       </div>
     </div>
 
+    <%= for comment <- @article_comments do %>
+      <article class="media zizhixi-comment">
+        <figure class="media-left">
+          <p class="image is-48x48">
+            <%= link to: user_path(@conn, :show, comment.user.username) do %>
+              <img src="<%= comment.user.avatar %>">
+            <%= end %>
+          </p>
+        </figure>
+        <div class="media-content">
+          <div class="content">
+            <div class="panel">
+              <div class="panel-heading is-clearfix">
+                <a name="reply<%= comment.index %>"></a>
+                <div class="is-pulled-left">
+                  <span>#<%= comment.index %></span>
+                  <%= link to: user_path(@conn, :show, comment.user.username) do %>
+                    <%= comment.user.username %>
+                  <%= end %>
+                  <small>
+                    评论于
+                    <span class="phoenix-moment" data-timestamp="<%= comment.inserted_at %>"></span>
+                  </small>
+                </div>
+                <%= if not comment.is_deleted do %>
+                <div class="is-pulled-right">
+                  <%= link to: "" do %>
+                    <span class="icon is-small is-dark">
+                      <i class="fa fa-reply"></i>
+                    </span>
+                  <%= end %>
+
+                  <%= if @logged_in? and @current_user == comment.user do %>
+                    <%= link to: article_comment_path(@conn, :edit, @article, comment) do %>
+                      <span class="icon is-small is-dark">
+                        <i class="fa fa-pencil"></i>
+                      </span>
+                    <%= end %>
+                  <%= end %>
+
+                  <%= link to: "" do %>
+                  <span class="icon is-small is-dark">
+                    <i class="fa fa-heart-o"></i>
+                  </span>
+                  <%= end %>
+                </div>
+                <%= end %>
+              </div>
+              <div class="panel-block">
+                <%= if comment.is_deleted do %>
+                  <div class="has-text-centered">
+                    <strike>已删除</strike>
+                  </div>
+                <%= else %>
+                  <%= raw comment.content %>
+                <%= end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    <%= end %>
+
+    <%= if @logged_in? do %>
+    <article class="media">
+      <figure class="media-left">
+        <p class="image is-48x48">
+          <img src="<%= @current_user.avatar %>">
+        </p>
+      </figure>
+      <div class="media-content">
+        <div class="content box">
+          <a name="reply"></a>
+          <%= form_for @changeset, article_comment_path(@conn, :create, @article), fn f -> %>
+            <p class="control">
+              <%= textarea f, :content, class: "textarea simditor-comment-textarea" %>
+              <%= error_tag f, :content %>
+            </p>
+            <p class="control is-clearfix">
+              <%= submit "评论", class: "button is-info is-pulled-right" %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+    </article>
+    <%= else %>
+    <div class="box">
+      请登录之后，再继续评论
+    </div>
+    <%= end %>
   </div>
   <div class="column is-3">
 

@@ -3,20 +3,33 @@ import Simditor from "simditor";
 
 (function() {
   $(function() {
-    var $simditor_textarea = $('.simditor-textarea');
+    let $simditor_textarea = $('.simditor-textarea');
 
-    if ($simditor_textarea.length <= 0) {
-      return;
+    if ($simditor_textarea.length > 0) {
+      new Simditor({
+        textarea: $simditor_textarea,
+        imageButton: 'upload',
+        pasteImage: true,
+        upload: {
+          url: "/editor/upload",
+          fileKey: "file"
+        }
+      });
     };
 
-    new Simditor({
-      textarea: $simditor_textarea,
-      imageButton: 'upload',
-      pasteImage: true,
-      upload: {
-        url: "/editor/upload",
-        fileKey: "file"
-      }
-    });
+    let $simditor_comment_textarea = $('.simditor-comment-textarea');
+
+    if ($simditor_comment_textarea.length > 0) {
+      new Simditor({
+        textarea: $simditor_comment_textarea,
+        toolbar: ['bold', 'ol', 'ul', 'blockquote','link', 'image'],
+        imageButton: 'upload',
+        pasteImage: true,
+        upload: {
+          url: "/editor/upload",
+          fileKey: "file"
+        }
+      });
+    };
   });
 })();

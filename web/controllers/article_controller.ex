@@ -1,7 +1,7 @@
 defmodule Zizhixi.ArticleController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Article, ArticleSection}
+  alias Zizhixi.{Article, ArticleSection, ArticleComment}
 
   import Guardian.Plug, only: [current_resource: 1]
 
@@ -59,9 +59,19 @@ defmodule Zizhixi.ArticleController do
     |> Repo.get!(id)
     |> Repo.preload(sections: from(ArticleSection, order_by: [:inserted_at]))
 
+    article_comments = ArticleComment
+    |> where(article_id: ^id)
+    |> preload([:user])
+    |> order_by([asc: :inserted_at])
+    |> Repo.all
+
+    changeset = ArticleComment.changeset(%ArticleComment{})
+
     conn
     |> assign(:title, article.title)
     |> assign(:article, article)
+    |> assign(:article_comments, article_comments)
+    |> assign(:changeset, changeset)
     |> render("show.html")
   end
 

@@ -34,7 +34,7 @@
                 </span>
                 <%= link to: "", class: "level-item" do %>
                   <span class="icon is-small"><i class="fa fa-comments-o"></i></span>
-                  <span>0</span>
+                  <span><%= article.comment_count %></span>
                 <%= end %>
               </div>
             </nav>

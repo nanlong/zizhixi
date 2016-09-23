@@ -6,7 +6,6 @@ defmodule Zizhixi.ArticleSectionController do
   import Guardian.Plug, only: [current_resource: 1]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
-    when action in [:new, :create, :edit, :update]
 
   def new(conn, %{"article_id" => article_id}) do
     current_user = current_resource(conn)
@@ -74,7 +73,7 @@ defmodule Zizhixi.ArticleSectionController do
     changeset = ArticleSection.changeset(article_section, article_section_params)
 
     case Repo.update(changeset) do
-      {:ok, article_section} ->
+      {:ok, _article_section} ->
         conn
         |> put_flash(:info, "更新成功.")
         |> redirect(to: article_path(conn, :show, article))

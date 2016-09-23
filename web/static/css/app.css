@@ -8,6 +8,13 @@
 body {
   background: #f5f7fa;
 }
+a.hover {
+  text-decoration: none !important;
+  border: none !important;
+}
+.content a:not(.button):hover {
+  border: none;
+}
 #header {
   border-bottom: 1px solid #ddd;
 }
@@ -113,6 +120,9 @@ strike {
 .icon.is-danger {
   color: #ed6c63;
 }
+.icon.is-dark {
+  color: #69707a;
+}
 .image {
   overflow: hidden;
 }
@@ -147,4 +157,8 @@ strike {
 }
 .article-content {
   padding: 20px 0;
+}
+
+.panel-heading {
+  padding: 8px 10px;
 }
