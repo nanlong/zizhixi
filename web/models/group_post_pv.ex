@@ -43,21 +43,13 @@ defmodule Zizhixi.GroupPostPV do
     today = Timex.today
     ip_address = get_ip_address(conn)
 
-    query = case is_nil(user_id) do
-      true ->
-        from pv in __MODULE__,
-          where: pv.day == ^today,
-          where: pv.post_id == ^post_id,
-          where: pv.ip == ^ip_address,
-          where: is_nil(pv.user_id)
-      false ->
-        from pv in __MODULE__,
-          where: pv.day == ^today,
-          where: pv.post_id == ^post_id,
-          where: pv.ip == ^ip_address,
-          where: pv.user_id == ^user_id
-    end
+    query = from pv in __MODULE__, where: [day: ^today, ip: ^ip_address, post_id: ^post_id]
 
+    query = case is_nil(user_id) do
+      true -> from pv in query, where: is_nil(pv.user_id)
+      false -> from pv in query, where: pv.user_id == ^user_id
+    end
+    
     case (query |> Ecto.Query.first |> Repo.one) do
       nil ->
         GroupPost |> inc(post_id, :pv)

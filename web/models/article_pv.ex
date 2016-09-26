@@ -43,19 +43,11 @@ defmodule Zizhixi.ArticlePV do
     today = Timex.today
     ip_address = get_ip_address(conn)
 
+    query = from pv in __MODULE__, where: [day: ^today, ip: ^ip_address, article_id: ^article_id]
+
     query = case is_nil(user_id) do
-      true ->
-        from pv in __MODULE__,
-          where: pv.day == ^today,
-          where: pv.article_id == ^article_id,
-          where: pv.ip == ^ip_address,
-          where: is_nil(pv.user_id)
-      false ->
-        from pv in __MODULE__,
-          where: pv.day == ^today,
-          where: pv.article_id == ^article_id,
-          where: pv.ip == ^ip_address,
-          where: pv.user_id == ^user_id
+      true -> from pv in query, where: is_nil(pv.user_id)
+      false -> from pv in query, where: pv.user_id == ^user_id
     end
 
     case (query |> Ecto.Query.first |> Repo.one) do
