@@ -1,13 +1,13 @@
-defmodule Zizhixi.GroupPostPV do
+defmodule Zizhixi.ArticlePV do
   use Zizhixi.Web, :model
 
-  alias Zizhixi.{Repo, User, GroupPost}
+  alias Zizhixi.{Repo, User, Article}
   import Zizhixi.Ecto.Helpers, only: [inc: 3]
 
-  schema "group_posts_pv" do
-    field :day, Timex.Ecto.Date
+  schema "articles_pv" do
+    field :day, Timex.Ecto.DateTime
     field :ip, :string
-    belongs_to :post, Zizhixi.GroupPost
+    belongs_to :article, Zizhixi.Article
     belongs_to :user, Zizhixi.User
 
     timestamps()
@@ -18,24 +18,24 @@ defmodule Zizhixi.GroupPostPV do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:day, :ip, :post_id], [:user_id])
-    |> validate_required([:day, :ip, :post_id])
+    |> cast(params, [:day, :ip, :article_id], [:user_id])
+    |> validate_required([:day, :ip, :article_id])
   end
 
-  def create(conn, %GroupPost{id: post_id}, %User{id: user_id}) do
-    create(conn, post_id, user_id)
+  def create(conn, %Article{id: article_id}, %User{id: user_id}) do
+    create(conn, article_id, user_id)
   end
 
-  def create(_conn, %GroupPost{id: _post_id}, nil) do
+  def create(_conn, %Article{id: _article_id}, nil) do
     nil
   end
 
-  def create(conn, post_id, user_id) do
+  def create(conn, article_id, user_id) do
     ip_address = Plug.Conn.get_req_header(conn, "x-forwarded-for") |> List.first
 
     params = %{
       day: Timex.today,
-      post_id: post_id,
+      article_id: article_id,
       user_id: user_id
     }
 
@@ -46,7 +46,7 @@ defmodule Zizhixi.GroupPostPV do
 
     case Repo.get_by(__MODULE__, params) do
       nil ->
-        GroupPost |> inc(post_id, :pv)
+        Article |> inc(article_id, :pv)
         %__MODULE__{}
       pv -> pv
     end

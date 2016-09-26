@@ -1,7 +1,7 @@
 defmodule Zizhixi.ArticleController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Article, ArticleSection, ArticleComment}
+  alias Zizhixi.{Article, ArticleSection, ArticleComment, ArticlePV}
 
   import Guardian.Plug, only: [current_resource: 1]
 
@@ -54,6 +54,8 @@ defmodule Zizhixi.ArticleController do
   end
 
   def show(conn, %{"id" => id}) do
+    current_user = current_resource(conn)
+
     article = Article
     |> preload([:user])
     |> Repo.get!(id)
@@ -64,6 +66,9 @@ defmodule Zizhixi.ArticleController do
     |> preload([:user])
     |> order_by([asc: :inserted_at])
     |> Repo.all
+
+    # 更新pv
+    ArticlePV.create(conn, article, current_user)
 
     changeset = ArticleComment.changeset(%ArticleComment{})
 

@@ -15,7 +15,7 @@
           <small>
             <%= link @article.user.username, to: user_path(@conn, :show, @article.user.username) %>
             于 <small class="phoenix-moment" data-timestamp="<%= @article.inserted_at %>" data-refresh="10000"></small> 发布
-            · 0次阅读
+            · <%= @article.pv %>次阅读
             · <%= @article.comment_count %>条评论
           </small>
         </div>
