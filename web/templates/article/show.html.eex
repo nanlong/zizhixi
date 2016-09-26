@@ -206,8 +206,12 @@
       </div>
     </article>
     <%= else %>
-    <div class="box">
-      请登录之后，再继续评论
+    <div class="box has-text-centered" style="margin-top: 20px;">
+      请
+      <%= link to: session_path(@conn, :new) <> "?next=" <> article_path(@conn, :show, @article) do %>
+        登录
+      <%= end %>
+      之后，再继续评论
     </div>
     <%= end %>
   </div>
