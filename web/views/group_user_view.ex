@@ -4,6 +4,10 @@ defmodule Zizhixi.GroupUserView do
   import Zizhixi.UserView, only: [follow?: 2]
   import Zizhixi.GroupView, only: [group_member?: 2]
 
+  def group_member?(conn, group) do
+    group_member?(conn, group)
+  end
+
   def tabs(conn, group_user) do
     group_user = Zizhixi.Repo.preload(group_user, :user)
     user = group_user.user

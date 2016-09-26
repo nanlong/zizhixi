@@ -22,14 +22,6 @@ defmodule Zizhixi.GroupPostPV do
     |> validate_required([:day, :ip, :post_id])
   end
 
-  def create(conn, %GroupPost{id: post_id}, %User{id: user_id}) do
-    create(conn, post_id, user_id)
-  end
-
-  def create(conn, %GroupPost{id: post_id}, nil) do
-    create(conn, post_id, nil)
-  end
-
   def get_ip_address(conn) do
     ip_address = Plug.Conn.get_req_header(conn, "x-forwarded-for") |> List.first
 
@@ -37,6 +29,14 @@ defmodule Zizhixi.GroupPostPV do
       true -> "127.0.0.1"
       false -> ip_address
     end
+  end
+
+  def create(conn, %GroupPost{id: post_id}, %User{id: user_id}) do
+    create(conn, post_id, user_id)
+  end
+
+  def create(conn, %GroupPost{id: post_id}, nil) do
+    create(conn, post_id, nil)
   end
 
   def create(conn, post_id, user_id) do
@@ -49,7 +49,7 @@ defmodule Zizhixi.GroupPostPV do
       true -> from pv in query, where: is_nil(pv.user_id)
       false -> from pv in query, where: pv.user_id == ^user_id
     end
-    
+
     case (query |> Ecto.Query.first |> Repo.one) do
       nil ->
         GroupPost |> inc(post_id, :pv)

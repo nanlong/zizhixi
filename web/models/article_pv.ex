@@ -22,14 +22,6 @@ defmodule Zizhixi.ArticlePV do
     |> validate_required([:day, :ip, :article_id])
   end
 
-  def create(conn, %Article{id: article_id}, %User{id: user_id}) do
-    create(conn, article_id, user_id)
-  end
-
-  def create(conn, %Article{id: article_id}, nil) do
-    create(conn, article_id, nil)
-  end
-
   def get_ip_address(conn) do
     ip_address = Plug.Conn.get_req_header(conn, "x-forwarded-for") |> List.first
 
@@ -37,6 +29,14 @@ defmodule Zizhixi.ArticlePV do
       true -> "127.0.0.1"
       false -> ip_address
     end
+  end
+
+  def create(conn, %Article{id: article_id}, %User{id: user_id}) do
+    create(conn, article_id, user_id)
+  end
+
+  def create(conn, %Article{id: article_id}, nil) do
+    create(conn, article_id, nil)
   end
 
   def create(conn, article_id, user_id) do
