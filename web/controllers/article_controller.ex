@@ -1,9 +1,10 @@
 defmodule Zizhixi.ArticleController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Article, ArticleSection, ArticleComment, ArticlePV}
+  alias Zizhixi.{Article, ArticleUser, ArticleSection, ArticleComment, ArticlePV}
 
   import Guardian.Plug, only: [current_resource: 1]
+  import Zizhixi.Ecto.Helpers, only: [inc: 3]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:new, :create, :update, :delete]
@@ -12,6 +13,13 @@ defmodule Zizhixi.ArticleController do
     when action in [:edit, :update, :delete]
 
   def index(conn, params) do
+    current_user = current_resource(conn)
+
+    article_user = case is_nil(current_user) do
+      true -> nil
+      false -> ArticleUser.get(current_user)
+    end
+
     pagination = Article
     |> order_by([desc: :inserted_at])
     |> preload([:user])
@@ -19,6 +27,8 @@ defmodule Zizhixi.ArticleController do
 
     conn
     |> assign(:title, "天工")
+    |> assign(:current_user, current_user)
+    |> assign(:article_user, article_user)
     |> assign(:pagination, pagination)
     |> render("index.html")
   end
@@ -42,6 +52,9 @@ defmodule Zizhixi.ArticleController do
 
     case Repo.insert(changeset) do
       {:ok, _article} ->
+        article_user = ArticleUser.get(current_user)
+        ArticleUser |> inc(article_user, :article_count)
+
         conn
         |> put_flash(:info, "发帖成功.")
         |> redirect(to: article_path(conn, :index))

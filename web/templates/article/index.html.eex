@@ -75,10 +75,21 @@
       <footer class="card-footer">
         <div class="card-footer-item">
           <%= link to: "", class: "button-is-multiline has-text-centered" do %>
-            <span>0</span>
+            <span><%= @article_user.article_count %></span>
             <small>发帖</small>
           <%= end %>
-
+        </div>
+        <div class="card-footer-item">
+          <%= link to: "", class: "button-is-multiline has-text-centered" do %>
+            <span><%= @article_user.comment_count %></span>
+            <small>回帖</small>
+          <%= end %>
+        </div>
+        <div class="card-footer-item">
+          <%= link to: "", class: "button-is-multiline has-text-centered" do %>
+            <span><%= @article_user.collect_count %></span>
+            <small>收藏</small>
+          <%= end %>
         </div>
       </footer>
 

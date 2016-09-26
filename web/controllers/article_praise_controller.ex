@@ -1,7 +1,7 @@
 defmodule Zizhixi.ArticlePraiseController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Article, ArticlePraise}
+  alias Zizhixi.{Article, ArticleUser, ArticlePraise}
 
   import Guardian.Plug, only: [current_resource: 1]
   import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
@@ -20,6 +20,10 @@ defmodule Zizhixi.ArticlePraiseController do
     conn = case Repo.insert(changeset) do
       {:ok, _article_praise} ->
         Article |> inc(article, :praise_count)
+
+        article_user = ArticleUser.get(current_user)
+        ArticleUser |> inc(article_user, :praise_count)
+
         conn |> put_flash(:info, "点赞成功.")
       {:error, _changeset} ->
         conn |> put_flash(:error, "点赞失败.")

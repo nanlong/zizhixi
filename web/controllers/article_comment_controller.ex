@@ -1,7 +1,7 @@
 defmodule Zizhixi.ArticleCommentController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Article, ArticleComment}
+  alias Zizhixi.{Article, ArticleUser, ArticleComment}
 
   import Guardian.Plug, only: [current_resource: 1]
   import Zizhixi.Ecto.Helpers, only: [set: 4, inc: 3]
@@ -24,6 +24,10 @@ defmodule Zizhixi.ArticleCommentController do
         Article |> set(article, :latest_inserted_at, article_comment.inserted_at)
         Article |> set(article, :latest_user_id, article_comment.user_id)
         Article |> inc(article, :comment_count)
+
+        article_user = ArticleUser.get(current_user)
+        ArticleUser |> inc(article_user, :comment_count)
+
         conn |> put_flash(:info, "评论成功.")
       {:error, _changeset} ->
         conn |> put_flash(:error, "评论失败.")
