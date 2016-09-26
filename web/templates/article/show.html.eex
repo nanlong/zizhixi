@@ -3,7 +3,7 @@
     <a name="#"></a>
     <div class="panel">
       <div class="panel-heading" style="padding: 10px;">
-        <a class="is-pulled-right" href="<%= user_path(@conn, :show, @article.user.username) %>">
+        <a class="is-pulled-right" href="<%= article_user_path(@conn, :show, @article.user.username) %>">
           <figure class="image is-32x32">
             <img src="<%= @article.user.avatar %>" alt="<%= @article.user.username %>" />
           </figure>
@@ -14,7 +14,7 @@
 
         <div style="padding-top: 5px;">
           <small>
-            <%= link @article.user.username, to: user_path(@conn, :show, @article.user.username) %>
+            <%= link @article.user.username, to: article_user_path(@conn, :show, @article.user.username) %>
             于 <small class="phoenix-moment" data-timestamp="<%= @article.inserted_at %>" data-refresh="10000"></small> 发布
             · <%= @article.pv %>次阅读
             · <%= link to: article_path(@conn, :show, @article) <> "#reply" do %>
@@ -100,7 +100,7 @@
     <article class="media zizhixi-comment">
       <figure class="media-left">
         <p class="image is-48x48">
-          <%= link to: user_path(@conn, :show, comment.user.username) do %>
+          <%= link to: article_user_path(@conn, :show, comment.user.username) do %>
             <img src="<%= comment.user.avatar %>">
           <%= end %>
         </p>
@@ -112,7 +112,7 @@
               <a name="reply<%= comment.index %>"></a>
               <div class="is-pulled-left">
                 <span>#<%= comment.index %></span>
-                <%= link to: user_path(@conn, :show, comment.user.username) do %>
+                <%= link to: article_user_path(@conn, :show, comment.user.username) do %>
                   <%= comment.user.username %>
                 <%= end %>
                 <small>

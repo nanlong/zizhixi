@@ -46,6 +46,9 @@ defmodule Zizhixi.ArticleCollectController do
     Repo.delete!(article_collect)
     Article |> dec(article, :collect_count)
 
+    article_user = ArticleUser.get(current_user)
+    ArticleUser |> dec(article_user, :collect_count)
+
     conn
     |> put_flash(:info, "取消点赞成功.")
     |> redirect(to: article_path(conn, :show, article))

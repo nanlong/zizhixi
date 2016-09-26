@@ -22,7 +22,7 @@ defmodule Zizhixi.ArticleController do
 
     pagination = Article
     |> order_by([desc: :inserted_at])
-    |> preload([:user])
+    |> preload([:user, :latest_user])
     |> Repo.paginate(params)
 
     conn

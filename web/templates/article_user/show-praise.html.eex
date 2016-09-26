@@ -1,0 +1,35 @@
+<div class="columns">
+  <div class="column">
+    <%= render "user-card.html",
+      conn: @conn,
+      user: @user,
+      logged_in?: @logged_in?,
+      current_user: @current_user,
+      current_tab: @current_tab
+    %>
+
+    <%= render "tabs.html",
+      conn: @conn,
+      article_user: @article_user,
+      current_tab: @current_tab
+    %>
+
+    <%= if @pagination.total_entries > 0 do %>
+    <div class="panel">
+      <div class="panel-heading">
+        赞过
+      </div>
+      <div class="panel-block">
+        <%= for article <- @pagination do %>
+        <%= render "praise-entry.html", conn: @conn, article: article %>
+        <%= end %>
+      </div>
+    </div>
+
+    <%= pagination_links @conn, @pagination, [@user.username], action: :show, path: &article_user_path/4, tab: @current_tab %>
+    <%= end %>
+  </div>
+  <div class="column is-3">
+
+  </div>
+</div>

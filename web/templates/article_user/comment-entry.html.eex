@@ -1,0 +1,40 @@
+<article class="media">
+  <div class="media-left">
+    <span class="icon is-small is-dark"><i class="fa fa-comment"></i></span>
+  </div>
+  <div class="media-content">
+    <div class="content">
+      <%= raw @comment.content %>
+      <div class="box" style="padding: 10px;">
+        <p>
+          <%= link to: article_path(@conn, :show, @comment.article) do %>
+            <%= @comment.article.title %>
+          <%= end %>
+        </p>
+        <nav class="level">
+          <div class="level-left">
+            <small class="level-item">
+              <span class="icon is-small is-dark"><i class="fa fa-user"></i></span>
+              <%= link to: article_user_path(@conn, :show, @comment.article.user.username) do %>
+                <%= @comment.article.user.username %>
+              <%= end %>
+              发布于
+              <small class="phoenix-moment" data-timestamp="<%= @comment.article.inserted_at %>" data-refresh="10000"></small>
+            </small>
+            <%= if @comment.article.latest_user_id do %>
+            <small class="level-item">
+              <span class="icon is-small is-dark"><i class="fa fa-comment-o"></i></span>
+              最后由
+              <%= link to: article_user_path(@conn, :show, @comment.article.latest_user.username) do %>
+                <%= @comment.article.latest_user.username %>
+              <%= end %>
+              回复于
+              <small class="phoenix-moment" data-timestamp="<%= @comment.article.latest_inserted_at %>" data-refresh="10000"></small>
+            </small>
+            <%= end %>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</article>

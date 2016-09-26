@@ -1,0 +1,35 @@
+<article class="media">
+  <div class="media-content">
+    <div class="content">
+      <%= link to: article_path(@conn, :show, @article), class: "title is-5" do %>
+        <span class="icon is-small"><i class="fa fa-file-text-o"></i></span>
+        <%= @article.title %>
+      <%= end %>
+    </div>
+    <nav class="level">
+      <small class="level-left">
+        <span class="level-item">
+          发布于 <small class="phoenix-moment" data-timestamp="<%= @article.inserted_at %>" data-refresh="10000"></small>
+        </span>
+
+        <%= if @article.latest_user_id do %>
+        <small class="level-item">
+          <span class="icon is-small is-dark"><i class="fa fa-comment-o"></i></span>
+          最后由
+          <%= link to: article_user_path(@conn, :show, @article.latest_user.username) do %>
+            <%= @article.latest_user.username %>
+          <%= end %>
+          回复于
+          <small class="phoenix-moment" data-timestamp="<%= @article.latest_inserted_at %>" data-refresh="10000"></small>
+        </small>
+        <%= end %>
+      </small>
+    </nav>
+  </div>
+  <div class="media-right">
+    <%= link to: article_path(@conn, :show, @article) <> "#reply" do %>
+      <span class="icon is-small is-dark"><i class="fa fa-comments-o"></i></span>
+      <span><%= @article.comment_count %></span>
+    <%= end %>
+  </div>
+</article>
