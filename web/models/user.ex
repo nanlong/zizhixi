@@ -111,7 +111,7 @@ defmodule Zizhixi.User do
     email_md5 = :crypto.hash(:md5, email)
     |> Base.encode16(case: :lower)
 
-    avatar = "https://gravatar.tycdn.net/avatar/#{email_md5}?d=wavatar&s=#300"
+    avatar = "https://cn.gravatar.com/avatar/#{email_md5}?d=wavatar&s=200"
 
     changeset |> put_change(avatar_field, avatar)
   end
