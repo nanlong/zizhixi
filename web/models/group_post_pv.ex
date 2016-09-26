@@ -26,31 +26,50 @@ defmodule Zizhixi.GroupPostPV do
     create(conn, post_id, user_id)
   end
 
-  def create(_conn, %GroupPost{id: _post_id}, nil) do
-    nil
+  def create(conn, %GroupPost{id: post_id}, nil) do
+    create(conn, post_id, nil)
+  end
+
+  def get_ip_address(conn) do
+    ip_address = Plug.Conn.get_req_header(conn, "x-forwarded-for") |> List.first
+
+    case is_nil(ip_address) do
+      true -> "127.0.0.1"
+      false -> ip_address
+    end
   end
 
   def create(conn, post_id, user_id) do
-    ip_address = Plug.Conn.get_req_header(conn, "x-forwarded-for") |> List.first
+    today = Timex.today
+    ip_address = get_ip_address(conn)
 
-    params = %{
-      day: Timex.today,
-      post_id: post_id,
-      user_id: user_id
-    }
-
-    params = case is_nil(ip_address) do
-      true -> Map.put_new(params, :ip, "127.0.0.1")
-      false -> Map.put_new(params, :ip, ip_address)
+    query = case is_nil(user_id) do
+      true ->
+        from pv in __MODULE__,
+          where: pv.day == ^today,
+          where: pv.post_id == ^post_id,
+          where: pv.ip == ^ip_address,
+          where: is_nil(pv.user_id)
+      false ->
+        from pv in __MODULE__,
+          where: pv.day == ^today,
+          where: pv.post_id == ^post_id,
+          where: pv.ip == ^ip_address,
+          where: pv.user_id == ^user_id
     end
 
-    case Repo.get_by(__MODULE__, params) do
+    case (query |> Ecto.Query.first |> Repo.one) do
       nil ->
         GroupPost |> inc(post_id, :pv)
-        %__MODULE__{}
+        %__MODULE__{
+          day: today,
+          user_id: user_id,
+          post_id: post_id,
+          ip: ip_address
+        }
       pv -> pv
     end
-    |> changeset(params)
+    |> changeset
     |> Repo.insert_or_update
   end
 end
