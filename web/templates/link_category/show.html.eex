@@ -1,0 +1,8 @@
+<h2>分类详情</h2>
+
+<ul>
+  <li><%= @link_category.name %></li>
+</ul>
+
+<%= link "Edit", to: link_category_path(@conn, :edit, @link_category) %>
+<%= link "Back", to: link_category_path(@conn, :index) %>

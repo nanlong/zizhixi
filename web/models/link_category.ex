@@ -3,7 +3,7 @@ defmodule Zizhixi.LinkCategory do
 
   schema "link_categories" do
     field :name, :string
-    field :index, :string, default: 0
+    field :sorted, :integer, default: 0
     belongs_to :category, Zizhixi.LinkCategory
 
     timestamps()
@@ -14,7 +14,12 @@ defmodule Zizhixi.LinkCategory do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :index], [:catetory_id])
-    |> validate_required([:name, :index])
+    |> cast(params, [:name, :sorted], [:category_id])
+    |> validate_required([:name, :sorted])
+  end
+
+  def query() do
+    from c in __MODULE__,
+      where: is_nil(c.category_id)
   end
 end

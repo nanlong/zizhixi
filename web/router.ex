@@ -93,9 +93,14 @@ defmodule Zizhixi.Router do
     resources "/article_users", ArticleUserController, param: "username", only: [:show]
     # 天工 end
 
+    # 司南车 begin
+    resources "/link_categories", LinkCategoryController
+    resources "/links", LinkController
+    # 司南车 end
+
     resources "/asks", AskController
 
-    resources "/links", LinkController
+
     resources "/markets", MarketController
   end
 

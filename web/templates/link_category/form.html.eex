@@ -1,0 +1,29 @@
+<%= form_for @changeset, @action, fn f -> %>
+
+  <%= label f, :category_id, "父级", class: "label" %>
+  <p class="control">
+    <span class="select">
+      <%= select f, :category_id, Enum.map(@categories, fn category -> {category.name, category.id} end) |> List.insert_at(0, {"选择父级", nil}) %>
+    </span>
+  </p>
+
+  <%= label f, :name, "名称", class: "label" %>
+  <p class="control">
+    <%= text_input f, :name, class: "input" %>
+    <%= error_tag f, :name %>
+  </p>
+
+  <%= label f, :sorted, "排序", class: "label" %>
+  <p class="control">
+    <%= text_input f, :sorted, class: "input" %>
+    <%= error_tag f, :sorted %>
+  </p>
+
+
+
+
+  <p class="control">
+    <%= submit "确定", class: "button is-info" %>
+    <button class="button is-link" type="reset">取消</button>
+  </p>
+<% end %>
