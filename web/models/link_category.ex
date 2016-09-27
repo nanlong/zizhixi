@@ -5,6 +5,7 @@ defmodule Zizhixi.LinkCategory do
     field :name, :string
     field :sorted, :integer, default: 0
     belongs_to :category, Zizhixi.LinkCategory
+    has_many :links, Zizhixi.Link, foreign_key: :category_id
 
     timestamps()
   end

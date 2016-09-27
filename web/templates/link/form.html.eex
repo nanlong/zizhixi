@@ -1,5 +1,12 @@
 <%= form_for @changeset, @action, fn f -> %>
 
+  <%= label f, :category_id, "分类", class: "label" %>
+  <p class="control">
+    <span class="select">
+      <%= select f, :category_id, @categories, prompt: "选择分类" %>
+    </span>
+  </p>
+
   <%= label f, :name, "网站名", class: "label" %>
   <p class="control">
     <%= text_input f, :name, class: "input" %>
@@ -10,13 +17,6 @@
   <p class="control">
     <%= text_input f, :href, class: "input" %>
     <%= error_tag f, :href %>
-  </p>
-
-  <%= label f, :category_id, "分类", class: "label" %>
-  <p class="control">
-    <span class="select">
-      <%= select f, :category_id, @categories, prompt: "选择分类" %>
-    </span>
   </p>
 
   <%= label f, :description, "描述", class: "label" %>

@@ -1,8 +1,12 @@
-<section class="hero is-small is-primary is-bold has-text-centered">
+<section class="hero is-small is-primary is-bold has-text-centered" style="margin-bottom: 20px;">
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
-        司南车
+        <%= if @logged_in? and admin?(@conn) do %>
+          <%= link "司南车", to: link_category_path(@conn, :index) %>
+        <%= else %>
+          司南车
+        <%= end %>
       </h1>
       <h2 class="subtitle">
         故郑人之取玉也，载司南之车，为其不惑也。
@@ -11,6 +15,37 @@
   </div>
 </section>
 
-<%= link to: link_path(@conn, :new) do %>
-  创建
+<%= for {parent, childs} <- @categories do %>
+  <div class="panel">
+    <div class="panel-heading">
+      <%= parent.name %>
+    </div>
+    <div class="panel-block columns is-multiline">
+      <%= for category <- childs do %>
+      <div class="column is-6">
+        <article class="media">
+          <figure class="media-left" style="width: 50px;">
+            <%= link to: link_path(@conn, :new, category_id: category.id) do %>
+              <small class="icon is-small">
+                <i class="fa fa-plus"></i>
+              </small>
+            <%= end %>
+            <strong><%= category.name %></strong>
+          </figure>
+          <div class="media-content">
+            <div class="content columns is-multiline">
+              <%= for entry <- category.links do %>
+                <div class="column is-2">
+                  <%= link to: entry.href, target: "_blank" do %>
+                    <%= entry.name %>
+                  <%= end %>
+                </div>
+              <%= end %>
+            </div>
+          </div>
+        </article>
+      </div>
+      <%= end %>
+    </div>
+  </div>
 <%= end %>

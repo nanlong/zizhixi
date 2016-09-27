@@ -4,18 +4,32 @@ defmodule Zizhixi.LinkController do
   alias Zizhixi.{Link, LinkCategory}
 
   def index(conn, _params) do
+    categories = LinkCategory
+    |> Repo.all
+    |> Repo.preload(links: from(l in Link))
+
+    categories = categories
+    |> Enum.filter(fn category -> is_nil(category.category_id) end)
+    |> Enum.map(fn parent ->
+      childs = Enum.filter(categories, fn child ->
+        child.category_id == parent.id
+      end)
+      {parent, childs}
+    end)
+
     conn
     |> assign(:title, "司南车")
+    |> assign(:categories, categories)
     |> render("index.html")
   end
 
-  def new(conn, _params) do
-    changeset = Link.changeset(%Link{})
+  def new(conn, params) do
+    changeset = Link.changeset(%Link{}, params)
 
     categories = LinkCategory
     |> Repo.all
     |> LinkCategory.generate
-    
+
     conn
     |> assign(:title, "创建链接")
     |> assign(:categories, categories)

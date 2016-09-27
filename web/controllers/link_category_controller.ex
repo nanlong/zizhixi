@@ -3,8 +3,7 @@ defmodule Zizhixi.LinkCategoryController do
 
   alias Zizhixi.LinkCategory
 
-  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
-  # must admin
+  plug Guardian.Plug.EnsurePermissions, handler: Zizhixi.Guardian.ErrorHandler, admin: [:all]
 
   def index(conn, _params) do
     link_categories = LinkCategory
@@ -47,11 +46,6 @@ defmodule Zizhixi.LinkCategoryController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    link_category = Repo.get!(LinkCategory, id)
-    render(conn, "show.html", link_category: link_category)
-  end
-
   def edit(conn, %{"id" => id}) do
     link_category = Repo.get!(LinkCategory, id)
     changeset = LinkCategory.changeset(link_category)
@@ -70,10 +64,10 @@ defmodule Zizhixi.LinkCategoryController do
     changeset = LinkCategory.changeset(link_category, link_category_params)
 
     case Repo.update(changeset) do
-      {:ok, link_category} ->
+      {:ok, _link_category} ->
         conn
         |> put_flash(:info, "分类更新成功.")
-        |> redirect(to: link_category_path(conn, :show, link_category))
+        |> redirect(to: link_category_path(conn, :index))
       {:error, changeset} ->
         categories = LinkCategory.query |> Repo.all
 

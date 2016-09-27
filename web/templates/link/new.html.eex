@@ -1,9 +1,19 @@
-<h2>New link</h2>
-
-<%= render "form.html",
-  changeset: @changeset,
-  action: link_path(@conn, :create),
-  categories: @categories
-%>
-
-<%= link "Back", to: link_path(@conn, :index) %>
+<div class="columns">
+  <div class="column">
+    <div class="box">
+      <%= render "form.html",
+        changeset: @changeset,
+        action: link_path(@conn, :create),
+        categories: @categories
+      %>
+    </div>
+  </div>
+  <div class="column is-3">
+    <%= link to: link_path(@conn, :index), class: "button is-link" do %>
+      <span>返回</span>
+      <span class="icon is-small">
+        <i class="fa fa-arrow-right"></i>
+      </span>
+    <%= end %>
+  </div>
+</div>

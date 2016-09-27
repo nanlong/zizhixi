@@ -34,7 +34,11 @@ config :guardian, Guardian,
   ttl: {30, :days},
   verify_issuer: true,
   secret_key: to_string(Mix.env),
-  serializer: Zizhixi.Guardian.Serializer
+  serializer: Zizhixi.Guardian.Serializer,
+  permissions: %{
+    default: [:all],
+    admin: [:all]
+  }
 
 config :scrivener_html,
   routes_helper: Zizhixi.Router.Helpers

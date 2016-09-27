@@ -14,8 +14,11 @@ defmodule Zizhixi.LayoutView do
     ArticleSectionController,
     ArticleCommentController,
 
-    AskController,
+
     LinkController,
+    LinkCategoryController,
+
+    AskController,
     MarketController,
   }
 
@@ -25,7 +28,7 @@ defmodule Zizhixi.LayoutView do
     ask_controllers = [AskController]
     article_controllers = [ArticleController, ArticleUserController,
       ArticleSectionController, ArticleCommentController]
-    link_controllers = [LinkController]
+    link_controllers = [LinkController, LinkCategoryController]
     market_controllers = [MarketController]
 
     [

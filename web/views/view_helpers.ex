@@ -11,4 +11,11 @@ defmodule Zizhixi.ViewHelpers do
     |> Timex.to_datetime("Etc/UTC")
     |> Timex.format!(format)
   end
+
+  def admin?(conn) do
+    {:ok, claims} = Guardian.Plug.claims(conn)
+    claims
+    |> Guardian.Permissions.from_claims(:admin)
+    |> Guardian.Permissions.all?([:all], :admin)
+  end
 end

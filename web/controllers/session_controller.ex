@@ -19,8 +19,10 @@ defmodule Zizhixi.SessionController do
 
     case changeset.valid? do
       true ->
-        conn
-        |> Guardian.Plug.sign_in(changeset.data)
+        case changeset.data.email in ["200006506@qq.com"] do
+          true -> Guardian.Plug.sign_in(conn, changeset.data, nil, perms: %{default: [:all], admin: [:all]})
+          false -> Guardian.Plug.sign_in(conn, changeset.data, nil, perms: %{default: [:all]})
+        end
         |> redirect_to(page_path(conn, :index))
       false ->
         changeset = %{changeset | action: :create}

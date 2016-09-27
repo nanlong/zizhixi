@@ -94,7 +94,7 @@ defmodule Zizhixi.Router do
     # 天工 end
 
     # 司南车 begin
-    resources "/link_categories", LinkCategoryController
+    resources "/link_categories", LinkCategoryController, except: [:show]
     resources "/links", LinkController
     # 司南车 end
 
