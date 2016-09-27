@@ -1,4 +1,4 @@
-<section class="hero is-large is-primary is-bold has-text-centered">
+<section class="hero is-small is-primary is-bold has-text-centered">
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
@@ -10,3 +10,7 @@
     </div>
   </div>
 </section>
+
+<%= link to: link_path(@conn, :new) do %>
+  创建
+<%= end %>
