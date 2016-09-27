@@ -15,6 +15,7 @@
       current_tab: @current_tab
     %>
 
+    <%= if @groups.total_entries > 0 do  %>
     <div class="panel">
       <div class="panel-heading">
         <%= link "更多", to: group_user_path(@conn, :show, @user.username, tab: "group"), class: "is-pulled-right" %>
@@ -37,7 +38,9 @@
         </div>
       </div>
     </div>
+    <%= end %>
 
+    <%= if @posts.total_entries > 0 do %>
     <div class="panel">
       <div class="panel-heading">
         <%= link "更多", to: group_user_path(@conn, :show, @user.username, tab: "post"), class: "is-pulled-right" %>
@@ -49,7 +52,9 @@
         <%= end %>
       </div>
     </div>
+    <%= end %>
 
+    <%= if @praises.total_entries > 0 do %>
     <div class="panel">
       <div class="panel-heading">
         <%= link "更多", to: group_user_path(@conn, :show, @user.username, tab: "praise"), class: "is-pulled-right" %>
@@ -61,6 +66,7 @@
         <%= end %>
       </div>
     </div>
+    <%= end %>
 
   </div>
   <div class="column is-3">

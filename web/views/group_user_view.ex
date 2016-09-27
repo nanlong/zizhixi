@@ -2,7 +2,7 @@ defmodule Zizhixi.GroupUserView do
   use Zizhixi.Web, :view
 
   import Zizhixi.UserView, only: [follow?: 2]
-  
+
   def tabs(conn, group_user) do
     group_user = Zizhixi.Repo.preload(group_user, :user)
     user = group_user.user
@@ -14,14 +14,14 @@ defmodule Zizhixi.GroupUserView do
         group_user_path(conn, :show, user.username)
       },
       {
-        "group",
+        "join",
         "加入的小组 (#{group_user.group_count})",
-        group_user_path(conn, :show, user.username, tab: "group")
+        group_user_path(conn, :show, user.username, tab: "join")
       },
       {
-        "post",
+        "publish",
         "发帖 (#{group_user.post_count})",
-        group_user_path(conn, :show, user.username, tab: "post")
+        group_user_path(conn, :show, user.username, tab: "publish")
       },
       {
         "comment",
