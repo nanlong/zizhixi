@@ -13,7 +13,7 @@
           <div class="card-content">
             <div class="media">
               <div class="media-left">
-                <a href="<%= group_user_path(@conn, :show, item.follow.username) %>">
+                <a href="<%= user_path(@conn, :show, item.follow.username) %>">
                   <figure class="image is-48x48">
                     <img src="<%= item.follow.avatar %>" alt="<%= item.follow.username %>">
                   </figure>
@@ -21,19 +21,19 @@
               </div>
               <div class="media-content">
                 <div class="title is-5" style="margin-bottom: 6px;">
-                  <%= link item.follow.username, to: group_user_path(@conn, :show, item.follow.username) %>
+                  <%= link item.follow.username, to: user_path(@conn, :show, item.follow.username) %>
                 </div>
                 <div class="subtitle is-6" style="margin-top: 0;">
                   <%= if @logged_in? and @current_user != item.follow do %>
                     <%= if follow?(@conn, item.follow) do %>
                     <%= link "取消关注",
-                      to: "#{user_follow_path(@conn, :delete, item.follow.username)}?next=#{group_user_path(@conn, :show, @user.username, tab: "following")}",
+                      to: "#{user_follow_path(@conn, :delete, item.follow.username)}?next=#{user_path(@conn, :show, @user.username, tab: "following")}",
                       class: "button is-info is-small",
                       method: :delete
                     %>
                     <%= else %>
                     <%= link "关注",
-                      to: "#{user_follow_path(@conn, :create, item.follow.username)}?next=#{group_user_path(@conn, :show, @user.username, tab: "following")}",
+                      to: "#{user_follow_path(@conn, :create, item.follow.username)}?next=#{user_path(@conn, :show, @user.username, tab: "following")}",
                       class: "button is-info is-small",
                       method: :post
                     %>
