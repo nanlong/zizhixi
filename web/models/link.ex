@@ -5,6 +5,7 @@ defmodule Zizhixi.Link do
     field :name, :string
     field :href, :string
     field :description, :string
+    field :is_approved, :boolean, default: false
     belongs_to :category, Zizhixi.LinkCategory
 
     timestamps()

@@ -1,7 +1,7 @@
 defmodule Zizhixi.LinkCategoryController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.LinkCategory
+  alias Zizhixi.{Link, LinkCategory}
 
   plug Guardian.Plug.EnsurePermissions, handler: Zizhixi.Guardian.ErrorHandler, admin: [:all]
 
@@ -10,9 +10,14 @@ defmodule Zizhixi.LinkCategoryController do
     |> preload([:category])
     |> Repo.all
 
+    links = Link
+    |> preload([:category])
+    |> Repo.all
+
     conn
     |> assign(:title, "分类主页")
     |> assign(:link_categories, link_categories)
+    |> assign(:links, links)
     |> render("index.html")
   end
 

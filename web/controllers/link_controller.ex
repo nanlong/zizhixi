@@ -3,10 +3,18 @@ defmodule Zizhixi.LinkController do
 
   alias Zizhixi.{Link, LinkCategory}
 
+  import Zizhixi.Ecto.Helpers, only: [set: 4]
+
+  plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
+    when action in [:new, :create]
+
+  plug Guardian.Plug.EnsurePermissions, [handler: Zizhixi.Guardian.ErrorHandler, admin: [:all]]
+    when action in [:edit, :update, :delete]
+
   def index(conn, _params) do
     categories = LinkCategory
     |> Repo.all
-    |> Repo.preload(links: from(l in Link))
+    |> Repo.preload(links: from(l in Link, where: l.is_approved == true))
 
     categories = categories
     |> Enum.filter(fn category -> is_nil(category.category_id) end)
@@ -43,22 +51,35 @@ defmodule Zizhixi.LinkController do
     case Repo.insert(changeset) do
       {:ok, _link} ->
         conn
-        |> put_flash(:info, "Link created successfully.")
+        |> put_flash(:info, "链接添加成功，等待审核.")
         |> redirect(to: link_path(conn, :index))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    link = Repo.get!(Link, id)
-    render(conn, "show.html", link: link)
-  end
-
   def edit(conn, %{"id" => id}) do
     link = Repo.get!(Link, id)
     changeset = Link.changeset(link)
-    render(conn, "edit.html", link: link, changeset: changeset)
+    categories = LinkCategory
+    |> Repo.all
+    |> LinkCategory.generate
+
+    conn
+    |> assign(:title, "编辑分类")
+    |> assign(:link, link)
+    |> assign(:categories, categories)
+    |> assign(:changeset, changeset)
+    |> render("edit.html")
+  end
+
+  def update(conn, %{"id" => id, "link" => %{"is_approved" => is_approved}}) do
+    link = Repo.get!(Link, id)
+    Link |> set(link, :is_approved, is_approved)
+
+    conn
+    |> put_flash(:info, "操作成功.")
+    |> redirect(to: link_category_path(conn, :index))
   end
 
   def update(conn, %{"id" => id, "link" => link_params}) do
@@ -66,12 +87,21 @@ defmodule Zizhixi.LinkController do
     changeset = Link.changeset(link, link_params)
 
     case Repo.update(changeset) do
-      {:ok, link} ->
+      {:ok, _link_category} ->
         conn
-        |> put_flash(:info, "Link updated successfully.")
-        |> redirect(to: link_path(conn, :show, link))
+        |> put_flash(:info, "链接成功.")
+        |> redirect(to: link_category_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "edit.html", link: link, changeset: changeset)
+        categories = LinkCategory
+        |> Repo.all
+        |> LinkCategory.generate
+
+        conn
+        |> assign(:title, "编辑分类")
+        |> assign(:link, link)
+        |> assign(:categories, categories)
+        |> assign(:changeset, changeset)
+        |> render("edit.html")
     end
   end
 
@@ -83,7 +113,7 @@ defmodule Zizhixi.LinkController do
     Repo.delete!(link)
 
     conn
-    |> put_flash(:info, "Link deleted successfully.")
-    |> redirect(to: link_path(conn, :index))
+    |> put_flash(:info, "链接删除成功.")
+    |> redirect(to: link_category_path(conn, :index))
   end
 end

@@ -7,6 +7,7 @@ defmodule Zizhixi.Repo.Migrations.CreateLink do
       add :name, :string
       add :href, :text
       add :description, :text
+      add :is_approved, :boolean, default: false
       add :category_id, references(:link_categories, on_delete: :delete_all, type: :binary_id)
 
       timestamps()
