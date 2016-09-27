@@ -12,6 +12,7 @@ defmodule Zizhixi.User do
     field :avatar, :string  # 头像
     field :address, :string  # 地址
     field :description, :string  # 个人简介
+    field :is_admin, :boolean, default: false
     field :followers_count, :integer, default: 0
     field :following_count, :integer, default: 0
     field :notification_count, :integer, default: 0

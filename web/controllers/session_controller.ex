@@ -19,7 +19,7 @@ defmodule Zizhixi.SessionController do
 
     case changeset.valid? do
       true ->
-        case changeset.data.email in ["200006506@qq.com"] do
+        case changeset.data.is_admin do
           true -> Guardian.Plug.sign_in(conn, changeset.data, nil, perms: %{default: [:all], admin: [:all]})
           false -> Guardian.Plug.sign_in(conn, changeset.data, nil, perms: %{default: [:all]})
         end
