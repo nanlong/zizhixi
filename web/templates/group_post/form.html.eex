@@ -2,7 +2,10 @@
   <%= label f, :title, "标题", class: "label" %>
   <p class="control has-addons">
     <span class="select">
-      <%= select f, :topic_id, Enum.map(@group_topics, fn topic -> {topic.name, topic.id} end) |> List.insert_at(0, {"选择话题", nil}) %>
+      <%= select f, :topic_id,
+        (for topic <- @group_topics, do: {topic.name, topic.id}),
+        prompt: "选择话题" 
+      %>
     </span>
     <%= text_input f, :title, class: "input is-expanded" %>
     <%= error_tag f, :title %>

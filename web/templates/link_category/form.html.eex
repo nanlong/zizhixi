@@ -3,7 +3,10 @@
   <%= label f, :category_id, "父级", class: "label" %>
   <p class="control">
     <span class="select">
-      <%= select f, :category_id, Enum.map(@categories, fn category -> {category.name, category.id} end) |> List.insert_at(0, {"选择父级", nil}) %>
+      <%= select f, :category_id,
+        (for category <- @categories, do: {category.name, category.id}),
+        prompt: "选择父级"
+      %>
     </span>
   </p>
 
@@ -18,9 +21,6 @@
     <%= text_input f, :sorted, class: "input" %>
     <%= error_tag f, :sorted %>
   </p>
-
-
-
 
   <p class="control">
     <%= submit "确定", class: "button is-info" %>
