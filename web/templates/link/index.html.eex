@@ -24,13 +24,15 @@
       <%= for category <- childs do %>
       <div class="column is-6">
         <article class="media">
-          <figure class="media-left" style="width: 50px;">
-            <%= link to: link_path(@conn, :new, category_id: category.id) do %>
-              <small class="icon is-small">
-                <i class="fa fa-plus"></i>
-              </small>
-            <%= end %>
-            <strong><%= category.name %></strong>
+          <figure class="media-left">
+            <div style="width: 80px;">
+              <%= link to: link_path(@conn, :new, category_id: category.id) do %>
+                <small class="icon is-small">
+                  <i class="fa fa-plus"></i>
+                </small>
+              <%= end %>
+              <strong><%= category.name %></strong>
+            </div>
           </figure>
           <div class="media-content">
             <div class="content columns is-multiline">
