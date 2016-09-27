@@ -35,7 +35,7 @@
           <div class="media-content">
             <div class="content columns is-multiline">
               <%= for entry <- category.links do %>
-                <div class="column is-2">
+                <div class="column is-3">
                   <%= link to: entry.href, target: "_blank" do %>
                     <%= entry.name %>
                   <%= end %>
