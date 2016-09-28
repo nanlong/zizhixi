@@ -1,4 +1,4 @@
-<section class="hero is-small is-primary is-bold has-text-centered">
+<section class="hero is-small is-primary is-bold has-text-centered" style="margin-bottom: 20px;">
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
@@ -10,3 +10,74 @@
     </div>
   </div>
 </section>
+<div class="columns">
+  <div class="column">
+    <%= for question <- @pagination do %>
+    <article class="media">
+      <figure class="media-left">
+        <nav class="level">
+          <div class="level-left has-text-centered">
+            <a class="level-item button-is-multiline">
+              <span>0</span>
+              <small>回答</small>
+            </a>
+            <a class="level-item button-is-multiline">
+              <span>0</span>
+              <small>浏览</small>
+            </a>
+          </div>
+        </nav>
+      </figure>
+      <div class="media-content" style="padding: 5px;">
+        <div class="content">
+          <h2 class="title is-5" style="margin: 0;">
+            <%= link to: question_path(@conn, :show, question) do %>
+              <%= question.title %>
+            <%= end %>
+          </h2>
+          <div>
+
+          </div>
+          <div class="is-clearfix" style="padding-top: 5px;">
+            <div class="is-pulled-left">
+              <%= link to: "" do %>
+                <span class="tag is-dark is-small">
+                  标签占位
+                </span>
+              <%= end %>
+              <%= link to: "" do %>
+                <span class="tag is-dark is-small">
+                  标签占位
+                </span>
+              <%= end %>
+              <%= link to: "" do %>
+                <span class="tag is-dark is-small">
+                  标签占位
+                </span>
+              <%= end %>
+              <%= link to: "" do %>
+                <span class="tag is-dark is-small">
+                  标签占位
+                </span>
+              <%= end %>
+            </div>
+            <small class="is-pulled-right">
+              <%= link to: user_path(@conn, :show, question.user.username) do %>
+                <%= question.user.username %>
+              <%= end %>
+              发布于
+              <span class="phoenix-moment" data-timestamp="<%= question.inserted_at %>"></span>
+            </small>
+          </div>
+        </div>
+      </div>
+    </article>
+    <%= end %>
+
+  </div>
+  <div class="column is-3">
+    <%= link to: question_path(@conn, :new), class: "button is-info is-fullwidth" do %>
+      提问
+    <%= end %>
+  </div>
+</div>

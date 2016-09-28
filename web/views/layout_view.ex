@@ -18,6 +18,7 @@ defmodule Zizhixi.LayoutView do
     LinkCategoryController,
 
     QuestionAndAnswerController,
+    QuestionController,
 
     MarketController,
   }
@@ -25,7 +26,7 @@ defmodule Zizhixi.LayoutView do
   def navigation(conn) do
     group_controllers = [GroupController, GroupUserController, GroupPostController,
       GroupCommentController, GroupTopicController, GroupMemberController]
-    qa_controllers = [QuestionAndAnswerController]
+    qa_controllers = [QuestionAndAnswerController, QuestionController]
     article_controllers = [ArticleController, ArticleUserController,
       ArticleSectionController, ArticleCommentController]
     link_controllers = [LinkController, LinkCategoryController]

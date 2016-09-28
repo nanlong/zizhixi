@@ -1,0 +1,166 @@
+<div class="columns">
+  <div class="column">
+    <div class="">
+      <h2 class="title"><%= @question.title %></h2>
+      <div>
+        <%= raw @question.content %>
+      </div>
+      <div style="padding-top: 10px;">
+        <%= link to: "" do %>
+          <span class="tag is-dark is-small">
+            标签占位
+          </span>
+        <%= end %>
+        <%= link to: "" do %>
+          <span class="tag is-dark is-small">
+            标签占位
+          </span>
+        <%= end %>
+      </div>
+    </div>
+
+    <div class="panel is-blank">
+      <div class="panel-heading">
+        <div class="is-pulled-right">
+          <%= link to: "", class: "button is-small is-link" do %>
+            <span class="icon is-small"><i class="fa fa-first-order"></i></span>
+            <span>默认排序</span>
+          <%= end %>
+
+          <%= link to: "", class: "button is-small is-link" do %>
+            <span class="icon is-small"><i class="fa fa-clock-o"></i></span>
+            <span>按时间排序</span>
+          <%= end %>
+        </div>
+        <strong>0 个回答</strong>
+      </div>
+    </div>
+
+    <%= if @logged_in? do %>
+    <div class="panel is-blank">
+      <div class="panel-block">
+        <div class="is-clearfix" style="padding-bottom: 10px;">
+          <%= link to: user_path(@conn, :show, @current_user.username), class: "is-pulled-left" do %>
+            <%= @current_user.username %>
+          <%= end %>
+          <figure class="image is-24x24 is-pulled-right">
+            <%= link to: user_path(@conn, :show, @question.user.username) do %>
+              <img src="<%= @question.user.avatar %>">
+            <%= end %>
+          </figure>
+        </div>
+        <div class="">
+          <textarea class="textarea simditor-comment-textarea"></textarea>
+        </div>
+      </div>
+    </div>
+    <%= end %>
+  </div>
+  <div class="column is-3">
+    <%= if @logged_in? and @current_user == @question.user do %>
+    <div class="panel is-blank">
+      <div class="panel-heading">
+        帖子操作
+      </div>
+      <div class="panel-block">
+        <aside class="menu">
+          <ul class="menu-list">
+            <li>
+              <%= link to: question_path(@conn, :edit, @question) do %>
+                <span class="icon is-small"><i class="fa fa-pencil"></i></span>
+                <span>编辑</span>
+              <%= end %>
+            </li>
+            <li>
+              <%= link to: question_path(@conn, :delete, @question), method: :delete, data: [confirm: "确定要删除吗？"] do %>
+                <span class="icon is-small"><i class="fa fa-trash"></i></span>
+                <span>删除</span>
+              <%= end %>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+    <%= end %>
+
+    <div class="panel is-blank">
+      <div class="panel-block">
+        <p>
+          <%= link to: "", class: "button is-success" do %>
+            <span class="icon is-small"><i class="fa fa-eye"></i></span>
+            <span>关注问题</span>
+          <%= end %>
+        </p>
+        <p>
+          <%= link to: "" do %>
+            0
+          <%= end %>
+          人关注问题
+        </p>
+        <p class="is-clearfix">
+          <%= for i <- 1..14 do %>
+          <span class="is-pulled-left" style="margin: 0 5px 5px 0">
+            <%= link to: "", class: "image is-24x24" do %>
+              <img src="http://placehold.it/128x128" alt="" />
+            <%= end %>
+          </span>
+          <%= end %>
+        </p>
+      </div>
+    </div>
+
+    <div class="panel is-blank">
+      <div class="panel-heading">
+        关于作者
+      </div>
+      <div class="panel-block">
+        <article class="media">
+          <figure class="media-left">
+            <p class="image is-48x48">
+              <%= link to: user_path(@conn, :show, @question.user.username) do %>
+                <img src="<%= @question.user.avatar %>">
+              <%= end %>
+            </p>
+          </figure>
+          <div class="media-content">
+            <div class="content">
+              <div class="">
+                <%= link to: user_path(@conn, :show, @question.user.username) do %>
+                  <%= @question.user.username %>
+                <%= end %>
+              </div>
+              <div class="">
+                <%= @question.user.description %>
+              </div>
+            </div>
+            <nav class="level">
+              <div class="level-left">
+                <a class="level-item button is-small is-link">
+                  <span class="icon is-small"><i class="fa fa-heart"></i></span>
+                  <span>关注</span>
+                </a>
+              </div>
+            </nav>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="panel is-blank">
+      <div class="panel-heading">
+        问题状态
+      </div>
+      <div class="panel-block">
+        <p>
+          最后更新 <span class="phoenix-moment" data-timestramp="<%= @question.updated_at %>"></span>
+        </p>
+        <p>
+          被浏览 0 次
+        </p>
+        <p>
+          相关话题 0 关注
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -162,3 +162,15 @@ strike {
 .panel-heading {
   padding: 8px 10px;
 }
+
+.panel.is-blank {
+  border: none;
+  background: none;
+}
+.panel.is-blank .panel-heading {
+  font-weight: bold;
+  background: none;
+}
+.panel.is-blank p {
+  padding: 0 0 10px;
+}

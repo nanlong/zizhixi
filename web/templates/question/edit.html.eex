@@ -1,0 +1,18 @@
+<div class="columns">
+  <div class="column">
+    <div class="box">
+      <%= render "form.html",
+        changeset: @changeset,
+        action: question_path(@conn, :update, @question)
+      %>
+    </div>
+  </div>
+  <div class="column is-3">
+    <%= link to: question_path(@conn, :show, @question), class: "button is-link" do %>
+      <span>返回</span>
+      <span class="icon is-small">
+        <i class="fa fa-arrow-right"></i>
+      </span>
+    <%= end %>
+  </div>
+</div>

@@ -100,7 +100,7 @@ defmodule Zizhixi.Router do
 
     # 问答 begin
     resources "/Q&A", QuestionAndAnswerController, only: [:index]
-    # resources "/Q&A", QuestionController, except: [:index]
+    resources "/Q&A", QuestionController, except: [:index]
     # /Q&A/123213-321321-32132-321321
     # 问答 end
 
