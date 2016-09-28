@@ -1,8 +1,8 @@
-<section class="hero is-large is-primary is-bold has-text-centered">
+<section class="hero is-small is-primary is-bold has-text-centered">
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
-        问答系统
+        问答
       </h1>
       <h2 class="subtitle">
         传道，授业，解惑
