@@ -63,10 +63,10 @@ defmodule Zizhixi.Router do
     resources "/group_users", GroupUserController, param: "username", only: [:show]
 
     resources "/group_posts", GroupPostController, only: [:show, :edit, :update] do
+      resources "/comments", GroupCommentController, as: :comment, only: [:create, :show]
       resources "/praise", GroupPostPraiseController, as: :praise, only: [:create, :delete], singleton: true
       resources "/collect", GroupPostCollectController, as: :collect, only: [:create, :delete], singleton: true
       resources "/watch", GroupPostWatchController, as: :watch, only: [:create, :delete], singleton: true
-      resources "/comments", GroupCommentController, as: :comment, only: [:create, :show]
       resources "/elite", GroupPostEliteController, as: :elite, only: [:create, :delete], singleton: true
       resources "/top", GroupPostTopController, as: :top, only: [:create, :delete], singleton: true
     end
@@ -100,7 +100,10 @@ defmodule Zizhixi.Router do
 
     # 问答 begin
     resources "/Q&A", QuestionAndAnswerController, only: [:index]
-    resources "/Q&A", QuestionController, except: [:index]
+    resources "/Q&A", QuestionController, except: [:index] do
+      resources "/answers", AnswerController, as: :answer, only: [:create]
+    end
+    resources "/answers", AnswerController, except: [:new, :create, :delete]
     # /Q&A/123213-321321-32132-321321
     # 问答 end
 

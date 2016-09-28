@@ -19,22 +19,106 @@
       </div>
     </div>
 
+    <%= if @question.answer_count > 0 do %>
     <div class="panel is-blank">
       <div class="panel-heading">
         <div class="is-pulled-right">
-          <%= link to: "", class: "button is-small is-link" do %>
-            <span class="icon is-small"><i class="fa fa-first-order"></i></span>
-            <span>默认排序</span>
+          <%= if @sort == "default" do %>
+            <%= link to: question_path(@conn, :show, @question), class: "button is-small is-light is-active" do %>
+              <span class="icon is-small"><i class="fa fa-first-order"></i></span>
+              <span>默认排序</span>
+            <%= end %>
+          <%= else %>
+            <%= link to: question_path(@conn, :show, @question), class: "button is-small is-link" do %>
+              <span class="icon is-small"><i class="fa fa-first-order"></i></span>
+              <span>默认排序</span>
+            <%= end %>
           <%= end %>
 
-          <%= link to: "", class: "button is-small is-link" do %>
-            <span class="icon is-small"><i class="fa fa-clock-o"></i></span>
-            <span>按时间排序</span>
+          <%= if @sort == "created" do %>
+            <%= link to: question_path(@conn, :show, @question, sort: "created"), class: "button is-small is-light is-active" do %>
+              <span class="icon is-small"><i class="fa fa-clock-o"></i></span>
+              <span>按时间排序</span>
+            <%= end %>
+          <%= else %>
+            <%= link to: question_path(@conn, :show, @question, sort: "created"), class: "button is-small is-link" do %>
+              <span class="icon is-small"><i class="fa fa-clock-o"></i></span>
+              <span>按时间排序</span>
+            <%= end %>
           <%= end %>
         </div>
-        <strong>0 个回答</strong>
+        <strong><%= @question.answer_count %> 个回答</strong>
       </div>
     </div>
+
+    <%= for answer <- @answers do %>
+    <div class="panel is-blank answer-entry">
+      <div class="panel-block">
+        <div class="is-clearfix">
+          <div class="is-pulled-left">
+            <div class="">
+              <%= link to: user_path(@conn, :show, answer.user.username) do %>
+                <%= answer.user.username %>
+              <%= end %>
+            </div>
+          </div>
+          <figure class="image is-24x24 is-pulled-right">
+            <%= link to: user_path(@conn, :show, answer.user.username) do %>
+              <img src="<%= answer.user.avatar %>">
+            <%= end %>
+          </figure>
+        </div>
+        <div class="">
+          <%= raw answer.content %>
+        </div>
+        <nav class="level">
+          <small class="level-left">
+            <%= link to: "", class: "level-item button is-small is-link" do %>
+              <span class="icon is-small"><i class="fa fa-heart-o"></i></span>
+              <span>感谢</span>
+            <%= end %>
+
+            <%= link to: "", class: "level-item button is-small is-link" do %>
+              <span class="icon is-small"><i class="fa fa-bookmark-o"></i></span>
+              <span>收藏</span>
+            <%= end %>
+
+            <%= link to: "", class: "level-item button is-small is-link" do %>
+              <span>没有帮助</span>
+            <%= end %>
+          </small>
+
+          <small class="level-right">
+            <%= link to: "", class: "level-item" do %>
+              <span>发布于</span>
+              <span class="phoenix-moment" data-timestamp="<%= answer.inserted_at %>"></span>
+            <%= end %>
+            <span class="level-item">•</span>
+            <%= if @logged_in? and @current_user == answer.user do %>
+              <%= link to: answer_path(@conn, :edit, answer), class: "level-item" do %>
+                <span class="icon is-small"><i class="fa fa-pencil"></i></span>
+                <span>修改</span>
+              <%= end %>
+            <%= else %>
+              <%= link to: "", class: "level-item" do %>
+                <span>没有帮助</span>
+              <%= end %>
+              <span class="level-item">•</span>
+              <%= link to: "", class: "level-item" do %>
+                <span>举报</span>
+              <%= end %>
+              <span class="level-item">•</span>
+              <%= link to: "", class: "level-item" do %>
+                <span>作者保留权力</span>
+              <%= end %>
+            <%= end %>
+          </small>
+        </nav>
+      </div>
+    </div>
+    <%= end %>
+
+    <%= end %>
 
     <%= if @logged_in? do %>
     <div class="panel is-blank">
@@ -50,7 +134,15 @@
           </figure>
         </div>
         <div class="">
-          <textarea class="textarea simditor-comment-textarea"></textarea>
+          <%= form_for @changeset, question_answer_path(@conn, :create, @question), fn f -> %>
+            <p class="control">
+              <%= textarea f, :content, class: "textarea simditor-comment-textarea" %>
+              <%= error_tag f, :content %>
+            </p>
+            <p class="control is-clearfix">
+              <%= submit "发布回答", class: "button is-info is-pulled-right" %>
+            </p>
+          <% end %>
         </div>
       </div>
     </div>

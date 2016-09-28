@@ -174,3 +174,6 @@ strike {
 .panel.is-blank p {
   padding: 0 0 10px;
 }
+.answer-entry .panel-block {
+  border-bottom: 1px solid #ddd;
+}
