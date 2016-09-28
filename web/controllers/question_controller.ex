@@ -98,17 +98,4 @@ defmodule Zizhixi.QuestionController do
         |> render("edit.html")
     end
   end
-
-  def delete(conn, %{"id" => id}) do
-    current_user = current_resource(conn)
-    question = Repo.get_by!(Question, %{id: id, user_id: current_user.id})
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(question)
-
-    conn
-    |> put_flash(:info, "问题删除成功.")
-    |> redirect(to: question_and_answer_path(conn, :index))
-  end
 end

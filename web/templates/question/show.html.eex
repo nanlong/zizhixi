@@ -152,7 +152,7 @@
     <%= if @logged_in? and @current_user == @question.user do %>
     <div class="panel is-blank">
       <div class="panel-heading">
-        帖子操作
+        问题操作
       </div>
       <div class="panel-block">
         <aside class="menu">
@@ -161,12 +161,6 @@
               <%= link to: question_path(@conn, :edit, @question) do %>
                 <span class="icon is-small"><i class="fa fa-pencil"></i></span>
                 <span>编辑</span>
-              <%= end %>
-            </li>
-            <li>
-              <%= link to: question_path(@conn, :delete, @question), method: :delete, data: [confirm: "确定要删除吗？"] do %>
-                <span class="icon is-small"><i class="fa fa-trash"></i></span>
-                <span>删除</span>
               <%= end %>
             </li>
           </ul>
