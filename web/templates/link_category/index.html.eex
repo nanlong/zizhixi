@@ -84,7 +84,11 @@
             <%= end %>
           </td>
           <td><%= link.name %></td>
-          <td><%= link.href %></td>
+          <td>
+            <textarea class="textarea" readonly="readonly">
+              <%= link.href %>
+            </textarea>
+          </td>
           <td><%= link.description %></td>
           <td><%= link.category.name %></td>
           <td class="is-icon text-right">

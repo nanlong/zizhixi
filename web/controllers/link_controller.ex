@@ -89,7 +89,7 @@ defmodule Zizhixi.LinkController do
     case Repo.update(changeset) do
       {:ok, _link_category} ->
         conn
-        |> put_flash(:info, "链接成功.")
+        |> put_flash(:info, "编辑成功.")
         |> redirect(to: link_category_path(conn, :index))
       {:error, changeset} ->
         categories = LinkCategory
