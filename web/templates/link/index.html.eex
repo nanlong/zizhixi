@@ -38,7 +38,7 @@
             <div class="content columns is-multiline">
               <%= for entry <- category.links do %>
                 <div class="column is-3">
-                  <%= link to: entry.href, target: "_blank" do %>
+                  <%= link to: entry.href, target: "_blank", class: "hint--top hint--medium", aria_label: entry.description  do %>
                     <%= entry.name %>
                   <%= end %>
                 </div>
