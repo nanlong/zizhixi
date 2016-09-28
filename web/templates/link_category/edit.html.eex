@@ -3,7 +3,7 @@
     <div class="box">
       <%= render "form.html",
         changeset: @changeset,
-        action: link_category_path(@conn, :create),
+        action: link_category_path(@conn, :update, @link_category),
         categories: @categories
       %>
     </div>

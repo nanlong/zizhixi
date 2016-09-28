@@ -89,7 +89,11 @@
               <%= link.href %>
             </textarea>
           </td>
-          <td><%= link.description %></td>
+          <td>
+            <textarea class="textarea" readonly="readonly">
+              <%= link.description %>
+            </textarea>
+          </td>
           <td><%= link.category.name %></td>
           <td class="is-icon text-right">
             <%= link "编辑", to: link_path(@conn, :edit, link), class: "btn btn-default btn-xs" %>
