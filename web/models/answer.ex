@@ -3,6 +3,8 @@ defmodule Zizhixi.Answer do
 
   schema "answers" do
     field :content, :string
+    field :thank_count, :integer, default: 0
+
     belongs_to :question, Zizhixi.Question
     belongs_to :user, Zizhixi.User
 

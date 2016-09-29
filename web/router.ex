@@ -105,8 +105,10 @@ defmodule Zizhixi.Router do
       resources "/answers", AnswerController, as: :answer, only: [:create]
       resources "/watch", QuestionWatchController, as: :watch, only: [:show, :create, :delete], singleton: true
     end
-    
-    resources "/answers", AnswerController, except: [:new, :create, :delete]
+
+    resources "/answers", AnswerController, except: [:new, :create, :delete] do
+      resources "/thank", AnswerThankController, as: :thank, only: [:create, :delete], singleton: true
+    end
     # 问答 end
 
     resources "/markets", MarketController
