@@ -21,10 +21,10 @@
               <span><%= question.answer_count %></span>
               <small>回答</small>
             <%= end %>
-            <a class="level-item button-is-multiline">
-              <span>0</span>
+            <%= link to: question_path(@conn, :show, question), class: "level-item button-is-multiline" do %>
+              <span><%= question.pv %></span>
               <small>浏览</small>
-            </a>
+            <%= end %>
           </div>
         </nav>
       </figure>

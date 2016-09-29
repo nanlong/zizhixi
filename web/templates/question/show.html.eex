@@ -223,12 +223,9 @@
         问题状态
       </div>
       <div class="panel-block">
-        <p>
-          最后更新 <span class="phoenix-moment" data-timestramp="<%= @question.updated_at %>"></span>
-        </p>
-        <p>
-          被浏览 0 次
-        </p>
+        <%= content_tag :p do %>
+          被浏览 <%= @question.pv %> 次
+        <%= end %>
         <p>
           相关话题 0 关注
         </p>

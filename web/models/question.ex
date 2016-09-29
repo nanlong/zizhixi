@@ -4,6 +4,7 @@ defmodule Zizhixi.Question do
   schema "questions" do
     field :title, :string
     field :content, :string
+    field :pv, :integer, default: 0
     field :answer_count, :integer, default: 0
     field :latest_inserted_at, Timex.Ecto.DateTime
 

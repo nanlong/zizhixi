@@ -1,7 +1,7 @@
 defmodule Zizhixi.QuestionController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Question, Answer}
+  alias Zizhixi.{Question, QuestionPV, Answer}
 
   import Guardian.Plug, only: [current_resource: 1]
 
@@ -51,6 +51,8 @@ defmodule Zizhixi.QuestionController do
     end
     |> Repo.all
 
+    QuestionPV.create(conn, question, current_resource(conn))
+
     changeset = Answer.changeset(%Answer{})
 
     conn
@@ -65,8 +67,6 @@ defmodule Zizhixi.QuestionController do
   def show(conn, %{"id" => id}) do
     show(conn, %{"id" => id, "sort" => "default"})
   end
-
-
 
   def edit(conn, %{"id" => id}) do
     current_user = current_resource(conn)
