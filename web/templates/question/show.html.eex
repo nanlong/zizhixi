@@ -137,8 +137,8 @@
             <%= @current_user.username %>
           <%= end %>
           <figure class="image is-24x24 is-pulled-right">
-            <%= link to: user_path(@conn, :show, @question.user.username) do %>
-              <img src="<%= @question.user.avatar %>">
+            <%= link to: user_path(@conn, :show, @current_user.username) do %>
+              <img src="<%= @current_user.avatar %>">
             <%= end %>
           </figure>
         </div>
