@@ -86,33 +86,22 @@
                   <%= end %>
                 <%= end %>
               <%= end %>
-
-              <%= link to: "", class: "level-item button is-small is-link" do %>
-                <span>没有帮助</span>
-              <%= end %>
             </small>
 
             <small class="level-right">
-              <%= link to: "", class: "level-item" do %>
+              <%= link to: "javascript:void(0);", class: "level-item" do %>
                 <span>发布于</span>
                 <span class="phoenix-moment" data-timestamp="<%= answer.inserted_at %>"></span>
               <%= end %>
-              <span class="level-item">•</span>
               <%= if @logged_in? and @current_user == answer.user do %>
+                <span class="level-item">•</span>
                 <%= link to: answer_path(@conn, :edit, answer), class: "level-item" do %>
                   <span class="icon is-small"><i class="fa fa-pencil"></i></span>
                   <span>修改</span>
                 <%= end %>
               <%= else %>
-                <%= link to: "", class: "level-item" do %>
-                  <span>没有帮助</span>
-                <%= end %>
                 <span class="level-item">•</span>
-                <%= link to: "", class: "level-item" do %>
-                  <span>举报</span>
-                <%= end %>
-                <span class="level-item">•</span>
-                <%= link to: "", class: "level-item" do %>
+                <%= link to: "javascript:void(0);", class: "level-item" do %>
                   <span>作者保留权力</span>
                 <%= end %>
               <%= end %>
