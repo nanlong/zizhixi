@@ -74,9 +74,9 @@ defmodule Zizhixi.LinkController do
   end
 
   def update(conn, %{"id" => id, "link" => %{"is_approved" => is_approved}}) do
-    link = Repo.get!(Link, id)
+    Repo.get!(Link, id)
     |> update_field(:is_approved, is_approved)
-    
+
     conn
     |> put_flash(:info, "操作成功.")
     |> redirect(to: link_category_path(conn, :index))

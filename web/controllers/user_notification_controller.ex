@@ -1,7 +1,7 @@
 defmodule Zizhixi.UserNotificationController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{User, UserNotification}
+  alias Zizhixi.{UserNotification}
 
   import Guardian.Plug, only: [current_resource: 1]
   import Zizhixi.Ecto.Helpers, only: [update_field: 3]

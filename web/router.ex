@@ -100,11 +100,13 @@ defmodule Zizhixi.Router do
 
     # 问答 begin
     resources "/Q&A", QuestionAndAnswerController, only: [:index]
+
     resources "/Q&A", QuestionController, except: [:index, :delete] do
       resources "/answers", AnswerController, as: :answer, only: [:create]
+      resources "/watch", QuestionWatchController, as: :watch, only: [:show, :create, :delete], singleton: true
     end
+    
     resources "/answers", AnswerController, except: [:new, :create, :delete]
-    # /Q&A/123213-321321-32132-321321
     # 问答 end
 
     resources "/markets", MarketController

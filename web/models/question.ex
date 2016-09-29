@@ -6,6 +6,7 @@ defmodule Zizhixi.Question do
     field :content, :string
     field :pv, :integer, default: 0
     field :answer_count, :integer, default: 0
+    field :watch_count, :integer, default: 0
     field :latest_inserted_at, Timex.Ecto.DateTime
 
     belongs_to :user, Zizhixi.User

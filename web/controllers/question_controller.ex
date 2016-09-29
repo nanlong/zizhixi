@@ -1,7 +1,7 @@
 defmodule Zizhixi.QuestionController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Question, QuestionPV, Answer}
+  alias Zizhixi.{User, Question, QuestionPV, QuestionWatch, Answer}
 
   import Guardian.Plug, only: [current_resource: 1]
 
@@ -51,15 +51,21 @@ defmodule Zizhixi.QuestionController do
     end
     |> Repo.all
 
-    QuestionPV.create(conn, question, current_resource(conn))
+    watches = User
+    |> join(:inner, [u], qw in QuestionWatch, qw.user_id == u.id and qw.question_id == ^question.id)
+    |> order_by([_, qw], [desc: qw.inserted_at])
+    |> Repo.paginate(%{page: 1, page_size: 27})
 
     changeset = Answer.changeset(%Answer{})
+
+    QuestionPV.create(conn, question, current_resource(conn))
 
     conn
     |> assign(:title, question.title)
     |> assign(:sort, sort)
     |> assign(:question, question)
     |> assign(:answers, answers)
+    |> assign(:watches, watches)
     |> assign(:changeset, changeset)
     |> render("show.html")
   end
