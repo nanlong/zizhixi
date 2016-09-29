@@ -5,6 +5,7 @@ defmodule Zizhixi.Answer do
     field :content, :string
     field :thank_count, :integer, default: 0
     field :collect_count, :integer, default: 0
+    field :vote_count, :integer, default: 0
 
     belongs_to :question, Zizhixi.Question
     belongs_to :user, Zizhixi.User

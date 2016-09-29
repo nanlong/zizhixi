@@ -174,6 +174,21 @@ strike {
 .panel.is-blank p {
   padding: 0 0 10px;
 }
+.question-entry,
+.answer-head,
+.question-answer-form {
+  margin-left: 50px;
+}
+.answer-entry {
+  position: relative;
+}
+.answer-entry .panel-left {
+  position: absolute;
+  width: 50px;
+}
 .answer-entry .panel-block {
   border-bottom: 1px solid #ddd;
+}
+.answer-entry .panel-block {
+  margin-left: 50px;
 }

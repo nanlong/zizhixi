@@ -1,6 +1,6 @@
 <div class="columns">
   <div class="column">
-    <div class="">
+    <div class="question-entry">
       <h2 class="title"><%= @question.title %></h2>
       <div>
         <%= raw @question.content %>
@@ -20,7 +20,7 @@
     </div>
     <a name="answer"></a>
     <%= if @question.answer_count > 0 do %>
-      <div class="panel is-blank">
+      <div class="panel is-blank answer-head">
         <div class="panel-heading">
           <div class="is-pulled-right">
             <%= link to: question_path(@conn, :show, @question), class: "button is-small" <> highlight(@sort, "default", "is-light is-active", "is-link") do %>
@@ -39,6 +39,23 @@
 
       <%= for answer <- @answers do %>
       <div class="panel is-blank answer-entry">
+        <div class="panel-left has-text-centered">
+          <div>
+            <%= link to: answer_vote_path(@conn, :create, answer, next: question_path(@conn, :show, @question)), method: :post do %>
+              <%= tag :input, type: "hidden", name: "answer_vote[status]", value: "true" %>
+              <span class="icon is-medium hint--top" aria-label="赞同"><i class="fa fa-caret-up"></i></span>
+            <%= end %>
+          </div>
+          <div>
+            <%= answer.vote_count %>
+          </div>
+          <div>
+            <%= link to: answer_vote_path(@conn, :create, answer, next: question_path(@conn, :show, @question)), method: :post do %>
+              <%= tag :input, type: "hidden", name: "answer_vote[status]", value: "false" %>
+              <span class="icon is-medium hint--bottom hint--small" aria-label="反对"><i class="fa fa-caret-down"></i></span>
+            <%= end %>
+          </div>
+        </div>
         <div class="panel-block">
           <div class="is-clearfix">
             <div class="is-pulled-left">
@@ -113,7 +130,7 @@
     <%= end %>
 
     <%= if @logged_in? do %>
-    <div class="panel is-blank">
+    <div class="panel is-blank question-answer-form">
       <div class="panel-block">
         <div class="is-clearfix" style="padding-bottom: 10px;">
           <%= link to: user_path(@conn, :show, @current_user.username), class: "is-pulled-left" do %>
