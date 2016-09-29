@@ -36,7 +36,7 @@ defmodule Zizhixi.Mixfile do
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_html, "~> 2.7.0"},
+      {:phoenix_html, "~> 2.7"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
@@ -46,7 +46,7 @@ defmodule Zizhixi.Mixfile do
       {:timex_ecto, "~> 3.0"},
       {:scrivener, "~> 2.0"},
       {:scrivener_ecto, "~> 1.0"},
-      {:scrivener_html, "~> 1.1"},
+      {:scrivener_html, "~> 1.3"},
       {:qiniu, "~> 0.3.0"},
       {:aliyun_direct_mail, github: "nanlong/aliyun_direct_mail"},
    ]

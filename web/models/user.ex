@@ -30,7 +30,7 @@ defmodule Zizhixi.User do
     timestamps()
   end
 
-  @regex_email ~r/.+@[^\.]+.*/
+  @regex_email ~r/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
   @regex_mobile ~r/1\d{10}$/
 
   # @required_params, @optional_params

@@ -4,7 +4,7 @@ defmodule Zizhixi.AnswerController do
   alias Zizhixi.{Answer, Question}
 
   import Guardian.Plug, only: [current_resource: 1]
-  import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
+  import Zizhixi.Ecto.Helpers, only: [inc: 3]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
 

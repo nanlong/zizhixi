@@ -40,7 +40,7 @@
           </div>
           <div class="is-clearfix" style="padding-top: 5px;">
             <div class="is-pulled-left">
-              <%= for i <- 1..4 do %>
+              <%= for _ <- 1..4 do %>
                 <%= link to: "" do %>
                   <span class="tag is-dark is-small">
                     标签占位

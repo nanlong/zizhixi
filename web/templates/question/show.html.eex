@@ -170,7 +170,7 @@
           人关注问题
         </p>
         <p class="is-clearfix">
-          <%= for i <- 1..14 do %>
+          <%= for _ <- 1..14 do %>
           <span class="is-pulled-left" style="margin: 0 5px 5px 0">
             <%= link to: "", class: "image is-24x24" do %>
               <img src="http://placehold.it/128x128" alt="" />
