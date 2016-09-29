@@ -23,28 +23,14 @@
     <div class="panel is-blank">
       <div class="panel-heading">
         <div class="is-pulled-right">
-          <%= if @sort == "default" do %>
-            <%= link to: question_path(@conn, :show, @question), class: "button is-small is-light is-active" do %>
-              <span class="icon is-small"><i class="fa fa-first-order"></i></span>
-              <span>默认排序</span>
-            <%= end %>
-          <%= else %>
-            <%= link to: question_path(@conn, :show, @question), class: "button is-small is-link" do %>
-              <span class="icon is-small"><i class="fa fa-first-order"></i></span>
-              <span>默认排序</span>
-            <%= end %>
+          <%= link to: question_path(@conn, :show, @question), class: "button is-small" <> highlight(@sort, "default", "is-light is-active", "is-link") do %>
+            <span class="icon is-small"><i class="fa fa-first-order"></i></span>
+            <span>默认排序</span>
           <%= end %>
 
-          <%= if @sort == "created" do %>
-            <%= link to: question_path(@conn, :show, @question, sort: "created"), class: "button is-small is-light is-active" do %>
-              <span class="icon is-small"><i class="fa fa-clock-o"></i></span>
-              <span>按时间排序</span>
-            <%= end %>
-          <%= else %>
-            <%= link to: question_path(@conn, :show, @question, sort: "created"), class: "button is-small is-link" do %>
-              <span class="icon is-small"><i class="fa fa-clock-o"></i></span>
-              <span>按时间排序</span>
-            <%= end %>
+          <%= link to: question_path(@conn, :show, @question, sort: "created"), class: "button is-small" <> highlight(@sort, "created", "is-light is-active", "is-link") do %>
+            <span class="icon is-small"><i class="fa fa-clock-o"></i></span>
+            <span>按时间排序</span>
           <%= end %>
         </div>
         <strong><%= @question.answer_count %> 个回答</strong>

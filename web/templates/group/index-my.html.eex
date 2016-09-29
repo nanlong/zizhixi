@@ -61,22 +61,22 @@
       </div>
       <footer class="card-footer">
         <div class="card-footer-item">
-          <a class="button-is-multiline has-text-centered" href="<%= group_user_path(@conn, :show, @current_user.username, tab: "post") %>">
+          <%= link to: group_user_path(@conn, :show, @current_user.username, tab: "post"), class: "button-is-multiline has-text-centered" do %>
             <span><%= @group_user.post_count %></span>
             <small>发帖</small>
-          </a>
+          <%= end %>
         </div>
         <div class="card-footer-item">
-          <a class="button-is-multiline has-text-centered" href="<%= group_user_path(@conn, :show, @current_user.username, tab: "comment") %>">
+          <%= link to: group_user_path(@conn, :show, @current_user.username, tab: "comment"), class: "button-is-multiline has-text-centered" do %>
             <span><%= @group_user.comment_count %></span>
             <small>回帖</small>
-          </a>
+          <%= end %>
         </div>
         <div class="card-footer-item">
-          <a class="button-is-multiline has-text-centered" href="<%= group_user_path(@conn, :show, @current_user.username, tab: "collect") %>">
+          <%= link to: group_user_path(@conn, :show, @current_user.username, tab: "collect"), class: "button-is-multiline has-text-centered" do %>
             <span><%= @group_user.collect_count %></span>
             <small>收藏</small>
-          </a>
+          <%= end %>
         </div>
       </footer>
     </div>

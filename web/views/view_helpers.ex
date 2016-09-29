@@ -18,4 +18,11 @@ defmodule Zizhixi.ViewHelpers do
     |> Guardian.Permissions.from_claims(:admin)
     |> Guardian.Permissions.all?([:all], :admin)
   end
+
+  def highlight(varable, value, class, default \\ "") do
+    " " <> cond do
+      varable == value -> class
+      true -> default
+    end
+  end
 end

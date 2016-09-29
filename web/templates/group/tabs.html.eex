@@ -1,13 +1,9 @@
 <div class="tabs">
   <ul>
     <%= for {tab, name, path} <- tabs(@conn) do %>
-    <%= if tab == @current_tab do %>
-    <li class="is-active">
-    <%= else %>
-    <li>
-    <%= end %>
-      <%= link name, to: path %>
-    </li>
+      <%= content_tag :li, class: highlight(@current_tab, tab, "is-active") do %>
+        <%= link raw(name), to: path %>
+      <%= end %>
     <%= end %>
   </ul>
 </div>

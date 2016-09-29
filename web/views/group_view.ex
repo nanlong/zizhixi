@@ -27,7 +27,7 @@ defmodule Zizhixi.GroupView do
     case authenticated?(conn) do
       true ->
         [
-          {"my", "我的小组", group_path(conn, :index, tab: "my")},
+          {"my", "我的小组", group_path(conn, :index)},
           {"new", "小组新贴", group_path(conn, :index, tab: "new")},
           {"rank", "小组排行", group_path(conn, :index, tab: "rank")},
         ]

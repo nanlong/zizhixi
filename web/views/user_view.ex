@@ -6,7 +6,7 @@ defmodule Zizhixi.UserView do
 
   def tabs(conn, user) do
     [
-      {"profile", "个人信息", user_path(conn, :show, user.username, tab: "profile")},
+      {"profile", "个人信息", user_path(conn, :show, user.username)},
       {"followers", "关注者 (" <> to_string(user.followers_count) <> ")", user_path(conn, :show, user.username, tab: "followers")},
       {"following", "正在关注 (" <> to_string(user.following_count) <> ")", user_path(conn, :show, user.username, tab: "following")},
     ]

@@ -4,7 +4,7 @@
     <%= render "tabs.html", conn: @conn, current_tab: @current_tab %>
 
     <div class="box">
-        <%= for {group, index} <- @groups |> Enum.with_index(1) |> Enum.to_list do %>
+        <%= for {group, index} <- @groups |> Enum.with_index(1) do %>
           <article class="media">
             <figure class="media-left">
               <p class="image is-48x48">
@@ -27,17 +27,17 @@
                 小组创始人
               <%= else %>
                 <%= if group_member?(@conn, group) do %>
-                <%= link "已加入",
-                  to: group_member_path(@conn, :delete, group, next: group_path(@conn, :index, tab: "rank")),
-                  class: "button is-success",
-                  method: :delete
-                %>
+                  <%= link "已加入",
+                    to: group_member_path(@conn, :delete, group, next: group_path(@conn, :index, tab: "rank")),
+                    class: "button is-success",
+                    method: :delete
+                  %>
                 <%= else %>
-                <%= link "加入",
-                  to: group_member_path(@conn, :create, group, next: group_path(@conn, :index, tab: "rank")),
-                  class: "button is-info",
-                  method: :post
-                %>
+                  <%= link "加入",
+                    to: group_member_path(@conn, :create, group, next: group_path(@conn, :index, tab: "rank")),
+                    class: "button is-info",
+                    method: :post
+                  %>
                 <%= end %>
               <%= end %>
             </div>
