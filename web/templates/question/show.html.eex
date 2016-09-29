@@ -18,7 +18,7 @@
         <%= end %>
       </div>
     </div>
-
+    <a name="answer"></a>
     <%= if @question.answer_count > 0 do %>
     <div class="panel is-blank">
       <div class="panel-heading">

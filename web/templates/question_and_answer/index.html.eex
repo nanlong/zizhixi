@@ -17,10 +17,10 @@
       <figure class="media-left">
         <nav class="level">
           <div class="level-left has-text-centered">
-            <a class="level-item button-is-multiline">
-              <span>0</span>
+            <%= link to: question_path(@conn, :show, question) <> "#answer", class: "level-item button-is-multiline" do %>
+              <span><%= question.answer_count %></span>
               <small>回答</small>
-            </a>
+            <%= end %>
             <a class="level-item button-is-multiline">
               <span>0</span>
               <small>浏览</small>
@@ -40,25 +40,12 @@
           </div>
           <div class="is-clearfix" style="padding-top: 5px;">
             <div class="is-pulled-left">
-              <%= link to: "" do %>
-                <span class="tag is-dark is-small">
-                  标签占位
-                </span>
-              <%= end %>
-              <%= link to: "" do %>
-                <span class="tag is-dark is-small">
-                  标签占位
-                </span>
-              <%= end %>
-              <%= link to: "" do %>
-                <span class="tag is-dark is-small">
-                  标签占位
-                </span>
-              <%= end %>
-              <%= link to: "" do %>
-                <span class="tag is-dark is-small">
-                  标签占位
-                </span>
+              <%= for i <- 1..4 do %>
+                <%= link to: "" do %>
+                  <span class="tag is-dark is-small">
+                    标签占位
+                  </span>
+                <%= end %>
               <%= end %>
             </div>
             <small class="is-pulled-right">
