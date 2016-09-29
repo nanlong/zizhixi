@@ -3,7 +3,7 @@ defmodule Zizhixi.LinkController do
 
   alias Zizhixi.{Link, LinkCategory}
 
-  import Zizhixi.Ecto.Helpers, only: [set: 4]
+  import Zizhixi.Ecto.Helpers, only: [update_field: 3]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:new, :create]
@@ -75,8 +75,8 @@ defmodule Zizhixi.LinkController do
 
   def update(conn, %{"id" => id, "link" => %{"is_approved" => is_approved}}) do
     link = Repo.get!(Link, id)
-    Link |> set(link, :is_approved, is_approved)
-
+    |> update_field(:is_approved, is_approved)
+    
     conn
     |> put_flash(:info, "操作成功.")
     |> redirect(to: link_category_path(conn, :index))

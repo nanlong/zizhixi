@@ -4,7 +4,7 @@ defmodule Zizhixi.GroupPostEliteController do
   alias Zizhixi.{GroupPost, UserNotification}
 
   import Guardian.Plug, only: [current_resource: 1]
-  import Zizhixi.Ecto.Helpers, only: [set: 4]
+  import Zizhixi.Ecto.Helpers, only: [update_field: 3]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:create, :delete]
@@ -20,7 +20,7 @@ defmodule Zizhixi.GroupPostEliteController do
       raise Phoenix.ActionClauseError
     end
 
-    GroupPost |> set(group_post, :is_elite, true)
+    group_post |> update_field(:is_elite, true)
 
     UserNotification.create(conn,
       user: group_post.user,
@@ -46,7 +46,7 @@ defmodule Zizhixi.GroupPostEliteController do
       raise Phoenix.ActionClauseError
     end
 
-    GroupPost |> set(group_post, :is_elite, false)
+    group_post |> update_field(:is_elite, false)
 
     conn
     |> put_flash(:info, "取消加精成功.")

@@ -4,7 +4,7 @@ defmodule Zizhixi.ArticleController do
   alias Zizhixi.{Article, ArticleUser, ArticleSection, ArticleComment, ArticlePV}
 
   import Guardian.Plug, only: [current_resource: 1]
-  import Zizhixi.Ecto.Helpers, only: [inc: 3]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:new, :create, :update, :delete]
@@ -52,8 +52,7 @@ defmodule Zizhixi.ArticleController do
 
     case Repo.insert(changeset) do
       {:ok, _article} ->
-        article_user = ArticleUser.get(current_user)
-        ArticleUser |> inc(article_user, :article_count)
+        ArticleUser.get(current_user) |> increment(:article_count)
 
         conn
         |> put_flash(:info, "发帖成功.")

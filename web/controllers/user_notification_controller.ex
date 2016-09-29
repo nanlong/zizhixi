@@ -4,7 +4,7 @@ defmodule Zizhixi.UserNotificationController do
   alias Zizhixi.{User, UserNotification}
 
   import Guardian.Plug, only: [current_resource: 1]
-  import Zizhixi.Ecto.Helpers, only: [set: 4]
+  import Zizhixi.Ecto.Helpers, only: [update_field: 3]
   import Zizhixi.Controller.Helpers, only: [redirect_to: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
@@ -18,7 +18,7 @@ defmodule Zizhixi.UserNotificationController do
     |> preload([:who])
     |> Repo.paginate(params)
 
-    User |> set(current_user, :noread_notification_count, 0)
+    current_user |> update_field(:noread_notification_count, 0)
 
     conn
     |> assign(:title, "所有通知")

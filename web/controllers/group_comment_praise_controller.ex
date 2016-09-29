@@ -4,7 +4,7 @@ defmodule Zizhixi.GroupCommentPraiseController do
   alias Zizhixi.{Repo, GroupComment, GroupCommentPraise, UserNotification}
 
   import Guardian.Plug, only: [current_resource: 1]
-  import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2, decrement: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:create, :delete]
@@ -24,7 +24,7 @@ defmodule Zizhixi.GroupCommentPraiseController do
 
     conn = case Repo.insert(changeset) do
       {:ok, _group_comment_praise} ->
-        GroupComment |> inc(group_comment, :praise_count)
+        group_comment |> increment(:praise_count)
 
         UserNotification.create(conn,
           user: group_comment.user,
@@ -56,7 +56,7 @@ defmodule Zizhixi.GroupCommentPraiseController do
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(group_comment_praise)
-    GroupComment |> dec(group_comment, :praise_count)
+    group_comment |> decrement(:praise_count)
 
     conn |> put_flash(:info, "取消评论点赞成功.")
     |> redirect(to: group_post_path(conn, :show, group_comment.post_id))

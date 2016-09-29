@@ -3,7 +3,7 @@ defmodule Zizhixi.UserNotification do
 
   alias Zizhixi.{Repo, User, Group, GroupPost, GroupComment}
 
-  import Zizhixi.Ecto.Helpers, only: [inc: 3]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2]
   import Zizhixi.Router.Helpers
   import Phoenix.HTML
   import Phoenix.HTML.Link
@@ -40,8 +40,8 @@ defmodule Zizhixi.UserNotification do
 
       case Repo.get_by(Zizhixi.UserNotification, params) do
         nil ->
-          User |> inc(user_id, :notification_count)
-          User |> inc(user_id, :noread_notification_count)
+          User |> Repo.get(user_id) |> increment(:notification_count)
+          User |> Repo.get(user_id) |> increment(:noread_notification_count)
 
           Repo.insert(%Zizhixi.UserNotification{
             user_id: user_id,

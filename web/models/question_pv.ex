@@ -2,7 +2,7 @@ defmodule Zizhixi.QuestionPV do
   use Zizhixi.Web, :model
 
   alias Zizhixi.{Repo, User, Question}
-  import Zizhixi.Ecto.Helpers, only: [inc: 3]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2]
 
   schema "questions_pv" do
     field :day, Timex.Ecto.DateTime
@@ -52,7 +52,7 @@ defmodule Zizhixi.QuestionPV do
 
     case (query |> Ecto.Query.first |> Repo.one) do
       nil ->
-        Question |> inc(question_id, :pv)
+        Question |> Repo.get(question_id) |> increment(:pv)
         %__MODULE__{
           day: today,
           user_id: user_id,

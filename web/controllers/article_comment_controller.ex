@@ -4,7 +4,7 @@ defmodule Zizhixi.ArticleCommentController do
   alias Zizhixi.{Article, ArticleUser, ArticleComment}
 
   import Guardian.Plug, only: [current_resource: 1]
-  import Zizhixi.Ecto.Helpers, only: [set: 4, inc: 3]
+  import Zizhixi.Ecto.Helpers, only: [update_field: 3, increment: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
 
@@ -21,12 +21,11 @@ defmodule Zizhixi.ArticleCommentController do
 
     conn = case Repo.insert(changeset) do
       {:ok, article_comment} ->
-        Article |> set(article, :latest_inserted_at, article_comment.inserted_at)
-        Article |> set(article, :latest_user_id, article_comment.user_id)
-        Article |> inc(article, :comment_count)
+        article |> update_field(:latest_inserted_at, article_comment.inserted_at)
+        article |> update_field(:latest_user_id, article_comment.user_id)
+        article |> increment(:comment_count)
 
-        article_user = ArticleUser.get(current_user)
-        ArticleUser |> inc(article_user, :comment_count)
+        ArticleUser.get(current_user) |> increment(:comment_count)
 
         conn |> put_flash(:info, "评论成功.")
       {:error, _changeset} ->
@@ -90,7 +89,7 @@ defmodule Zizhixi.ArticleCommentController do
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    ArticleComment |> set(article_comment, :is_deleted, true)
+    article_comment |> update_field(:is_deleted, true)
 
     conn
     |> put_flash(:info, "评论删除成功.")

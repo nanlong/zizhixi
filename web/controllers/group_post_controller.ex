@@ -5,7 +5,7 @@ defmodule Zizhixi.GroupPostController do
     GroupComment, UserTimeline}
 
   import Guardian.Plug, only: [current_resource: 1]
-  import Zizhixi.Ecto.Helpers, only: [inc: 3]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2]
   import Zizhixi.GroupView, only: [group_member?: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
@@ -49,13 +49,12 @@ defmodule Zizhixi.GroupPostController do
 
     case Repo.insert(changeset) do
       {:ok, group_post} ->
-        Group |> inc(group, :post_count)
+        group |> increment(:post_count)
 
-        group_user = GroupUser.get(current_user.id)
-        GroupUser |> inc(group_user, :post_count)
+        group_user = GroupUser.get(current_user.id) |> increment(:post_count)
 
-        group_member = Repo.get_by(GroupMember, %{group_id: group.id, user_id: current_user.id})
-        GroupMember |> inc(group_member, :post_count)
+        Repo.get_by(GroupMember, %{group_id: group.id, user_id: current_user.id})
+        |> increment(:post_count)
 
         UserTimeline.create(conn,
           where: group,

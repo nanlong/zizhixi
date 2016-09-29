@@ -4,7 +4,7 @@ defmodule Zizhixi.AnswerController do
   alias Zizhixi.{Answer, Question}
 
   import Guardian.Plug, only: [current_resource: 1]
-  import Zizhixi.Ecto.Helpers, only: [inc: 3]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
 
@@ -18,7 +18,7 @@ defmodule Zizhixi.AnswerController do
 
     conn = case Repo.insert(changeset) do
       {:ok, _answer} ->
-        Question |> inc(question, :answer_count)
+        question |> increment(:answer_count)
         conn |> put_flash(:info, "创建回答成功.")
       {:error, _changeset} ->
         conn |> put_flash(:error, "创建回答失败.")

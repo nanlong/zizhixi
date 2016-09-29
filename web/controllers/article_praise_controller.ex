@@ -4,7 +4,7 @@ defmodule Zizhixi.ArticlePraiseController do
   alias Zizhixi.{Article, ArticleUser, ArticlePraise}
 
   import Guardian.Plug, only: [current_resource: 1]
-  import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2, decrement: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
 
@@ -19,10 +19,8 @@ defmodule Zizhixi.ArticlePraiseController do
 
     conn = case Repo.insert(changeset) do
       {:ok, _article_praise} ->
-        Article |> inc(article, :praise_count)
-
-        article_user = ArticleUser.get(current_user)
-        ArticleUser |> inc(article_user, :praise_count)
+        article |> increment(:praise_count)
+        ArticleUser.get(current_user) |> increment(:praise_count)
 
         conn |> put_flash(:info, "点赞成功.")
       {:error, _changeset} ->
@@ -44,11 +42,10 @@ defmodule Zizhixi.ArticlePraiseController do
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(article_praise)
-    Article |> dec(article, :praise_count)
 
-    article_user = ArticleUser.get(current_user)
-    ArticleUser |> dec(article_user, :praise_count)
-
+    article |> decrement(:praise_count)
+    ArticleUser.get(current_user) |> decrement(:praise_count)
+    
     conn
     |> put_flash(:info, "取消点赞成功.")
     |> redirect(to: article_path(conn, :show, article))

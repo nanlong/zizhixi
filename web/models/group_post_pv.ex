@@ -2,7 +2,7 @@ defmodule Zizhixi.GroupPostPV do
   use Zizhixi.Web, :model
 
   alias Zizhixi.{Repo, User, GroupPost}
-  import Zizhixi.Ecto.Helpers, only: [inc: 3]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2]
 
   schema "group_posts_pv" do
     field :day, Timex.Ecto.Date
@@ -52,7 +52,7 @@ defmodule Zizhixi.GroupPostPV do
 
     case (query |> Ecto.Query.first |> Repo.one) do
       nil ->
-        GroupPost |> inc(post_id, :pv)
+        GroupPost |> Repo.get(post_id) |> increment(:pv)
         %__MODULE__{
           day: today,
           user_id: user_id,

@@ -3,7 +3,7 @@ defmodule Zizhixi.GroupMemberController do
 
   alias Zizhixi.{Group, GroupUser, GroupMember, UserNotification}
 
-  import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2, decrement: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:create, :delete]
@@ -40,10 +40,9 @@ defmodule Zizhixi.GroupMemberController do
       true ->
         case Repo.insert(changeset) do
           {:ok, _group_member} ->
-            Group |> inc(group, :member_count)
+            group |> increment(:member_count)
 
-            group_user = GroupUser.get(current_user.id)
-            GroupUser |> inc(group_user, :group_count)
+            GroupUser.get(current_user.id) |> increment(:group_count)
 
             UserNotification.create(conn,
               user: group.user,
@@ -85,10 +84,9 @@ defmodule Zizhixi.GroupMemberController do
         # Here we use delete! (with a bang) because we expect
         # it to always work (and if it does not, it will raise).
         Repo.delete!(group_member)
-        Group |> dec(group, :member_count)
-
-        group_user = GroupUser.get(current_user.id)
-        GroupUser |> dec(group_user, :group_count)
+        
+        group |> decrement(:member_count)
+        GroupUser.get(current_user.id) |> decrement(:group_count)
 
         conn
         |> put_flash(:info, "已退出 #{group.name} 小组")

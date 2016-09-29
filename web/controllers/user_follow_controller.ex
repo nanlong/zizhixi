@@ -4,7 +4,7 @@ defmodule Zizhixi.UserFollowController do
   alias Zizhixi.{User, UserFollow, UserNotification}
 
   import Guardian.Plug, only: [current_resource: 1]
-  import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2, decrement: 2]
   import Zizhixi.Controller.Helpers, only: [redirect_to: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
@@ -31,8 +31,8 @@ defmodule Zizhixi.UserFollowController do
 
     conn = case Repo.insert(changeset) do
       {:ok, _user_follow} ->
-        User |> inc(current_user, :following_count)
-        User |> inc(follow_user, :followers_count)
+        current_user |> increment(:following_count)
+        follow_user |> increment(:followers_count)
 
         UserNotification.create(conn,
           user: follow_user,
@@ -62,8 +62,9 @@ defmodule Zizhixi.UserFollowController do
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(user_follow)
-    User |> dec(current_user, :following_count)
-    User |> dec(follow_user, :followers_count)
+
+    current_user |> decrement(:following_count)
+    follow_user |> decrement(:followers_count)
 
     conn
     |> put_flash(:info, "取消关注成功.")

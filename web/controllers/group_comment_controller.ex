@@ -4,7 +4,7 @@ defmodule Zizhixi.GroupCommentController do
   alias Zizhixi.{GroupUser, GroupMember, GroupPost, GroupComment, UserTimeline,
     UserNotification}
 
-  import Zizhixi.Ecto.Helpers, only: [set: 4, inc: 3]
+  import Zizhixi.Ecto.Helpers, only: [update_field: 3, increment: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:create, :edit, :update, :delete]
@@ -25,15 +25,13 @@ defmodule Zizhixi.GroupCommentController do
     conn = case Repo.insert(changeset) do
       {:ok, group_comment} ->
         group_comment = Repo.preload(group_comment, :post)
-        GroupPost |> inc(post, :comment_count)
-        GroupPost |> set(post, :latest_inserted_at, group_comment.inserted_at)
-        GroupPost |> set(post, :latest_user_id, group_comment.user_id)
+        post |> increment(:comment_count)
+        post |> update_field(:latest_inserted_at, group_comment.inserted_at)
+        post |> update_field(:latest_user_id, group_comment.user_id)
 
-        group_user = GroupUser.get(current_user.id)
-        GroupUser |> inc(group_user, :comment_count)
-
-        group_member = Repo.get_by(GroupMember, %{group_id: post.group_id, user_id: current_user.id})
-        GroupMember |> inc(group_member, :comment_count)
+        GroupUser.get(current_user.id) |> increment(:comment_count)
+        Repo.get_by(GroupMember, %{group_id: post.group_id, user_id: current_user.id})
+        |> increment(:comment_count)
 
         UserTimeline.create(conn,
           where: post.group,
@@ -97,7 +95,7 @@ defmodule Zizhixi.GroupCommentController do
     comment = Repo.get!(GroupComment, id)
     post = Repo.get!(GroupPost, comment.post_id)
 
-    GroupComment |> set(comment, :is_deleted, true)
+    comment |> update_field(:is_deleted, true)
 
     conn
     |> put_flash(:info, "评论删除成功.")

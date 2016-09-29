@@ -4,7 +4,7 @@ defmodule Zizhixi.GroupPostWatchController do
   alias Zizhixi.{GroupPost, GroupPostWatch}
 
   import Guardian.Plug, only: [current_resource: 1]
-  import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2, decrement: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:create, :delete]
@@ -22,7 +22,7 @@ defmodule Zizhixi.GroupPostWatchController do
 
     conn = case Repo.insert(changeset) do
       {:ok, _group_post_watch} ->
-        GroupPost |> inc(group_post, :watch_count)
+        group_post |> increment(:watch_count)
         conn |> put_flash(:info, "关注成功.")
       {:error, _changeset} ->
         conn |> put_flash(:info, "关注失败.")
@@ -45,7 +45,8 @@ defmodule Zizhixi.GroupPostWatchController do
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(group_post_watch)
-    GroupPost |> dec(group_post, :watch_count)
+    
+    group_post |> decrement(:watch_count)
 
     conn
     |> put_flash(:info, "取消关注成功.")

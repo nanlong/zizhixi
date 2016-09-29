@@ -2,7 +2,7 @@ defmodule Zizhixi.GroupController do
   use Zizhixi.Web, :controller
 
   alias Zizhixi.{Group, GroupUser, GroupTopic, GroupMember, GroupPost}
-  import Zizhixi.Ecto.Helpers, only: [inc: 3]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:new, :create, :edit, :update, :delete]
@@ -90,8 +90,7 @@ defmodule Zizhixi.GroupController do
       {:ok, group} ->
         Repo.insert(%GroupMember{group_id: group.id, user_id: current_user.id})
 
-        group_user = GroupUser.get(current_user.id)
-        GroupUser |> inc(group_user, :group_count)
+        GroupUser.get(current_user.id) |> increment(:group_count)
 
         conn
         |> put_flash(:info, "小组创建成功.")
@@ -183,7 +182,7 @@ defmodule Zizhixi.GroupController do
       group.member_count == 1 ->
         Repo.delete!(group)
         conn
-        |> put_flash(:info, "Group deleted successfully.")
+        |> put_flash(:info, "小组删除成功.")
         |> redirect(to: group_path(conn, :index))
       true ->
         conn

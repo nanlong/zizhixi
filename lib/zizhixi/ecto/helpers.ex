@@ -4,64 +4,40 @@ defmodule Zizhixi.Ecto.Helpers do
   example:
     post = Repo.get(Post, post_id)
     Post |> inc(post, :comment_count)
+
+    post |> inc(:comment_count)
   """
   import Ecto.Query
+  import Ecto.Changeset, only: [update_change: 3]
 
   alias Zizhixi.Repo
 
+  def increment(struct, field, step \\ 1) do
+    params = %{}
+    |> Map.put_new(field, Map.get(struct, field))
+    |> Map.update!(field, &(&1 + step))
 
-  @doc """
-  设置某个字段的值
-  """
-  def set(model, %{:id => id}, column, value) do
-    set(model, id, column, value)
+    update_struct(struct, params)
   end
 
-  def set(model, id, column, value) do
-    opts = [] |> Keyword.put(column, value)
+  def decrement(struct, field, step \\ 1) do
+    params = %{}
+    |> Map.put_new(field, Map.get(struct, field))
+    |> Map.update!(field, &(&1 - step))
 
-    model
-    |> where(id: ^id)
-    |> update(set: ^opts)
-    |> Repo.update_all([])
+    update_struct(struct, params)
   end
 
-  @doc """
-  递增某个字段的值
-  """
-  def inc(model, %{:id => id}, column) do
-    inc(model, id, column)
+  def update_field(struct, field, value) do
+    params = %{}
+    |> Map.put_new(field, value)
+
+    update_struct(struct, params)
   end
 
-  def inc(model, id, column) do
-    model
-    |> where(id: ^id)
-    |> inc_or_dec(:inc, column)
-  end
-
-  @doc """
-  递减某个字段的值
-  """
-  def dec(model, %{:id => id}, column) do
-    dec(model, id, column)
-  end
-
-  def dec(model, id, column) do
-    model
-    |> where(id: ^id)
-    |> inc_or_dec(:dec, column)
-  end
-
-  defp inc_or_dec(query, action, column, step \\ 1) do
-    value = case action do
-      :inc -> step
-      :dec -> -step
-    end
-
-    opts = [] |> Keyword.put(column, value)
-
-    query
-    |> update(inc: ^opts)
-    |> Repo.update_all([])
+  defp update_struct(struct, params) do
+    struct
+    |> Ecto.Changeset.change(params)
+    |> Repo.update
   end
 end

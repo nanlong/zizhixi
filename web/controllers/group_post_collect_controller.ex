@@ -4,7 +4,7 @@ defmodule Zizhixi.GroupPostCollectController do
   alias Zizhixi.{GroupUser, GroupPost, GroupPostCollect}
 
   import Guardian.Plug, only: [current_resource: 1]
-  import Zizhixi.Ecto.Helpers, only: [inc: 3, dec: 3]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2, decrement: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:create, :delete]
@@ -22,10 +22,8 @@ defmodule Zizhixi.GroupPostCollectController do
 
     conn = case Repo.insert(changeset) do
       {:ok, _group_post_collect} ->
-        GroupPost |> inc(group_post, :collect_count)
-
-        group_user = GroupUser.get(current_user.id)
-        GroupUser |> inc(group_user, :collect_count)
+        group_post |> increment(:collect_count)
+        GroupUser.get(current_user.id) |> increment(:collect_count)
 
         conn |> put_flash(:info, "收藏成功.")
       {:error, _changeset} ->
@@ -50,10 +48,8 @@ defmodule Zizhixi.GroupPostCollectController do
     # it to always work (and if it does not, it will raise).
     Repo.delete!(group_post_collect)
 
-    GroupPost |> dec(group_post, :collect_count)
-
-    group_user = GroupUser.get(current_user.id)
-    GroupUser |> dec(group_user, :collect_count)
+    group_post |> decrement(:collect_count)
+    GroupUser.get(current_user.id) |> decrement(:collect_count)
 
     conn
     |> put_flash(:info, "取消收藏成功.")
