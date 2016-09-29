@@ -71,12 +71,20 @@
                     <span>感谢</span>
                   <%= end %>
                 <%= end %>
-
               <%= end %>
 
-              <%= link to: "", class: "level-item button is-small is-link" do %>
-                <span class="icon is-small"><i class="fa fa-bookmark-o"></i></span>
-                <span>收藏</span>
+              <%= if @logged_in? and @current_user != answer.user do %>
+                <%= if collect?(@conn, answer) do %>
+                  <%= link to: answer_collect_path(@conn, :delete, answer, next: question_path(@conn, :show, @question)), method: :delete, class: "level-item button is-small is-link" do %>
+                    <span class="icon is-small"><i class="fa fa-bookmark-o"></i></span>
+                    <span>取消收藏</span>
+                  <%= end %>
+                <%= else %>
+                  <%= link to: answer_collect_path(@conn, :create, answer, next: question_path(@conn, :show, @question)), method: :post, class: "level-item button is-small is-link" do %>
+                    <span class="icon is-small"><i class="fa fa-bookmark-o"></i></span>
+                    <span>收藏</span>
+                  <%= end %>
+                <%= end %>
               <%= end %>
 
               <%= link to: "", class: "level-item button is-small is-link" do %>
