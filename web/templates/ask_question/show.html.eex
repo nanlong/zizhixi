@@ -5,18 +5,13 @@
       <div>
         <%= raw @question.content %>
       </div>
-      <div style="padding-top: 10px;">
+      <!-- <div style="padding-top: 10px;">
         <%= link to: "" do %>
           <span class="tag is-dark is-small">
             标签占位
           </span>
         <%= end %>
-        <%= link to: "" do %>
-          <span class="tag is-dark is-small">
-            标签占位
-          </span>
-        <%= end %>
-      </div>
+      </div> -->
     </div>
     <a name="answer"></a>
     <%= if @question.answer_count > 0 do %>
