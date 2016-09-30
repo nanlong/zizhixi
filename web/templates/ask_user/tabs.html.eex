@@ -1,0 +1,9 @@
+<div class="tabs" style="margin-top: 20px;">
+  <ul class="is-left">
+    <%= for {tab, name, path} <- tabs(@conn, @ask_user) do %>
+      <%= content_tag :li, class: highlight(@current_tab, tab, "is-active") do %>
+        <%= link raw(name), to: path %>
+      <%= end %>
+    <%= end %>
+  </ul>
+</div>
