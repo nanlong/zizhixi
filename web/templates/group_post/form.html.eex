@@ -4,7 +4,7 @@
     <span class="select">
       <%= select f, :topic_id,
         (for topic <- @group_topics, do: {topic.name, topic.id}),
-        prompt: "选择话题" 
+        prompt: "选择话题"
       %>
     </span>
     <%= text_input f, :title, class: "input is-expanded" %>
@@ -13,7 +13,7 @@
 
   <%= label f, :content, "内容", class: "label" %>
   <p class="control">
-    <%= textarea f, :content, class: "textarea" %>
+    <%= textarea f, :content, class: "textarea simditor-textarea" %>
     <%= error_tag f, :content %>
   </p>
 

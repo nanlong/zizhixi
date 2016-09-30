@@ -8,6 +8,24 @@ import Simditor from "simditor";
     if ($simditor_textarea.length > 0) {
       new Simditor({
         textarea: $simditor_textarea,
+        toolbar: [
+          'title',
+          'bold',
+          'italic',
+          'underline',
+          'strikethrough',
+          'fontScale',
+          'color',
+          'ol',
+          'ul',
+          'blockquote',
+          'link',
+          'image',
+          'hr',
+          'indent',
+          'outdent',
+          'alignment'
+        ],
         imageButton: 'upload',
         pasteImage: true,
         upload: {
@@ -22,7 +40,15 @@ import Simditor from "simditor";
     if ($simditor_comment_textarea.length > 0) {
       new Simditor({
         textarea: $simditor_comment_textarea,
-        toolbar: ['bold', 'ol', 'ul', 'blockquote','link', 'image'],
+        toolbar: [
+          'bold',
+          'ol',
+          'ul',
+          'blockquote',
+          'link',
+          'image',
+          'alignment'
+        ],
         imageButton: 'upload',
         pasteImage: true,
         upload: {

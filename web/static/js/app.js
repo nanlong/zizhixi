@@ -47,6 +47,13 @@ import "moment/locale/zh-cn";
 })();
 
 $(function() {
+  $('button[type=submit]').on('click', function() {
+    if ($(this).data('is-submited')) {
+      return false;
+    }
+    $(this).data('is-submited', true);
+  });
+
   // 消息框
   (function() {
     let $notification = $('.notification');
@@ -60,27 +67,6 @@ $(function() {
         $notification.fadeOut();
       });
     };
-  })();
-
-  // 发新贴
-  (function() {
-    let $textarea = $('#group_post_content');
-
-    if ($textarea.length == 0) {
-      return;
-    }
-
-    let editor = new Simditor({
-      textarea: $textarea,
-      imageButton: 'upload',
-      pasteImage: true,
-      upload: {
-        url: "/editor/upload",
-        fileKey: "file"
-      }
-    });
-
-    editor.focus();
   })();
 
   // 小组帖子详情
@@ -98,7 +84,15 @@ $(function() {
 
     let editor = new Simditor({
       textarea: $textarea,
-      toolbar: ['bold', 'ol', 'ul', 'blockquote','link', 'image'],
+      toolbar: [
+        'bold',
+        'ol',
+        'ul',
+        'blockquote',
+        'link',
+        'image',
+        'alignment'
+      ],
       imageButton: 'upload',
       pasteImage: true,
       upload: {
