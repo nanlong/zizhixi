@@ -1,0 +1,70 @@
+<section class="hero is-small is-primary is-bold has-text-centered" style="margin-bottom: 20px;">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        问答
+      </h1>
+      <h2 class="subtitle">
+        传道，授业，解惑
+      </h2>
+    </div>
+  </div>
+</section>
+<div class="columns">
+  <div class="column">
+    <%= for question <- @pagination do %>
+    <article class="media">
+      <figure class="media-left">
+        <nav class="level">
+          <div class="level-left has-text-centered">
+            <%= link to: ask_question_path(@conn, :show, question) <> "#answer", class: "level-item button-is-multiline" do %>
+              <span><%= question.answer_count %></span>
+              <small>回答</small>
+            <%= end %>
+            <%= link to: ask_question_path(@conn, :show, question), class: "level-item button-is-multiline" do %>
+              <span><%= question.pv %></span>
+              <small>浏览</small>
+            <%= end %>
+          </div>
+        </nav>
+      </figure>
+      <div class="media-content" style="padding: 5px;">
+        <div class="content">
+          <h2 class="title is-5" style="margin: 0;">
+            <%= link to: ask_question_path(@conn, :show, question) do %>
+              <%= question.title %>
+            <%= end %>
+          </h2>
+          <div>
+
+          </div>
+          <div class="is-clearfix" style="padding-top: 5px;">
+            <div class="is-pulled-left">
+              <%= for _ <- 1..4 do %>
+                <%= link to: "" do %>
+                  <span class="tag is-dark is-small">
+                    标签占位
+                  </span>
+                <%= end %>
+              <%= end %>
+            </div>
+            <small class="is-pulled-right">
+              <%= link to: user_path(@conn, :show, question.user.username) do %>
+                <%= question.user.username %>
+              <%= end %>
+              发布于
+              <span class="phoenix-moment" data-timestamp="<%= question.inserted_at %>"></span>
+            </small>
+          </div>
+        </div>
+      </div>
+    </article>
+    <%= end %>
+
+  </div>
+  <div class="column is-3">
+    <%= link to: ask_question_path(@conn, :new), class: "button is-info is-fullwidth" do %>
+      提问
+    <%= end %>
+  </div>
+</div>

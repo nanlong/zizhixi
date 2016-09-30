@@ -1,0 +1,285 @@
+<div class="columns">
+  <div class="column">
+    <div class="question-entry">
+      <h2 class="title"><%= @question.title %></h2>
+      <div>
+        <%= raw @question.content %>
+      </div>
+      <div style="padding-top: 10px;">
+        <%= link to: "" do %>
+          <span class="tag is-dark is-small">
+            标签占位
+          </span>
+        <%= end %>
+        <%= link to: "" do %>
+          <span class="tag is-dark is-small">
+            标签占位
+          </span>
+        <%= end %>
+      </div>
+    </div>
+    <a name="answer"></a>
+    <%= if @question.answer_count > 0 do %>
+      <div class="panel is-blank answer-head">
+        <div class="panel-heading">
+          <div class="is-pulled-right">
+            <%= link to: ask_question_path(@conn, :show, @question), class: "button is-small" <> highlight(@sort, "default", "is-light is-active", "is-link") do %>
+              <span class="icon is-small"><i class="fa fa-first-order"></i></span>
+              <span>默认排序</span>
+            <%= end %>
+
+            <%= link to: ask_question_path(@conn, :show, @question, sort: "created"), class: "button is-small" <> highlight(@sort, "created", "is-light is-active", "is-link") do %>
+              <span class="icon is-small"><i class="fa fa-clock-o"></i></span>
+              <span>按时间排序</span>
+            <%= end %>
+          </div>
+          <strong><%= @question.answer_count %> 个回答</strong>
+        </div>
+      </div>
+
+      <%= for answer <- @answers do %>
+      <div class="panel is-blank answer-entry">
+        <div class="panel-left has-text-centered">
+          <div>
+            <%= link to: ask_answer_vote_path(@conn, :create, answer, next: ask_question_path(@conn, :show, @question)), method: :post do %>
+              <%= tag :input, type: "hidden", name: "ask_answer_vote[status]", value: "true" %>
+              <span class="icon is-medium hint--top" aria-label="赞同"><i class="fa fa-caret-up"></i></span>
+            <%= end %>
+          </div>
+          <div>
+            <%= answer.vote_count %>
+          </div>
+          <div>
+            <%= link to: ask_answer_vote_path(@conn, :create, answer, next: ask_question_path(@conn, :show, @question)), method: :post do %>
+              <%= tag :input, type: "hidden", name: "ask_answer_vote[status]", value: "false" %>
+              <span class="icon is-medium hint--bottom" aria-label="反对"><i class="fa fa-caret-down"></i></span>
+            <%= end %>
+          </div>
+        </div>
+        <div class="panel-block">
+          <div class="is-clearfix">
+            <div class="is-pulled-left">
+              <div class="">
+                <%= link to: user_path(@conn, :show, answer.user.username) do %>
+                  <%= answer.user.username %>
+                <%= end %>
+              </div>
+            </div>
+            <figure class="image is-24x24 is-pulled-right">
+              <%= link to: user_path(@conn, :show, answer.user.username) do %>
+                <img src="<%= answer.user.avatar %>">
+              <%= end %>
+            </figure>
+          </div>
+          <div class="">
+            <%= raw answer.content %>
+          </div>
+          <nav class="level">
+            <small class="level-left">
+              <%= if @logged_in? and @current_user != answer.user do %>
+                <%= if thank?(@conn, answer) do %>
+                  <%= link to: ask_answer_thank_path(@conn, :delete, answer, next: ask_question_path(@conn, :show, @question)), method: :delete, class: "level-item button is-small is-link" do %>
+                    <span class="icon is-small"><i class="fa fa-heart-o"></i></span>
+                    <span>取消感谢</span>
+                  <%= end %>
+                <%= else %>
+                  <%= link to: ask_answer_thank_path(@conn, :create, answer, next: ask_question_path(@conn, :show, @question)), method: :post, class: "level-item button is-small is-link" do %>
+                    <span class="icon is-small"><i class="fa fa-heart-o"></i></span>
+                    <span>感谢</span>
+                  <%= end %>
+                <%= end %>
+              <%= end %>
+
+              <%= if @logged_in? and @current_user != answer.user do %>
+                <%= if collect?(@conn, answer) do %>
+                  <%= link to: ask_answer_collect_path(@conn, :delete, answer, next: ask_question_path(@conn, :show, @question)), method: :delete, class: "level-item button is-small is-link" do %>
+                    <span class="icon is-small"><i class="fa fa-bookmark-o"></i></span>
+                    <span>取消收藏</span>
+                  <%= end %>
+                <%= else %>
+                  <%= link to: ask_answer_collect_path(@conn, :create, answer, next: ask_question_path(@conn, :show, @question)), method: :post, class: "level-item button is-small is-link" do %>
+                    <span class="icon is-small"><i class="fa fa-bookmark-o"></i></span>
+                    <span>收藏</span>
+                  <%= end %>
+                <%= end %>
+              <%= end %>
+            </small>
+
+            <small class="level-right">
+              <%= link to: "javascript:void(0);", class: "level-item" do %>
+                <span>发布于</span>
+                <span class="phoenix-moment" data-timestamp="<%= answer.inserted_at %>"></span>
+              <%= end %>
+              <%= if @logged_in? and @current_user == answer.user do %>
+                <span class="level-item">•</span>
+                <%= link to: ask_answer_path(@conn, :edit, answer), class: "level-item" do %>
+                  <span class="icon is-small"><i class="fa fa-pencil"></i></span>
+                  <span>修改</span>
+                <%= end %>
+              <%= else %>
+                <span class="level-item">•</span>
+                <%= link to: "javascript:void(0);", class: "level-item" do %>
+                  <span>作者保留权力</span>
+                <%= end %>
+              <%= end %>
+            </small>
+          </nav>
+        </div>
+      </div>
+      <%= end %>
+    <%= end %>
+
+    <%= if @logged_in? do %>
+    <div class="panel is-blank question-answer-form">
+      <div class="panel-block">
+        <div class="is-clearfix" style="padding-bottom: 10px;">
+          <%= link to: user_path(@conn, :show, @current_user.username), class: "is-pulled-left" do %>
+            <%= @current_user.username %>
+          <%= end %>
+          <figure class="image is-24x24 is-pulled-right">
+            <%= link to: user_path(@conn, :show, @current_user.username) do %>
+              <img src="<%= @current_user.avatar %>">
+            <%= end %>
+          </figure>
+        </div>
+        <div class="">
+          <%= form_for @changeset, ask_question_answer_path(@conn, :create, @question), fn f -> %>
+            <p class="control">
+              <%= textarea f, :content, class: "textarea simditor-comment-textarea" %>
+              <%= error_tag f, :content %>
+            </p>
+            <p class="control is-clearfix">
+              <%= submit "发布回答", class: "button is-info is-pulled-right" %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <%= end %>
+  </div>
+  <div class="column is-3">
+    <%= if @logged_in? and @current_user == @question.user do %>
+    <div class="panel is-blank">
+      <div class="panel-heading">
+        问题操作
+      </div>
+      <div class="panel-block">
+        <aside class="menu">
+          <ul class="menu-list">
+            <li>
+              <%= link to: ask_question_path(@conn, :edit, @question) do %>
+                <span class="icon is-small"><i class="fa fa-pencil"></i></span>
+                <span>编辑</span>
+              <%= end %>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+    <%= end %>
+
+    <div class="panel is-blank">
+      <div class="panel-block">
+        <%= content_tag :p do %>
+          <%= if watch?(@conn, @question) do %>
+            <%= link to: ask_question_watch_path(@conn, :create, @question), method: :delete, class: "button" do %>
+              <span class="icon is-small"><i class="fa fa-eye"></i></span>
+              <span>取消关注</span>
+            <%= end %>
+          <%= else %>
+            <%= link to: ask_question_watch_path(@conn, :create, @question), method: :post, class: "button is-success" do %>
+              <span class="icon is-small"><i class="fa fa-eye"></i></span>
+              <span>关注问题</span>
+            <%= end %>
+          <%= end %>
+        <%= end %>
+
+        <%= if @watches.total_entries > 0 do %>
+          <%= content_tag :p do %>
+            <%= link to: ask_question_watch_path(@conn, :show, @question) do %>
+              <%= @question.watch_count %>
+            <%= end %>
+            <span>人关注问题</span>
+          <%= end %>
+
+          <%= content_tag :p do %>
+            <%= for user <- @watches do %>
+            <span style="margin: 0 5px 5px 0" class="is-pulled-left hint--top" aria-label="<%= user.username %>">
+              <%= link to: user_path(@conn, :show, user.username), class: "image is-24x24" do %>
+                <%= tag :img, src: user.avatar, alt: user.username %>
+              <%= end %>
+            </span>
+            <%= end %>
+          <%= end %>
+        <%= end %>
+      </div>
+    </div>
+
+    <div class="panel is-blank">
+      <div class="panel-heading">
+        关于作者
+      </div>
+      <div class="panel-block">
+        <article class="media">
+          <figure class="media-left">
+            <p class="image is-48x48">
+              <%= link to: user_path(@conn, :show, @question.user.username) do %>
+                <img src="<%= @question.user.avatar %>">
+              <%= end %>
+            </p>
+          </figure>
+          <div class="media-content">
+            <div class="content">
+              <div class="">
+                <%= link to: user_path(@conn, :show, @question.user.username) do %>
+                  <%= @question.user.username %>
+                <%= end %>
+              </div>
+              <div class="">
+                <%= @question.user.description %>
+              </div>
+            </div>
+            <nav class="level">
+              <div class="level-left">
+                <%= if @logged_in? do %>
+                  <%= if @current_user != @question.user do %>
+                    <%= if UserView.follow?(@conn, @question.user) do %>
+                      <%= link to: user_follow_path(@conn, :delete, @question.user.username, next: ask_question_path(@conn, :show, @question)), method: :delete, class: "button is-small" do %>
+                        <span class="icon is-small"><i class="fa fa-heart-o"></i></span>
+                        <span>取消关注</span>
+                      <%= end %>
+                    <%= else %>
+                      <%= link to: user_follow_path(@conn, :create, @question.user.username, next: ask_question_path(@conn, :show, @question)), method: :post, class: "button is-success is-small" do %>
+                        <span class="icon is-small"><i class="fa fa-heart"></i></span>
+                        <span>关注</span>
+                      <%= end %>
+                    <%= end %>
+                  <%= end %>
+                <%= else %>
+                  <%= link to: user_follow_path(@conn, :create, @question.user.username, next: ask_question_path(@conn, :show, @question)), method: :post, class: "button is-success is-small" do %>
+                    <span class="icon is-small"><i class="fa fa-heart"></i></span>
+                    <span>关注</span>
+                  <%= end %>
+                <%= end %>
+              </div>
+            </nav>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="panel is-blank">
+      <div class="panel-heading">
+        问题状态
+      </div>
+      <div class="panel-block">
+        <%= content_tag :p do %>
+          被浏览 <%= @question.pv %> 次
+        <%= end %>
+        <p>
+          相关话题 0 关注
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
