@@ -75,7 +75,7 @@ defmodule Zizhixi.LinkController do
 
   def update(conn, %{"id" => id, "link" => %{"is_approved" => is_approved}}) do
     Repo.get!(Link, id)
-    |> update_field(:is_approved, is_approved)
+    |> update_field(:is_approved, is_approved == "true")
 
     conn
     |> put_flash(:info, "操作成功.")
