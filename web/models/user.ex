@@ -68,11 +68,9 @@ defmodule Zizhixi.User do
   end
 
   def changeset(:settings_profile, struct, params) do
-    required_params = [:avatar, :username, :email, :address, :description]
-
+    optioned_params = [:avatar, :address, :description]
     struct
-    |> cast(params, required_params)
-    |> validate_required(required_params)
+    |> cast(params, [], optioned_params)
   end
 
   def changeset(:settings_password, struct, params) do

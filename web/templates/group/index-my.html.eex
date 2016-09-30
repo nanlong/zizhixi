@@ -80,7 +80,7 @@
         </div>
       </footer>
     </div>
-    <div class="panel">
+    <div class="panel is-blank">
       <div class="panel-heading">
         <span>我的小组</span>
         <span>(<%= Enum.count(@groups) %>)</span>
