@@ -99,18 +99,20 @@ defmodule Zizhixi.Router do
     # 司南车 end
 
     # 问答 begin
-    resources "/Q&A", QuestionAndAnswerController, only: [:index]
+    resources "/ask", AskQuestionAndAnswerController, only: [:index]
 
-    resources "/Q&A", QuestionController, except: [:index, :delete] do
-      resources "/answers", AnswerController, as: :answer, only: [:create]
-      resources "/watch", QuestionWatchController, as: :watch, only: [:show, :create, :delete], singleton: true
+    resources "/ask", AskQuestionController, except: [:index, :delete] do
+      resources "/answers", AskAnswerController, as: :answer, only: [:create]
+      resources "/watch", AskQuestionWatchController, as: :watch, only: [:show, :create, :delete], singleton: true
     end
 
-    resources "/answers", AnswerController, except: [:new, :create, :delete] do
-      resources "/thank", AnswerThankController, as: :thank, only: [:create, :delete], singleton: true
-      resources "/collect", AnswerCollectController, as: :collect, only: [:create, :delete], singleton: true
-      resources "/vote", AnswerVoteController, as: :vote, only: [:create], singleton: true
+    resources "/answers", AskAnswerController, except: [:new, :create, :delete] do
+      resources "/thank", AskAnswerThankController, as: :thank, only: [:create, :delete], singleton: true
+      resources "/collect", AskAnswerCollectController, as: :collect, only: [:create, :delete], singleton: true
+      resources "/vote", AskAnswerVoteController, as: :vote, only: [:create], singleton: true
     end
+
+    resources "/ask_users", AskUserController, param: "username", only: [:show]
     # 问答 end
 
     resources "/markets", MarketController

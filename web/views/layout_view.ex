@@ -17,8 +17,9 @@ defmodule Zizhixi.LayoutView do
     LinkController,
     LinkCategoryController,
 
-    QuestionAndAnswerController,
-    QuestionController,
+    AskQuestionAndAnswerController,
+    AskQuestionController,
+    AskQuestionWatchController,
 
     MarketController,
   }
@@ -26,7 +27,8 @@ defmodule Zizhixi.LayoutView do
   def navigation(conn) do
     group_controllers = [GroupController, GroupUserController, GroupPostController,
       GroupCommentController, GroupTopicController, GroupMemberController]
-    qa_controllers = [QuestionAndAnswerController, QuestionController]
+    ask_controllers = [AskQuestionAndAnswerController, AskQuestionController,
+      AskQuestionWatchController]
     article_controllers = [ArticleController, ArticleUserController,
       ArticleSectionController, ArticleCommentController]
     link_controllers = [LinkController, LinkCategoryController]
@@ -34,7 +36,7 @@ defmodule Zizhixi.LayoutView do
 
     [
       {group_controllers, "小组", group_path(conn, :index)},
-      {qa_controllers, "问答", question_and_answer_path(conn, :index)},
+      {ask_controllers, "问答", ask_question_and_answer_path(conn, :index)},
       {article_controllers, "天工", article_path(conn, :index)},
       {link_controllers, "司南车", link_path(conn, :index)},
       {market_controllers, "五杂市集", market_path(conn, :index)},
