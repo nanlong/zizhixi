@@ -47,6 +47,13 @@ import "moment/locale/zh-cn";
 })();
 
 $(function() {
+  $('button[type=submit]').on('click', function() {
+    if ($(this).data('is-submited')) {
+      return false;
+    }
+    $(this).data('is-submited', true);
+  });
+
   // 消息框
   (function() {
     let $notification = $('.notification');
