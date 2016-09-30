@@ -62,27 +62,6 @@ $(function() {
     };
   })();
 
-  // 发新贴
-  (function() {
-    let $textarea = $('#group_post_content');
-
-    if ($textarea.length == 0) {
-      return;
-    }
-
-    let editor = new Simditor({
-      textarea: $textarea,
-      imageButton: 'upload',
-      pasteImage: true,
-      upload: {
-        url: "/editor/upload",
-        fileKey: "file"
-      }
-    });
-
-    editor.focus();
-  })();
-
   // 小组帖子详情
   (function() {
     let $textarea = $('#group_comment_content');
@@ -98,7 +77,15 @@ $(function() {
 
     let editor = new Simditor({
       textarea: $textarea,
-      toolbar: ['bold', 'ol', 'ul', 'blockquote','link', 'image'],
+      toolbar: [
+        'bold',
+        'ol',
+        'ul',
+        'blockquote',
+        'link',
+        'image',
+        'alignment'
+      ],
       imageButton: 'upload',
       pasteImage: true,
       upload: {
