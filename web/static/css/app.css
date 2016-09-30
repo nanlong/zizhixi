@@ -6,7 +6,7 @@
 }*/
 
 body {
-  background: #f5f7fa;
+  background: #ffffff;
 }
 a.hover {
   text-decoration: none !important;
@@ -174,10 +174,18 @@ strike {
 .panel.is-blank p {
   padding: 0 0 10px;
 }
+.question-entry {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
 .question-entry,
 .answer-head,
 .question-answer-form {
   margin-left: 50px;
+}
+.question-answer-form  .panel-block {
+  padding: 0;
 }
 .answer-entry {
   position: relative;

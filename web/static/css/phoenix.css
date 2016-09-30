@@ -6,6 +6,7 @@ html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquot
   font-weight: normal;
   vertical-align: baseline;
   background: transparent;
+  font: 14px/1.5 tahoma, arial, 'Hiragino Sans GB', '\5b8b\4f53', sans-serif;
 }
 
 article, aside, figure, footer, header, nav, section, details, summary {

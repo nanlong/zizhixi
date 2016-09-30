@@ -199,7 +199,7 @@
 
           <%= content_tag :p do %>
             <%= for user <- @watches do %>
-            <span style="margin: 0 5px 5px 0" class="is-pulled-left hint--top" aria-label="<%= user.username %>">
+            <span style="margin: 0 5px 5px 0" class="is-pulled-left hint--left" aria-label="<%= user.username %>">
               <%= link to: user_path(@conn, :show, user.username), class: "image is-24x24" do %>
                 <%= tag :img, src: user.avatar, alt: user.username %>
               <%= end %>
