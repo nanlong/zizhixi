@@ -1,6 +1,7 @@
 defmodule Zizhixi.AskAnswerThankController do
   use Zizhixi.Web, :controller
 
+  alias Zizhixi.AskUser
   alias Zizhixi.AskAnswer, as: Answer
   alias Zizhixi.AskAnswerThank, as: AnswerThank
 
@@ -22,6 +23,7 @@ defmodule Zizhixi.AskAnswerThankController do
     case Repo.insert(changeset) do
       {:ok, _answer_thank} ->
         answer |> increment(:thank_count)
+        AskUser.get(current_user) |> increment(:thank_count)
         conn
       {:error, _changeset} ->
         conn |> put_flash(:error, "感谢失败.")
@@ -43,6 +45,7 @@ defmodule Zizhixi.AskAnswerThankController do
     Repo.delete!(answer_thank)
 
     answer |> decrement(:thank_count)
+    AskUser.get(current_user) |> decrement(:thank_count)
 
     conn |> redirect_to(ask_question_path(conn, :show, answer.question_id))
   end

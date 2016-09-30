@@ -1,6 +1,7 @@
 defmodule Zizhixi.AskAnswerCollectController do
   use Zizhixi.Web, :controller
 
+  alias Zizhixi.AskUser
   alias Zizhixi.AskAnswer, as: Answer
   alias Zizhixi.AskAnswerCollect, as: AnswerCollect
 
@@ -22,6 +23,8 @@ defmodule Zizhixi.AskAnswerCollectController do
     case Repo.insert(changeset) do
       {:ok, _answer_thank} ->
         answer |> increment(:collect_count)
+        AskUser.get(current_user) |> increment(:collect_count)
+
         conn |> put_flash(:info, "收藏成功.")
       {:error, _changeset} ->
         conn |> put_flash(:error, "收藏失败.")
@@ -43,6 +46,7 @@ defmodule Zizhixi.AskAnswerCollectController do
     Repo.delete!(answer_collect)
 
     answer |> decrement(:collect_count)
+    AskUser.get(current_user) |> decrement(:collect_count)
 
     conn |> redirect_to(ask_question_path(conn, :show, answer.question_id))
   end

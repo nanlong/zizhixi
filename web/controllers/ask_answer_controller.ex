@@ -1,6 +1,7 @@
 defmodule Zizhixi.AskAnswerController do
   use Zizhixi.Web, :controller
 
+  alias Zizhixi.AskUser
   alias Zizhixi.AskQuestion, as: Question
   alias Zizhixi.AskAnswer, as: Answer
 
@@ -20,6 +21,7 @@ defmodule Zizhixi.AskAnswerController do
     conn = case Repo.insert(changeset) do
       {:ok, _answer} ->
         question |> increment(:answer_count)
+        AskUser.get(current_user) |> increment(:answer_count)
         conn |> put_flash(:info, "创建回答成功.")
       {:error, _changeset} ->
         conn |> put_flash(:error, "创建回答失败.")

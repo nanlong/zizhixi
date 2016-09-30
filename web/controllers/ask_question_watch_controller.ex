@@ -1,7 +1,7 @@
 defmodule Zizhixi.AskQuestionWatchController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.User
+  alias Zizhixi.{User, AskUser}
   alias Zizhixi.AskQuestion, as: Question
   alias Zizhixi.AskQuestionWatch, as: QuestionWatch
 
@@ -22,6 +22,8 @@ defmodule Zizhixi.AskQuestionWatchController do
     conn = case Repo.insert(changeset) do
       {:ok, _question_watch} ->
         question |> increment(:watch_count)
+        AskUser.get(current_user) |> increment(:watch_count)
+        
         conn |> put_flash(:info, "关注成功.")
       {:error, _changeset} ->
         conn |> put_flash(:error, "关注失败.")

@@ -271,9 +271,9 @@
         <%= content_tag :p do %>
           被浏览 <%= @question.pv %> 次
         <%= end %>
-        <p>
+        <!-- <p>
           相关话题 0 关注
-        </p>
+        </p> -->
       </div>
     </div>
   </div>

@@ -7,9 +7,6 @@ defmodule Zizhixi.Ecto.Helpers do
 
     post |> inc(:comment_count)
   """
-  import Ecto.Query
-  import Ecto.Changeset, only: [update_change: 3]
-
   alias Zizhixi.Repo
 
   def increment(struct, field, step \\ 1) do

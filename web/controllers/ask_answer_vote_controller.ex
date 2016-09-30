@@ -1,6 +1,7 @@
 defmodule Zizhixi.AskAnswerVoteController do
   use Zizhixi.Web, :controller
 
+  alias Zizhixi.AskUser
   alias Zizhixi.AskAnswer, as: Answer
   alias Zizhixi.AskAnswerVote, as: AnswerVote
 
@@ -18,14 +19,17 @@ defmodule Zizhixi.AskAnswerVoteController do
       nil ->
         if answer_vote_params["status"] == "true" do
           answer |> increment(:vote_count)
+          AskUser.get(current_user) |> increment(:vote_count)
         end
         %AnswerVote{answer_id: answer_id, user_id: current_user.id}
       answer_vote ->
         cond do
           answer_vote.status and answer_vote_params["status"] == "false" ->
             answer |> decrement(:vote_count)
+            AskUser.get(current_user) |> decrement(:vote_count)
           !answer_vote.status and answer_vote_params["status"] == "true" ->
             answer |> increment(:vote_count)
+            AskUser.get(current_user) |> increment(:vote_count)
           true -> answer
         end
         answer_vote

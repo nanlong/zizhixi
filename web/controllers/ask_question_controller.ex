@@ -1,13 +1,14 @@
 defmodule Zizhixi.AskQuestionController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.User
+  alias Zizhixi.{User, AskUser}
   alias Zizhixi.AskQuestion, as: Question
   alias Zizhixi.AskAnswer, as: Answer
   alias Zizhixi.AskQuestionPV, as: QuestionPV
   alias Zizhixi.AskQuestionWatch, as: QuestionWatch
 
   import Guardian.Plug, only: [current_resource: 1]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
     when action in [:new, :create, :edit, :update, :delete]
@@ -21,7 +22,7 @@ defmodule Zizhixi.AskQuestionController do
     |> render("new.html")
   end
 
-  def create(conn, %{"question" => question_params}) do
+  def create(conn, %{"ask_question" => question_params}) do
     current_user = current_resource(conn)
     params = question_params
     |> Map.put_new("user_id", current_user.id)
@@ -29,6 +30,8 @@ defmodule Zizhixi.AskQuestionController do
 
     case Repo.insert(changeset) do
       {:ok, question} ->
+        AskUser.get(current_user) |> increment(:question_count)
+
         conn
         |> put_flash(:info, "问题创建成功.")
         |> redirect(to: ask_question_path(conn, :show, question))
