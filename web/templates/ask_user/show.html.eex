@@ -3,6 +3,48 @@
       <%= render "user-card.html", conn: @conn, user: @user, current_tab: @current_tab %>
 
       <%= render "tabs.html", conn: @conn, ask_user: @ask_user, current_tab: @current_tab %>
+
+      <%= if @questions.total_entries > 0 do %>
+      <div class="panel is-blank">
+        <div class="panel-heading">
+          <%= link "更多", to: ask_user_path(@conn, :show, @user.username, tab: "question"), class: "is-pulled-right" %>
+          <span>提问</span>
+        </div>
+        <div class="panel-block">
+          <%= for question <- @questions do %>
+            <%= render Zizhixi.AskQuestionView, "entry.html", conn: @conn, question: question %>
+          <%= end %>
+        </div>
+      </div>
+      <%= end %>
+
+      <%= if @answers.total_entries > 0 do %>
+      <div class="panel is-blank">
+        <div class="panel-heading">
+          <%= link "更多", to: ask_user_path(@conn, :show, @user.username, tab: "answer"), class: "is-pulled-right" %>
+          <span>回答</span>
+        </div>
+        <div class="panel-block">
+          <%= for answer <- @answers do %>
+            <%= render Zizhixi.AskAnswerView, "entry.html", conn: @conn, answer: answer %>
+          <%= end %>
+        </div>
+      </div>
+      <%= end %>
+
+      <%= if @collects.total_entries > 0 do %>
+      <div class="panel is-blank">
+        <div class="panel-heading">
+          <%= link "更多", to: ask_user_path(@conn, :show, @user.username, tab: "collect"), class: "is-pulled-right" %>
+          <span>收藏</span>
+        </div>
+        <div class="panel-block">
+          <%= for answer <- @collects do %>
+            <%= render Zizhixi.AskAnswerView, "entry.html", conn: @conn, answer: answer %>
+          <%= end %>
+        </div>
+      </div>
+      <%= end %>
     </div>
     <div class="column is-3">
 

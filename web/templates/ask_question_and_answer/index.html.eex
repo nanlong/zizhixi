@@ -13,58 +13,60 @@
 <div class="columns">
   <div class="column">
     <%= for question <- @pagination do %>
-    <article class="media">
-      <figure class="media-left">
-        <nav class="level">
-          <div class="level-left has-text-centered">
-            <%= link to: ask_question_path(@conn, :show, question) <> "#answer", class: "level-item button-is-multiline" do %>
-              <span><%= question.answer_count %></span>
-              <small>回答</small>
-            <%= end %>
-            <%= link to: ask_question_path(@conn, :show, question), class: "level-item button-is-multiline" do %>
-              <span><%= question.pv %></span>
-              <small>浏览</small>
-            <%= end %>
-          </div>
-        </nav>
-      </figure>
-      <div class="media-content" style="padding: 5px;">
-        <div class="content">
-          <h2 class="title is-5" style="margin: 0;">
-            <%= link to: ask_question_path(@conn, :show, question) do %>
-              <%= question.title %>
-            <%= end %>
-          </h2>
-          <div>
-
-          </div>
-          <div class="is-clearfix" style="padding-top: 5px;">
-            <!-- <div class="is-pulled-left">
-              <%= for _ <- 1..4 do %>
-                <%= link to: "" do %>
-                  <span class="tag is-dark is-small">
-                    标签占位
-                  </span>
-                <%= end %>
-              <%= end %>
-            </div> -->
-            <small class="is-pulled-right">
-              <%= link to: user_path(@conn, :show, question.user.username) do %>
-                <%= question.user.username %>
-              <%= end %>
-              发布于
-              <span class="phoenix-moment" data-timestamp="<%= question.inserted_at %>"></span>
-            </small>
-          </div>
-        </div>
-      </div>
-    </article>
+    <%= render Zizhixi.AskQuestionView, "entry.html", conn: @conn, question: question %>
     <%= end %>
 
   </div>
   <div class="column is-3">
-    <%= link to: ask_question_path(@conn, :new), class: "button is-info is-fullwidth" do %>
-      提问
+    <%= if @logged_in? do %>
+    <div class="card" style="margin-bottom: 20px;">
+      <div class="card-content">
+        <div class="media">
+          <div class="media-left">
+            <figure class="image is-32x32">
+              <img src="<%= @current_user.avatar %>" alt="<%= @current_user.username %>">
+            </figure>
+          </div>
+          <div class="media-content">
+            <p class="title is-5"><%= @current_user.username %></p>
+            <p class="subtitle is-6"></p>
+          </div>
+        </div>
+        <div class="content">
+          <p>
+            <%= @current_user.description %>
+          </p>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <div class="card-footer-item">
+          <%= link to: ask_user_path(@conn, :show, @current_user.username, tab: "question"), class: "button-is-multiline has-text-centered" do %>
+            <span><%= @ask_user.question_count %></span>
+            <small>提问</small>
+          <%= end %>
+        </div>
+        <div class="card-footer-item">
+          <%= link to: ask_user_path(@conn, :show, @current_user.username, tab: "answer"), class: "button-is-multiline has-text-centered" do %>
+            <span><%= @ask_user.answer_count %></span>
+            <small>回答</small>
+          <%= end %>
+        </div>
+        <div class="card-footer-item">
+          <%= link to: ask_user_path(@conn, :show, @current_user.username, tab: "collect"), class: "button-is-multiline has-text-centered" do %>
+            <span><%= @ask_user.collect_count %></span>
+            <small>收藏</small>
+          <%= end %>
+        </div>
+      </footer>
+
+      <footer class="card-footer">
+        <div class="card-footer-item">
+          <%= link to: ask_question_path(@conn, :new), class: "button is-fullwidth" do %>
+            提问
+          <%= end %>
+        </div>
+      </footer>
+    </div>
     <%= end %>
   </div>
 </div>

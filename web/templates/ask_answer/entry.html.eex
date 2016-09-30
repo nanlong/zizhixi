@@ -1,0 +1,24 @@
+<article class="media">
+  <figure class="media-left">
+    <p class="image is-32x32">
+      <img src="<%= @answer.user.avatar %>">
+    </p>
+  </figure>
+  <div class="media-content">
+    <div class="">
+      <%= link to: ask_question_path(@conn, :show, @answer.question) do %>
+        <strong>
+        <%= @answer.question.title %>
+        </strong>
+      <%= end %>
+    </div>
+    <div class="content">
+      <%= link to: ask_user_path(@conn, :show, @answer.user.username) do %>
+        <small>
+        <%= @answer.user.username %>
+        </small>
+      <%= end %>
+      <%= raw @answer.content %>
+    </div>
+  </div>
+</article>

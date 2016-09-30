@@ -7,7 +7,7 @@ defmodule Zizhixi.AskAnswer do
     field :collect_count, :integer, default: 0
     field :vote_count, :integer, default: 0
 
-    belongs_to :question, Zizhixi.Question
+    belongs_to :question, Zizhixi.AskQuestion
     belongs_to :user, Zizhixi.User
 
     timestamps()

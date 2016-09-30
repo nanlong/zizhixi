@@ -20,6 +20,7 @@ defmodule Zizhixi.LayoutView do
     AskQuestionAndAnswerController,
     AskQuestionController,
     AskQuestionWatchController,
+    AskUserController,
 
     MarketController,
   }
@@ -28,7 +29,7 @@ defmodule Zizhixi.LayoutView do
     group_controllers = [GroupController, GroupUserController, GroupPostController,
       GroupCommentController, GroupTopicController, GroupMemberController]
     ask_controllers = [AskQuestionAndAnswerController, AskQuestionController,
-      AskQuestionWatchController]
+      AskQuestionWatchController, AskUserController]
     article_controllers = [ArticleController, ArticleUserController,
       ArticleSectionController, ArticleCommentController]
     link_controllers = [LinkController, LinkCategoryController]

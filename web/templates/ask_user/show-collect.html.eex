@@ -1,0 +1,16 @@
+<div class="columns">
+    <div class="column">
+      <%= render "user-card.html", conn: @conn, user: @user, current_tab: @current_tab %>
+
+      <%= render "tabs.html", conn: @conn, ask_user: @ask_user, current_tab: @current_tab %>
+
+      <%= for answer <- @pagination do %>
+        <%= render Zizhixi.AskAnswerView, "entry.html", conn: @conn, answer: answer %>
+      <%= end %>
+
+      <%= pagination_links @conn, @pagination, [@user.username], action: :show, path: &ask_user_path/4, tab: @current_tab %>
+    </div>
+    <div class="column is-3">
+
+    </div>
+</div>

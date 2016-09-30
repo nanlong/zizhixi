@@ -1,0 +1,43 @@
+<article class="media">
+  <figure class="media-left">
+    <nav class="level">
+      <div class="level-left has-text-centered">
+        <%= link to: ask_question_path(@conn, :show, @question) <> "#answer", class: "level-item button-is-multiline" do %>
+          <span><%= @question.answer_count %></span>
+          <small>回答</small>
+        <%= end %>
+        <%= link to: ask_question_path(@conn, :show, @question), class: "level-item button-is-multiline" do %>
+          <span><%= @question.pv %></span>
+          <small>浏览</small>
+        <%= end %>
+      </div>
+    </nav>
+  </figure>
+  <div class="media-content" style="padding: 5px;">
+    <div class="content">
+      <h2 class="title is-5" style="margin: 0;">
+        <%= link to: ask_question_path(@conn, :show, @question) do %>
+          <%= @question.title %>
+        <%= end %>
+      </h2>
+      <div class="is-clearfix" style="padding-top: 5px;">
+        <!-- <div class="is-pulled-left">
+          <%= for _ <- 1..4 do %>
+            <%= link to: "" do %>
+              <span class="tag is-dark is-small">
+                标签占位
+              </span>
+            <%= end %>
+          <%= end %>
+        </div> -->
+        <small class="is-pulled-right">
+          <%= link to: ask_user_path(@conn, :show, @question.user.username) do %>
+            <%= @question.user.username %>
+          <%= end %>
+          发布于
+          <span class="phoenix-moment" data-timestamp="<%= @question.inserted_at %>"></span>
+        </small>
+      </div>
+    </div>
+  </div>
+</article>
