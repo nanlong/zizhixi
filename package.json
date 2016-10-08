@@ -8,6 +8,8 @@
   "dependencies": {
     "angular": "^1.5.8",
     "angular-events-calendar": "git://github.com/nanlong/angular-events-calendar.git",
+    "bulma": "^0.2.1",
+    "hint.css": "^2.4.0",
     "jquery": "~3.1.0",
     "moment": "^2.15.0",
     "ng-file-upload": "^12.2.9",
