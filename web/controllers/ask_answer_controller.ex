@@ -6,7 +6,7 @@ defmodule Zizhixi.AskAnswerController do
   alias Zizhixi.AskAnswer, as: Answer
 
   import Guardian.Plug, only: [current_resource: 1]
-  import Zizhixi.Ecto.Helpers, only: [increment: 2]
+  import Zizhixi.Ecto.Helpers, only: [increment: 2, update_field: 3]
 
   plug Guardian.Plug.EnsureAuthenticated, [handler: Zizhixi.Guardian.ErrorHandler]
 
@@ -19,8 +19,13 @@ defmodule Zizhixi.AskAnswerController do
     changeset = Answer.changeset(%Answer{}, params)
 
     conn = case Repo.insert(changeset) do
-      {:ok, _answer} ->
-        question |> increment(:answer_count)
+      {:ok, answer} ->
+        question
+        |> increment(:answer_count)
+        |> update_field(:latest_user_id, answer.user_id)
+        |> update_field(:latest_answer_id, answer.id)
+        |> update_field(:latest_inserted_at, answer.inserted_at)
+
         AskUser.get(current_user) |> increment(:answer_count)
         conn |> put_flash(:info, "创建回答成功.")
       {:error, _changeset} ->

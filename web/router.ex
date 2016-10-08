@@ -98,7 +98,7 @@ defmodule Zizhixi.Router do
     # 司南车 end
 
     # 问答 begin
-    resources "/ask", AskQuestionAndAnswerController, only: [:index]
+    resources "/ask", AskController, only: [:index]
 
     resources "/ask", AskQuestionController, except: [:index, :delete] do
       resources "/answers", AskAnswerController, as: :answer, only: [:create]

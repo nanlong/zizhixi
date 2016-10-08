@@ -33,8 +33,10 @@ defmodule Zizhixi.Ecto.Helpers do
   end
 
   defp update_struct(struct, params) do
-    struct
+    {:ok, struct} = struct
     |> Ecto.Changeset.change(params)
     |> Repo.update
+
+    struct
   end
 end

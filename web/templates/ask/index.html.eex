@@ -12,10 +12,16 @@
 </section>
 <div class="columns">
   <div class="column">
+    <%= render "tabs.html",
+      conn: @conn,
+      current_tab: @current_tab
+    %>
+
     <%= for question <- @pagination do %>
-    <%= render Zizhixi.AskQuestionView, "entry.html", conn: @conn, question: question %>
+      <%= render Zizhixi.AskQuestionView, "entry.html", conn: @conn, question: question %>
     <%= end %>
 
+    <%= pagination_links @conn, @pagination, path: &ask_path/3, tab: @current_tab %>
   </div>
   <div class="column is-3">
     <%= if logged_in?(@conn) do %>

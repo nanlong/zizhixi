@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="column is-3">
-    <%= link to: ask_question_and_answer_path(@conn, :index), class: "button is-link" do %>
+    <%= link to: ask_path(@conn, :index), class: "button is-link" do %>
       <span>返回</span>
       <span class="icon is-small">
         <i class="fa fa-arrow-right"></i>
