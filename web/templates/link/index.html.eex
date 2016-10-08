@@ -16,7 +16,7 @@
 </section>
 
 <%= for {parent, childs} <- @categories do %>
-  <div class="panel is-blank">
+  <div class="panel is-blank panel-link">
     <div class="panel-heading">
       <%= parent.name %>
     </div>

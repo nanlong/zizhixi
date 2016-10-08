@@ -201,3 +201,12 @@ strike {
 .answer-entry .panel-block {
   margin-left: 50px;
 }
+.panel-link a,
+.panel-link a:visited {
+  color: #1E96A5 !important;
+}
+.panel-link a:hover {
+  text-decoration: none !important;
+  border: none !important;
+  color: #333 !important;
+}
