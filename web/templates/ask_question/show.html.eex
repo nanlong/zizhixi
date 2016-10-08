@@ -74,7 +74,7 @@
               <%= if logged_in?(@conn) and current_user(@conn) != answer.user do %>
                 <%= if thank?(@conn, answer) do %>
                   <%= link to: ask_answer_thank_path(@conn, :delete, answer, next: ask_question_path(@conn, :show, @question)), method: :delete, class: "level-item button is-small is-link" do %>
-                    <span class="icon is-small"><i class="fa fa-heart-o"></i></span>
+                    <span class="icon is-small is-danger"><i class="fa fa-heart"></i></span>
                     <span>取消感谢</span>
                   <%= end %>
                 <%= else %>
@@ -88,7 +88,7 @@
               <%= if logged_in?(@conn) and current_user(@conn) != answer.user do %>
                 <%= if collect?(@conn, answer) do %>
                   <%= link to: ask_answer_collect_path(@conn, :delete, answer, next: ask_question_path(@conn, :show, @question)), method: :delete, class: "level-item button is-small is-link" do %>
-                    <span class="icon is-small"><i class="fa fa-bookmark-o"></i></span>
+                    <span class="icon is-small is-danger"><i class="fa fa-bookmark"></i></span>
                     <span>取消收藏</span>
                   <%= end %>
                 <%= else %>

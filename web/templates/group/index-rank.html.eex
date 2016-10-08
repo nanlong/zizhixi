@@ -3,47 +3,45 @@
   <div class="column">
     <%= render "tabs.html", conn: @conn, current_tab: @current_tab %>
 
-    <div class="box">
-        <%= for {group, index} <- @groups |> Enum.with_index(1) do %>
-          <article class="media">
-            <figure class="media-left">
-              <p class="image is-48x48">
-                <img src="<%= group.logo %>" alt="<%= group.name %>">
-              </p>
-            </figure>
-            <div class="media-content">
-              <div class="content">
-                <div>
-                  <span class="tag is-success is-small"><%= index %></span>
-                  <%= link group.name, to: group_path(@conn, :show, group) %>
-                </div>
-                <div>
-                  <small><%= group.member_count %>人加入</small>
-                </div>
-              </div>
+    <%= for {group, index} <- @groups |> Enum.with_index(1) do %>
+      <article class="media">
+        <figure class="media-left">
+          <p class="image is-48x48">
+            <img src="<%= group.logo %>" alt="<%= group.name %>">
+          </p>
+        </figure>
+        <div class="media-content">
+          <div class="content">
+            <div>
+              <span class="tag is-success is-small"><%= index %></span>
+              <%= link group.name, to: group_path(@conn, :show, group) %>
             </div>
-            <div class="media-right">
-              <%= if group_own?(@conn, group) do %>
-                小组创始人
-              <%= else %>
-                <%= if group_member?(@conn, group) do %>
-                  <%= link "已加入",
-                    to: group_member_path(@conn, :delete, group, next: group_path(@conn, :index, tab: "rank")),
-                    class: "button is-success",
-                    method: :delete
-                  %>
-                <%= else %>
-                  <%= link "加入",
-                    to: group_member_path(@conn, :create, group, next: group_path(@conn, :index, tab: "rank")),
-                    class: "button is-info",
-                    method: :post
-                  %>
-                <%= end %>
-              <%= end %>
+            <div>
+              <small><%= group.member_count %>人加入</small>
             </div>
-          </article>
-        <%= end %>
-    </div>
+          </div>
+        </div>
+        <div class="media-right">
+          <%= if group_own?(@conn, group) do %>
+            小组创始人
+          <%= else %>
+            <%= if group_member?(@conn, group) do %>
+              <%= link "已加入",
+                to: group_member_path(@conn, :delete, group, next: group_path(@conn, :index, tab: "rank")),
+                class: "button is-success",
+                method: :delete
+              %>
+            <%= else %>
+              <%= link "加入",
+                to: group_member_path(@conn, :create, group, next: group_path(@conn, :index, tab: "rank")),
+                class: "button is-info",
+                method: :post
+              %>
+            <%= end %>
+          <%= end %>
+        </div>
+      </article>
+    <%= end %>
   </div>
   <div class="column is-3">
 

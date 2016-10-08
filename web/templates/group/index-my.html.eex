@@ -4,11 +4,11 @@
     <%= render "tabs.html", conn: @conn, current_tab: @current_tab %>
     <%= if Enum.count(@groups) > 0 do %>
       <%= if @pagination.total_entries > 0 do %>
-      <div class="box">
-        <%= for post <- @pagination do %>
-          <%= render(Zizhixi.GroupPostView, "entry.html", show_group: true, conn: @conn, post: post) %>
-        <%= end %>
-      </div>
+
+      <%= for post <- @pagination do %>
+        <%= render(Zizhixi.GroupPostView, "entry.html", show_group: true, conn: @conn, post: post) %>
+      <%= end %>
+
       <%= pagination_links @conn, @pagination, path: &group_path/3 %>
       <%= else %>
       <section class="hero is-primary has-text-centered">
