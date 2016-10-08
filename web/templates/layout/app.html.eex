@@ -39,7 +39,7 @@
         <nav class="nav">
           <div class="nav-left">
             <%= link to: page_path(@conn, :index), class: "nav-item" do %>
-              <span class="title is-4">自制系</span>
+              <img src="https://odf91nqvz.qnssl.com/logo.png?imageView2/2/h/48" alt="自制系" height="24" />
             <%= end %>
 
             <%= for {controllers, name, path} <- navigation(@conn) do %>
