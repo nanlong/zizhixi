@@ -29,8 +29,6 @@ defmodule Zizhixi.ViewHelpers do
     |> Timex.format!(format)
   end
 
-
-
   def highlight(varable, value, class, default \\ "") do
     " " <> cond do
       varable == value -> class

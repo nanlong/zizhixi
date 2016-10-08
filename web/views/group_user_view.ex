@@ -1,8 +1,6 @@
 defmodule Zizhixi.GroupUserView do
   use Zizhixi.Web, :view
 
-  import Zizhixi.UserView, only: [follow?: 2]
-
   def tabs(conn, group_user) do
     group_user = Zizhixi.Repo.preload(group_user, :user)
     user = group_user.user

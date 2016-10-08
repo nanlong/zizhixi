@@ -1,9 +1,6 @@
 defmodule Zizhixi.UserView do
   use Zizhixi.Web, :view
 
-  alias Zizhixi.{Repo, UserFollow}
-  import Guardian.Plug, only: [authenticated?: 1, current_resource: 1]
-
   def tabs(conn, user) do
     [
       {"profile", "个人信息", user_path(conn, :show, user.username)},
@@ -25,15 +22,5 @@ defmodule Zizhixi.UserView do
       username: user.username,
       avatar: user.avatar,
     }
-  end
-
-  def follow?(conn, user) do
-    if authenticated?(conn) do
-      current_user = current_resource(conn)
-      params = %{user_id: current_user.id, follow_id: user.id}
-      not (UserFollow |> Repo.get_by(params) |> is_nil)
-    else
-      false
-    end
   end
 end

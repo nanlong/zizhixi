@@ -11,7 +11,7 @@ defmodule Zizhixi.AskQuestion do
 
     belongs_to :user, Zizhixi.User
     belongs_to :latest_user, Zizhixi.User
-    belongs_to :latest_answer, Zizhixi.Answer
+    belongs_to :latest_answer, Zizhixi.AskAnswer
 
     timestamps()
   end

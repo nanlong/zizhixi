@@ -22,8 +22,8 @@
   </div>
   <footer class="card-footer">
     <div style="padding: 10px;">
-      <%= if @logged_in? and @current_user != @user do %>
-        <%= if follow?(@conn, @user) do %>
+      <%= if logged_in?(@conn) and current_user(@conn) != @user do %>
+        <%= if Zizhixi.UserFollowView.follow?(@conn, @user) do %>
           <%= link "取消关注",
             to: user_follow_path(@conn, :delete, @user.username, next: article_user_path(@conn, :show, @user.username, tab: @current_tab)),
             class: "button is-info",

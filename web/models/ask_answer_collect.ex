@@ -2,7 +2,7 @@ defmodule Zizhixi.AskAnswerCollect do
   use Zizhixi.Web, :model
 
   schema "answer_collects" do
-    belongs_to :answer, Zizhixi.Answer
+    belongs_to :answer, Zizhixi.AskAnswer
     belongs_to :user, Zizhixi.User
 
     timestamps()

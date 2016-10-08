@@ -1,6 +1,6 @@
 <div class="columns" id="user-show-profile">
   <div class="column is-4">
-    <%= render "show-left.html", conn: @conn, user: @user, logged_in?: @logged_in?, current_user: @current_user %>
+    <%= render "show-left.html", conn: @conn, user: @user, logged_in?: logged_in?(@conn), current_user: current_user(@conn) %>
   </div>
   <div class="column" ng-controller="UserCalendarController">
     <%= render "show-tabs.html", conn: @conn, user: @user, current_tab: @current_tab %>

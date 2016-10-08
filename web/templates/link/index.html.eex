@@ -2,7 +2,7 @@
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
-        <%= if @logged_in? and admin?(@conn) do %>
+        <%= if logged_in?(@conn) and admin?(@conn) do %>
           <%= link "司南车", to: link_category_path(@conn, :index) %>
         <%= else %>
           司南车

@@ -28,8 +28,8 @@
     </div>
   </div>
   <div class="media-right">
-    <%= if @logged_in? do %>
-      <%= if @current_user.id == @comment.user_id do %>
+    <%= if logged_in?(@conn) do %>
+      <%= if current_user(@conn).id == @comment.user_id do %>
         <%= link to: group_comment_path(@conn, :edit, @comment), class: "button is-link is-small btn-edit is-hidden" do %>
           <span class="icon is-small"><i class="fa fa-pencil"></i></span><span>编辑</span>
         <%= end %>
@@ -39,7 +39,7 @@
         <%= end %>
       <%= end %>
 
-      <%= if @logged_in? and praise?(@comment, @current_user) do %>
+      <%= if logged_in?(@conn) and praise?(@comment, current_user(@conn)) do %>
         <%= link to: group_comment_praise_path(@conn, :delete, @comment), class: "button is-link is-small", method: :delete do %>
           <span class="icon is-small is-danger"><i class="fa fa-heart"></i></span><span><%= praise_count(@comment) %></span>
         <%= end %>

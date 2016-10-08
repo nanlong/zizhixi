@@ -45,35 +45,35 @@
         <div class="media">
           <div class="media-left">
             <figure class="image is-32x32">
-              <img src="<%= @current_user.avatar %>" alt="<%= @current_user.username %>">
+              <img src="<%= current_user(@conn).avatar %>" alt="<%= current_user(@conn).username %>">
             </figure>
           </div>
           <div class="media-content">
-            <p class="title is-5"><%= @current_user.username %></p>
+            <p class="title is-5"><%= current_user(@conn).username %></p>
             <p class="subtitle is-6"></p>
           </div>
         </div>
         <div class="content">
           <p>
-            <%= @current_user.description %>
+            <%= current_user(@conn).description %>
           </p>
         </div>
       </div>
       <footer class="card-footer">
         <div class="card-footer-item">
-          <%= link to: group_user_path(@conn, :show, @current_user.username, tab: "post"), class: "button-is-multiline has-text-centered" do %>
+          <%= link to: group_user_path(@conn, :show, current_user(@conn).username, tab: "post"), class: "button-is-multiline has-text-centered" do %>
             <span><%= @group_user.post_count %></span>
             <small>发帖</small>
           <%= end %>
         </div>
         <div class="card-footer-item">
-          <%= link to: group_user_path(@conn, :show, @current_user.username, tab: "comment"), class: "button-is-multiline has-text-centered" do %>
+          <%= link to: group_user_path(@conn, :show, current_user(@conn).username, tab: "comment"), class: "button-is-multiline has-text-centered" do %>
             <span><%= @group_user.comment_count %></span>
             <small>回帖</small>
           <%= end %>
         </div>
         <div class="card-footer-item">
-          <%= link to: group_user_path(@conn, :show, @current_user.username, tab: "collect"), class: "button-is-multiline has-text-centered" do %>
+          <%= link to: group_user_path(@conn, :show, current_user(@conn).username, tab: "collect"), class: "button-is-multiline has-text-centered" do %>
             <span><%= @group_user.collect_count %></span>
             <small>收藏</small>
           <%= end %>

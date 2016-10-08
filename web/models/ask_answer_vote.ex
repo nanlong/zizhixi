@@ -3,7 +3,7 @@ defmodule Zizhixi.AskAnswerVote do
 
   schema "answer_votes" do
     field :status, :boolean, default: false
-    belongs_to :answer, Zizhixi.Answer
+    belongs_to :answer, Zizhixi.AskAnswer
     belongs_to :user, Zizhixi.User
 
     timestamps()

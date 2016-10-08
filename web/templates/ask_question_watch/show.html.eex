@@ -47,9 +47,9 @@
               </nav>
             </div>
             <div class="media-right">
-              <%= if @logged_in? do %>
-                <%= if @current_user != user do %>
-                  <%= if UserView.follow?(@conn, user) do %>
+              <%= if logged_in?(@conn) do %>
+                <%= if current_user(@conn) != user do %>
+                  <%= if Zizhixi.UserFollowView.follow?(@conn, user) do %>
                     <%= link to: user_follow_path(@conn, :delete, user.username, next: ask_question_watch_path(@conn, :show, @question)), method: :delete, class: "button is-small" do %>
                       <span class="icon is-small"><i class="fa fa-heart-o"></i></span>
                       <span>取消关注</span>

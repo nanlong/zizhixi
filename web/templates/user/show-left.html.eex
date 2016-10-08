@@ -35,10 +35,10 @@
         </div>
       </div>
 
-      <%= if @logged_in? and @current_user.id != @user.id do %>
+      <%= if logged_in?(@conn) and current_user(@conn).id != @user.id do %>
       <div class="columns" style="margin-top: 0;">
         <div class="column btn-follow">
-          <%= if follow?(@conn, @user) do %>
+          <%= if Zizhixi.UserFollowView.follow?(@conn, @user) do %>
             <%= link "取消关注",
               to: user_follow_path(@conn, :delete, @user.username),
               class: "button is-info is-fullwidth",
@@ -60,7 +60,7 @@
     </div>
   </div>
 
-  <%= if @logged_in? and @current_user.id == @user.id do %>
+  <%= if logged_in?(@conn) and current_user(@conn).id == @user.id do %>
   <footer class="card-footer">
     <%= link "编辑个人信息", to: user_path(@conn, :edit, "profile"), class: "card-footer-item" %>
   </footer>

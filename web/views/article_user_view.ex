@@ -1,8 +1,6 @@
 defmodule Zizhixi.ArticleUserView do
   use Zizhixi.Web, :view
 
-  import Zizhixi.UserView, only: [follow?: 2]
-
   def tabs(conn, article_user) do
     article_user = Zizhixi.Repo.preload(article_user, :user)
     user = article_user.user

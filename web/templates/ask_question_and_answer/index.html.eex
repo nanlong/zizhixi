@@ -18,41 +18,41 @@
 
   </div>
   <div class="column is-3">
-    <%= if @logged_in? do %>
+    <%= if logged_in?(@conn) do %>
     <div class="card" style="margin-bottom: 20px;">
       <div class="card-content">
         <div class="media">
           <div class="media-left">
             <figure class="image is-32x32">
-              <img src="<%= @current_user.avatar %>" alt="<%= @current_user.username %>">
+              <img src="<%= current_user(@conn).avatar %>" alt="<%= current_user(@conn).username %>">
             </figure>
           </div>
           <div class="media-content">
-            <p class="title is-5"><%= @current_user.username %></p>
+            <p class="title is-5"><%= current_user(@conn).username %></p>
             <p class="subtitle is-6"></p>
           </div>
         </div>
         <div class="content">
           <p>
-            <%= @current_user.description %>
+            <%= current_user(@conn).description %>
           </p>
         </div>
       </div>
       <footer class="card-footer">
         <div class="card-footer-item">
-          <%= link to: ask_user_path(@conn, :show, @current_user.username, tab: "question"), class: "button-is-multiline has-text-centered" do %>
+          <%= link to: ask_user_path(@conn, :show, current_user(@conn).username, tab: "question"), class: "button-is-multiline has-text-centered" do %>
             <span><%= @ask_user.question_count %></span>
             <small>提问</small>
           <%= end %>
         </div>
         <div class="card-footer-item">
-          <%= link to: ask_user_path(@conn, :show, @current_user.username, tab: "answer"), class: "button-is-multiline has-text-centered" do %>
+          <%= link to: ask_user_path(@conn, :show, current_user(@conn).username, tab: "answer"), class: "button-is-multiline has-text-centered" do %>
             <span><%= @ask_user.answer_count %></span>
             <small>回答</small>
           <%= end %>
         </div>
         <div class="card-footer-item">
-          <%= link to: ask_user_path(@conn, :show, @current_user.username, tab: "collect"), class: "button-is-multiline has-text-centered" do %>
+          <%= link to: ask_user_path(@conn, :show, current_user(@conn).username, tab: "collect"), class: "button-is-multiline has-text-centered" do %>
             <span><%= @ask_user.collect_count %></span>
             <small>收藏</small>
           <%= end %>

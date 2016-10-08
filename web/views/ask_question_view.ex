@@ -1,7 +1,7 @@
 defmodule Zizhixi.AskQuestionView do
   use Zizhixi.Web, :view
 
-  alias Zizhixi.{Repo, UserView}
+  alias Zizhixi.{Repo}
   alias Zizhixi.AskQuestionWatch, as: QuestionWatch
   alias Zizhixi.AskAnswerThank, as: AnswerThank
   alias Zizhixi.AskAnswerCollect, as: AnswerCollect

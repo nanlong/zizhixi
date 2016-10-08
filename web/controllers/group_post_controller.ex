@@ -50,9 +50,7 @@ defmodule Zizhixi.GroupPostController do
     case Repo.insert(changeset) do
       {:ok, group_post} ->
         group |> increment(:post_count)
-
-        group_user = GroupUser.get(current_user.id) |> increment(:post_count)
-
+        GroupUser.get(current_user.id) |> increment(:post_count)
         Repo.get_by(GroupMember, %{group_id: group.id, user_id: current_user.id})
         |> increment(:post_count)
 

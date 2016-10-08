@@ -1,6 +1,6 @@
 <div class="columns">
   <div class="column is-4">
-    <%= render "show-left.html", conn: @conn, user: @user, logged_in?: @logged_in?, current_user: @current_user %>
+    <%= render "show-left.html", conn: @conn, user: @user, logged_in?: logged_in?(@conn), current_user: current_user(@conn) %>
   </div>
   <div class="column">
     <%= render "show-tabs.html", conn: @conn, user: @user, current_tab: @current_tab %>
@@ -24,8 +24,8 @@
                   <%= link item.follow.username, to: user_path(@conn, :show, item.follow.username) %>
                 </div>
                 <div class="subtitle is-6" style="margin-top: 0;">
-                  <%= if @logged_in? and @current_user != item.follow do %>
-                    <%= if follow?(@conn, item.follow) do %>
+                  <%= if logged_in?(@conn) and current_user(@conn) != item.follow do %>
+                    <%= if Zizhixi.UserFollowView.follow?(@conn, item.follow) do %>
                     <%= link "取消关注",
                       to: "#{user_follow_path(@conn, :delete, item.follow.username)}?next=#{user_path(@conn, :show, @user.username, tab: "following")}",
                       class: "button is-info is-small",

@@ -16,7 +16,7 @@
             <small><%= @group.post_count %> 帖子</small>
           </div>
           <div class="level-item">
-            <%= if @logged_in? do %>
+            <%= if logged_in?(@conn) do %>
               <%= if group_member?(@conn, @group) do %>
                 <%= link "已加入 | 退出",
                   to: group_member_path(@conn, :delete, @group, next: group_user_path(@conn, :show, @user.username, tab: @current_tab)),

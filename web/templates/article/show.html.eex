@@ -30,7 +30,7 @@
 
           <%= for section <- @article.sections do %>
           <div class="article-section">
-            <%= if @logged_in? and @current_user == @article.user do %>
+            <%= if logged_in?(@conn) and current_user(@conn) == @article.user do %>
               <div class="article-section-edit-box">
                 <%= link to: article_section_path(@conn, :edit, @article, section), class: "button is-info is-small is-pulled-right" do %>
                   编辑
@@ -122,8 +122,8 @@
               </div>
               <%= if not comment.is_deleted do %>
               <div class="is-pulled-right">
-                <%= if @logged_in? do %>
-                  <%= if @current_user == comment.user do %>
+                <%= if logged_in?(@conn) do %>
+                  <%= if current_user(@conn) == comment.user do %>
                     <%= link to: article_comment_path(@conn, :edit, @article, comment), class: "button is-light is-small btn-edit is-hidden", title: "编辑" do %>
                       <span class="icon is-small is-dark">
                         <i class="fa fa-pencil"></i>
@@ -177,11 +177,11 @@
     </article>
     <%= end %>
 
-    <%= if @logged_in? do %>
+    <%= if logged_in?(@conn) do %>
     <article class="media">
       <figure class="media-left">
         <p class="image is-48x48">
-          <img src="<%= @current_user.avatar %>">
+          <img src="<%= current_user(@conn).avatar %>">
         </p>
       </figure>
       <div class="media-content">
@@ -217,7 +217,7 @@
   </div>
   <div class="column is-3">
 
-    <%= if @logged_in? and @current_user == @article.user do %>
+    <%= if logged_in?(@conn) and current_user(@conn) == @article.user do %>
     <div class="panel">
       <div class="panel-heading">
         操作

@@ -12,7 +12,6 @@ defmodule Zizhixi.Router do
   pipeline :browser_session do
     plug Guardian.Plug.VerifySession
     plug Guardian.Plug.LoadResource
-    plug Zizhixi.Plug.LoadCurrentUser
   end
 
   pipeline :require_login do

@@ -9,7 +9,7 @@ defmodule Zizhixi.AskQuestionPV do
   schema "questions_pv" do
     field :day, Timex.Ecto.DateTime
     field :ip, :string
-    belongs_to :question, Zizhixi.Question
+    belongs_to :question, Zizhixi.AskQuestion
     belongs_to :user, Zizhixi.User
 
     timestamps()
