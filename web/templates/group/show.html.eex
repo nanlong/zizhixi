@@ -42,11 +42,9 @@
     </div>
 
     <%= if @pagination.total_entries > 0 do %>
-    <div class="box">
       <%= for post <- @pagination do %>
         <%= render(Zizhixi.GroupPostView, "entry.html", show_group: false, conn: @conn, post: post) %>
       <%= end %>
-    </div>
     <%= pagination_links @conn, @pagination, [@group], action: :show, path: &group_path/4 %>
     <%= else %>
     <section class="hero is-primary has-text-centered">
