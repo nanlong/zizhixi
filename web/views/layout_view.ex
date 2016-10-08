@@ -40,7 +40,7 @@ defmodule Zizhixi.LayoutView do
       {ask_controllers, "问答", ask_path(conn, :index)},
       {article_controllers, "天工", article_path(conn, :index)},
       {link_controllers, "司南车", link_path(conn, :index)},
-      {market_controllers, "五杂市集", market_path(conn, :index)},
+      # {market_controllers, "五杂市集", market_path(conn, :index)},
     ]
   end
 end
