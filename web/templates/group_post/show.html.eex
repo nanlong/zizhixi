@@ -31,7 +31,7 @@
       </article>
     </div>
 
-    <div class="panel">
+    <div class="panel is-blank">
       <div class="panel-heading" style="padding: 10px;">
         <a class="is-pulled-right" href="<%= group_user_path(@conn, :show, @group_post.user.username) %>">
           <figure class="image is-32x32">
@@ -73,97 +73,124 @@
         </p>
       </div>
       <%= end %>
-      <div class="panel-block control is-grouped">
-        <p class="control">
-          <%= if praise?(@conn, @group_post) do %>
-            <%= link to: group_post_praise_path(@conn, :delete, @group_post.id), class: "button is-light is-small", method: :delete do %>
-              <span class="icon is-small is-danger"><i class="fa fa-heart"></i></span><span><%= praise_count(@group_post) %></span>
+      <nav class="level" style="margin-top: 10px;">
+        <div class="level-left">
+          <div class="level-item">
+            <%= if praise?(@conn, @group_post) do %>
+              <%= link to: group_post_praise_path(@conn, :delete, @group_post.id), class: "button is-light is-small", method: :delete do %>
+                <span class="icon is-small is-danger"><i class="fa fa-heart"></i></span><span><%= praise_count(@group_post) %></span>
+              <%= end %>
+            <%= else %>
+              <%= link to: group_post_praise_path(@conn, :create, @group_post.id), class: "button is-light is-small", method: :post do %>
+                <span class="icon is-small"><i class="fa fa-heart-o"></i></span><span><%= praise_count(@group_post) %></span>
+              <%= end %>
             <%= end %>
-          <%= else %>
-            <%= link to: group_post_praise_path(@conn, :create, @group_post.id), class: "button is-light is-small", method: :post do %>
-              <span class="icon is-small"><i class="fa fa-heart-o"></i></span><span><%= praise_count(@group_post) %></span>
+          </div>
+          <div class="level-item">
+            <%= if watch?(@conn, @group_post) do %>
+              <%= link to: group_post_watch_path(@conn, :delete, @group_post), class: "button is-light is-small", method: :delete do %>
+                <span class="icon is-small is-danger"><i class="fa fa-eye"></i></span><span>关注</span>
+              <%= end %>
+            <%= else %>
+              <%= link to: group_post_watch_path(@conn, :create, @group_post), class: "button is-light is-small", method: :post do %>
+                <span class="icon is-small"><i class="fa fa-eye"></i></span><span>关注</span>
+              <%= end %>
             <%= end %>
-          <%= end %>
-        </p>
-        <p class="control">
-          <%= if watch?(@conn, @group_post) do %>
-            <%= link to: group_post_watch_path(@conn, :delete, @group_post), class: "button is-light is-small", method: :delete do %>
-              <span class="icon is-small is-danger"><i class="fa fa-eye"></i></span><span>关注</span>
+          </div>
+          <div class="level-item">
+            <%= if collect?(@conn, @group_post) do %>
+              <%= link to: group_post_collect_path(@conn, :delete, @group_post), class: "button is-light is-small", method: :delete do %>
+                <span class="icon is-small is-danger"><i class="fa fa-bookmark"></i></span><span>收藏</span>
+              <%= end %>
+            <%= else %>
+              <%= link to: group_post_collect_path(@conn, :create, @group_post), class: "button is-light is-small", method: :post do %>
+                <span class="icon is-small"><i class="fa fa-bookmark"></i></span><span>收藏</span>
+              <%= end %>
             <%= end %>
-          <%= else %>
-            <%= link to: group_post_watch_path(@conn, :create, @group_post), class: "button is-light is-small", method: :post do %>
-              <span class="icon is-small"><i class="fa fa-eye"></i></span><span>关注</span>
+          </div>
+          <%= if group_own?(@conn, @group) do %>
+          <div class="level-item">
+            <%= if @group_post.is_elite do %>
+              <%= link to: group_post_elite_path(@conn, :create, @group_post), class: "button is-danger is-small", method: :delete do %>
+                <span class="icon is-small"><i class="fa fa-diamond"></i></span><span>取消加精</span>
+              <%= end %>
+            <%= else %>
+              <%= link to: group_post_elite_path(@conn, :create, @group_post), class: "button is-warning is-small", method: :post do %>
+                <span class="icon is-small"><i class="fa fa-diamond"></i></span><span>加精</span>
+              <%= end %>
             <%= end %>
-          <%= end %>
-        </p>
-        <p class="control">
-          <%= if collect?(@conn, @group_post) do %>
-            <%= link to: group_post_collect_path(@conn, :delete, @group_post), class: "button is-light is-small", method: :delete do %>
-              <span class="icon is-small is-danger"><i class="fa fa-bookmark"></i></span><span>收藏</span>
-            <%= end %>
-          <%= else %>
-            <%= link to: group_post_collect_path(@conn, :create, @group_post), class: "button is-light is-small", method: :post do %>
-              <span class="icon is-small"><i class="fa fa-bookmark"></i></span><span>收藏</span>
-            <%= end %>
-          <%= end %>
-        </p>
-        <%= if group_own?(@conn, @group) do %>
-        <p class="control">
-          <%= if @group_post.is_elite do %>
-            <%= link to: group_post_elite_path(@conn, :create, @group_post), class: "button is-danger is-small", method: :delete do %>
-              <span class="icon is-small"><i class="fa fa-diamond"></i></span><span>取消加精</span>
-            <%= end %>
-          <%= else %>
-            <%= link to: group_post_elite_path(@conn, :create, @group_post), class: "button is-warning is-small", method: :post do %>
-              <span class="icon is-small"><i class="fa fa-diamond"></i></span><span>加精</span>
-            <%= end %>
-          <%= end %>
-        </p>
+          </div>
 
-        <p class="control">
-          <%= if @group_post.is_top do %>
-            <%= link to: group_post_top_path(@conn, :create, @group_post), class: "button is-danger is-small", method: :delete do %>
-              <span class="icon is-small"><i class="fa fa-thumb-tack"></i></span><span>取消置顶</span>
+          <div class="level-item">
+            <%= if @group_post.is_top do %>
+              <%= link to: group_post_top_path(@conn, :create, @group_post), class: "button is-danger is-small", method: :delete do %>
+                <span class="icon is-small"><i class="fa fa-thumb-tack"></i></span><span>取消置顶</span>
+              <%= end %>
+            <%= else %>
+              <%= link to: group_post_top_path(@conn, :create, @group_post), class: "button is-warning is-small", method: :post do %>
+                <span class="icon is-small"><i class="fa fa-thumb-tack"></i></span><span>置顶</span>
+              <%= end %>
             <%= end %>
-          <%= else %>
-            <%= link to: group_post_top_path(@conn, :create, @group_post), class: "button is-warning is-small", method: :post do %>
-              <span class="icon is-small"><i class="fa fa-thumb-tack"></i></span><span>置顶</span>
-            <%= end %>
+          </div>
           <%= end %>
-        </p>
+        </div>
+      </nav>
+    </div>
+    <%= if length(@comments) > 0 do %>
+    <div class="panel is-blank">
+      <div class="panel-heading">
+        共收到 <strong><%= @group_post.comment_count %></strong> 条回复
+      </div>
+      <div class="panel-block">
+        <%= for comment <- @comments do %>
+          <%= render Zizhixi.GroupCommentView, "entry.html",
+            conn: @conn,
+            comment: comment
+          %>
         <%= end %>
       </div>
     </div>
-    <%= if length(@comments) > 0 do %>
-    <div class="box">
-      共收到 <strong><%= @group_post.comment_count %></strong> 条回复
-    </div>
+    <%= end %>
 
-    <div class="box">
-    <%= for comment <- @comments do %>
-      <%= render Zizhixi.GroupCommentView, "entry.html",
-        logged_in?: logged_in?(@conn),
-        current_user: current_user(@conn),
-        conn: @conn,
-        comment: comment
-      %>
-    <%= end %>
+    <%= if logged_in?(@conn) do %>
+    <article class="media">
+      <figure class="media-left">
+        <p class="image is-64x64">
+          <img src="<%= current_user(@conn).avatar %>">
+        </p>
+      </figure>
+      <div class="media-content">
+        <a name="reply"></a>
+        <%= form_for @changeset, group_post_comment_path(@conn, :create, @group_post), fn f -> %>
+          <p class="control">
+            <%= textarea f, :content, class: "textarea" %>
+            <%= error_tag f, :content %>
+          </p>
+          <nav class="level">
+            <div class="level-left"></div>
+            <div class="level-right">
+              <div class="level-item">
+                <%= submit "评论", class: "button is-info" %>
+              </div>
+            </div>
+          </nav>
+        <% end %>
+      </div>
+    </article>
+    <%= else %>
+    <div class="box" style="line-height: 24px;">
+      需要
+      <%= link to: session_path(@conn, :create), class: "button is-small is-info" do %>
+        登录
+      <%= end %>
+      后放可回复，如果你还没有帐号请点击
+      <%= link to: user_path(@conn, :create), class: "button is-small is-danger" do %>
+        注册
+      <%= end %>
+      。
     </div>
     <%= end %>
-    <div class="box">
-      <a name="reply"></a>
-      <%= form_for @changeset, group_post_comment_path(@conn, :create, @group_post), fn f -> %>
-        <%= label f, :content, "回复", class: "label" %>
-        <p class="control">
-          <%= textarea f, :content, class: "textarea" %>
-          <%= error_tag f, :content %>
-        </p>
-        <p class="control">
-          <%= submit "确定", class: "button is-info" %>
-          <button class="button is-link" type="reset">取消</button>
-        </p>
-      <% end %>
-    </div>
+
   </div>
   <div class="column is-3">
     <div id="group-post-sidebar" class="box if-fullwidth">

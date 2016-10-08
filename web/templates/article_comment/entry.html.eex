@@ -18,9 +18,9 @@
   <div class="media-content">
     <div class="content">
       <div style="height: 30px;">
-        <%= link @comment.user.username, to: group_user_path(@conn, :show, @comment.user.username) %>
+        <%= link @comment.user.username, to: article_user_path(@conn, :show, @comment.user.username) %>
         ·
-        <%= link "##{@comment.index}", to: "#{group_post_path(@conn, :show, @comment.post_id)}#reply#{@comment.index}" %>
+        <%= link "##{@comment.index}", to: "#{article_path(@conn, :show, @comment.article_id)}#reply#{@comment.index}" %>
         ·
         <small class="phoenix-moment" data-timestamp="<%= @comment.inserted_at %>" data-refresh="10000"></small>
       </div>
@@ -29,7 +29,7 @@
   </div>
   <div class="media-right">
       <%= if logged_in?(@conn) and current_user(@conn).id == @comment.user_id do %>
-        <%= link to: group_comment_path(@conn, :edit, @comment), class: "button is-link is-small btn-edit is-hidden" do %>
+        <%= link to: article_comment_path(@conn, :edit, @comment), class: "button is-link is-small btn-edit is-hidden" do %>
           <span class="icon is-small"><i class="fa fa-pencil"></i></span><span>编辑</span>
         <%= end %>
       <%= else %>
@@ -38,13 +38,13 @@
         <%= end %>
       <%= end %>
 
-      <%= if logged_in?(@conn) and praise?(@comment, current_user(@conn)) do %>
-        <%= link to: group_comment_praise_path(@conn, :delete, @comment), class: "button is-link is-small", method: :delete do %>
-          <span class="icon is-small is-danger"><i class="fa fa-heart"></i></span><span><%= praise_count(@comment) %></span>
+      <%= if logged_in?(@conn) and Zizhixi.ArticleView.praise?(@conn, @comment) do %>
+        <%= link to: article_comment_praise_path(@conn, :delete, @comment), class: "button is-link is-small", method: :delete do %>
+          <span class="icon is-small is-danger"><i class="fa fa-heart"></i></span><span><%= Zizhixi.ArticleView.praise_count(@comment) %></span>
         <%= end %>
       <%= else %>
-        <%= link to: group_comment_praise_path(@conn, :create, @comment), class: "button is-link is-small", method: :post do %>
-          <span class="icon is-small"><i class="fa fa-heart-o"></i></span><span><%= praise_count(@comment) %></span>
+        <%= link to: article_comment_praise_path(@conn, :create, @comment), class: "button is-link is-small", method: :post do %>
+          <span class="icon is-small"><i class="fa fa-heart-o"></i></span><span><%= Zizhixi.ArticleView.praise_count(@comment) %></span>
         <%= end %>
       <%= end %>
   </div>

@@ -1,7 +1,7 @@
 <div class="columns">
   <div class="column">
     <a name="#"></a>
-    <div class="panel">
+    <div class="panel is-blank">
       <div class="panel-heading" style="padding: 10px;">
         <a class="is-pulled-right" href="<%= article_user_path(@conn, :show, @article.user.username) %>">
           <figure class="image is-32x32">
@@ -52,130 +52,62 @@
         </div>
       </div>
 
-      <div class="panel-block control is-grouped">
-        <p class="control">
-          <%= if praise?(@conn, @article) do %>
-            <%= link to: article_praise_path(@conn, :delete, @article), method: :delete, class: "button is-light is-small", title: "赞" do %>
-              <span class="icon is-small is-danger">
-                <i class="fa fa-heart"></i>
-              </span>
-              <span>
-                <%= praise_count(@article) %>
-              </span>
+      <nav class="level" style="margin-top: 10px;">
+        <div class="level-left">
+          <div class="level-item">
+            <%= if praise?(@conn, @article) do %>
+              <%= link to: article_praise_path(@conn, :delete, @article), method: :delete, class: "button is-light is-small", title: "赞" do %>
+                <span class="icon is-small is-danger">
+                  <i class="fa fa-heart"></i>
+                </span>
+                <span>
+                  <%= praise_count(@article) %>
+                </span>
+              <%= end %>
+            <%= else %>
+              <%= link to: article_praise_path(@conn, :create, @article), method: :post, class: "button is-light is-small", title: "赞" do %>
+                <span class="icon is-small is-dark">
+                  <i class="fa fa-heart-o"></i>
+                </span>
+                <span>
+                  <%= praise_count(@article) %>
+                </span>
+              <%= end %>
             <%= end %>
-          <%= else %>
-            <%= link to: article_praise_path(@conn, :create, @article), method: :post, class: "button is-light is-small", title: "赞" do %>
-              <span class="icon is-small is-dark">
-                <i class="fa fa-heart-o"></i>
-              </span>
-              <span>
-                <%= praise_count(@article) %>
-              </span>
-            <%= end %>
-          <%= end %>
-        </p>
+          </div>
 
-        <p class="control">
-          <%= if collect?(@conn, @article) do %>
-            <%= link to: article_collect_path(@conn, :delete, @article), method: :delete, class: "button is-light is-small", title: "收藏" do %>
-              <span class="icon is-small is-danger">
-                <i class="fa fa-bookmark"></i>
-              </span>
-              <span>收藏</span>
+          <div class="level-item">
+            <%= if collect?(@conn, @article) do %>
+              <%= link to: article_collect_path(@conn, :delete, @article), method: :delete, class: "button is-light is-small", title: "收藏" do %>
+                <span class="icon is-small is-danger">
+                  <i class="fa fa-bookmark"></i>
+                </span>
+                <span>取消收藏</span>
+              <%= end %>
+            <%= else %>
+              <%= link to: article_collect_path(@conn, :create, @article), method: :post, class: "button is-light is-small", title: "收藏" do %>
+                <span class="icon is-small is-dark">
+                  <i class="fa fa-bookmark-o"></i>
+                </span>
+                <span>收藏</span>
+              <%= end %>
             <%= end %>
-          <%= else %>
-            <%= link to: article_collect_path(@conn, :create, @article), method: :post, class: "button is-light is-small", title: "收藏" do %>
-              <span class="icon is-small is-dark">
-                <i class="fa fa-bookmark"></i>
-              </span>
-              <span>收藏</span>
-            <%= end %>
-          <%= end %>
-        </p>
-      </div>
+          </div>
+        </div>
+      </nav>
     </div>
 
     <a name="reply"></a>
-    <%= for comment <- @article_comments do %>
-    <article class="media zizhixi-comment">
-      <figure class="media-left">
-        <p class="image is-48x48">
-          <%= link to: article_user_path(@conn, :show, comment.user.username) do %>
-            <img src="<%= comment.user.avatar %>">
-          <%= end %>
-        </p>
-      </figure>
-      <div class="media-content">
-        <div class="content">
-          <div class="panel">
-            <div class="panel-heading is-clearfix">
-              <a name="reply<%= comment.index %>"></a>
-              <div class="is-pulled-left">
-                <span>#<%= comment.index %></span>
-                <%= link to: article_user_path(@conn, :show, comment.user.username) do %>
-                  <%= comment.user.username %>
-                <%= end %>
-                <small>
-                  评论于
-                  <span class="phoenix-moment" data-timestamp="<%= comment.inserted_at %>"></span>
-                </small>
-              </div>
-              <%= if not comment.is_deleted do %>
-              <div class="is-pulled-right">
-                <%= if logged_in?(@conn) do %>
-                  <%= if current_user(@conn) == comment.user do %>
-                    <%= link to: article_comment_path(@conn, :edit, @article, comment), class: "button is-light is-small btn-edit is-hidden", title: "编辑" do %>
-                      <span class="icon is-small is-dark">
-                        <i class="fa fa-pencil"></i>
-                      </span>
-                      <span>编辑</span>
-                    <%= end %>
-                  <%= else %>
-                    <%= link to: "javascript:void(0);", class: "button is-light is-small btn-reply is-hidden", title: "回复" do %>
-                      <span class="icon is-small is-dark">
-                        <i class="fa fa-reply"></i>
-                      </span>
-                      <span>回复</span>
-                    <%= end %>
-                  <%= end %>
-                <%= end %>
-
-                <%= if praise?(@conn, comment) do %>
-                  <%= link to: article_comment_praise_path(@conn, :delete, comment), method: :delete, class: "button is-light is-small", title: "赞" do %>
-                    <span class="icon is-small is-danger">
-                      <i class="fa fa-heart"></i>
-                    </span>
-                    <span>
-                      <%= praise_count(comment) %>
-                    </span>
-                  <%= end %>
-                <%= else %>
-                  <%= link to: article_comment_praise_path(@conn, :create, comment), method: :post, class: "button is-light is-small", title: "赞" do %>
-                    <span class="icon is-small is-dark">
-                      <i class="fa fa-heart-o"></i>
-                    </span>
-                    <span>
-                      <%= praise_count(comment) %>
-                    </span>
-                  <%= end %>
-                <%= end %>
-              </div>
-              <%= end %>
-            </div>
-            <div class="panel-block">
-              <%= if comment.is_deleted do %>
-                <div class="has-text-centered">
-                  <strike>已删除</strike>
-                </div>
-              <%= else %>
-                <%= raw comment.content %>
-              <%= end %>
-            </div>
-          </div>
-        </div>
+    <div class="panel is-blank">
+      <div class="panel-heading">
+        共收到 <strong><%= @article.comment_count %></strong> 条回复
       </div>
-    </article>
-    <%= end %>
+      <div class="panel-block">
+        <%= for comment <- @article_comments do %>
+          <%= render Zizhixi.ArticleCommentView, "entry.html", conn: @conn, comment: comment %>
+        <%= end %>
+      </div>
+    </div>
 
     <%= if logged_in?(@conn) do %>
     <article class="media">
@@ -185,7 +117,7 @@
         </p>
       </figure>
       <div class="media-content">
-        <div class="content box">
+        <div class="content">
           <a name="reply"></a>
           <%= form_for @changeset, article_comment_path(@conn, :create, @article), fn f -> %>
             <p class="control">
@@ -206,17 +138,20 @@
       </div>
     </article>
     <%= else %>
-    <div class="box has-text-centered" style="margin-top: 20px;">
-      请
-      <%= link to: session_path(@conn, :new) <> "?next=" <> article_path(@conn, :show, @article) do %>
+    <div class="box" style="line-height: 24px; margin-top: 20px;">
+      需要
+      <%= link to: session_path(@conn, :create), class: "button is-small is-info" do %>
         登录
       <%= end %>
-      之后，再继续评论
+      后放可回复，如果你还没有帐号请点击
+      <%= link to: user_path(@conn, :create), class: "button is-small is-danger" do %>
+        注册
+      <%= end %>
+      。
     </div>
     <%= end %>
   </div>
   <div class="column is-3">
-
     <%= if logged_in?(@conn) and current_user(@conn) == @article.user do %>
     <div class="panel">
       <div class="panel-heading">
@@ -241,6 +176,5 @@
       </div>
     </div>
     <%= end %>
-
   </div>
 </div>
