@@ -8,8 +8,12 @@
         手工玩家的聚集地
       </h2>
 
-      <p>
-        有任何问题和建议，请在 <a style="color: #fff;" href="https://www.zizhixi.com/groups/b535b576-053b-4a0d-9951-bc377c3976a9">站务小组</a> 中提问，会尽快回应。
+      <p style="line-height: 24px;">
+        有任何问题和建议，请在
+        <%= link to: "https://www.zizhixi.com/groups/b535b576-053b-4a0d-9951-bc377c3976a9", class: "button is-danger is-small" do %>
+          站务小组
+        <%= end %>
+        中提问，会尽快回应。
       </p>
     </div>
   </div>
