@@ -33,6 +33,7 @@
       </div>
 
       <%= for answer <- @answers do %>
+      <a name="answer-<%= answer.id %>"></a>
       <div class="panel is-blank answer-entry">
         <div class="panel-left has-text-centered">
           <div>
