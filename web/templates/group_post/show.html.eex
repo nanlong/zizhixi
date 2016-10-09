@@ -34,12 +34,11 @@
     <div class="panel is-blank">
       <div class="panel-heading" style="padding: 10px;">
         <a class="is-pulled-right" href="<%= group_user_path(@conn, :show, @group_post.user.username) %>">
-          <figure class="image is-32x32">
+          <figure class="image is-24x24">
             <img src="<%= @group_post.user.avatar %>" alt="<%= @group_post.user.username %>" />
           </figure>
         </a>
         <h1 class="title is-4 is-marginless">
-          <%= @group_post.title %>
           <%= if @group_post.is_elite do %>
             <span class="icon is-danger" title="精华"><i class="fa fa-diamond"></i></span>
           <%= end %>

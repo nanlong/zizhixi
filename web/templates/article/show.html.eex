@@ -4,15 +4,12 @@
     <div class="panel is-blank">
       <div class="panel-heading" style="padding: 10px;">
         <a class="is-pulled-right" href="<%= article_user_path(@conn, :show, @article.user.username) %>">
-          <figure class="image is-32x32">
+          <figure class="image is-24x24">
             <img src="<%= @article.user.avatar %>" alt="<%= @article.user.username %>" />
           </figure>
         </a>
-        <h1 class="title is-4 is-marginless">
-          <%= @article.title %>
-        </h1>
 
-        <div style="padding-top: 5px;">
+        <div>
           <small>
             <%= link @article.user.username, to: article_user_path(@conn, :show, @article.user.username) %>
             于 <small class="phoenix-moment" data-timestamp="<%= @article.inserted_at %>" data-refresh="10000"></small> 发布

@@ -1,18 +1,11 @@
 <div class="columns">
   <div class="column">
-    <div class="question-entry">
-      <h2 class="title"><%= @question.title %></h2>
-      <div>
-        <%= raw @question.content %>
-      </div>
-      <!-- <div style="padding-top: 10px;">
-        <%= link to: "" do %>
-          <span class="tag is-dark is-small">
-            标签占位
-          </span>
-        <%= end %>
-      </div> -->
+    <div class="content" style="margin-left: 50px;">
+      <%= raw @question.content %>
+      <hr>
     </div>
+
+
     <a name="answer"></a>
     <%= if @question.answer_count > 0 do %>
       <div class="panel is-blank answer-head">
