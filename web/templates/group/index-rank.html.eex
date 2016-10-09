@@ -27,9 +27,8 @@
           <%= else %>
             <%= if group_member?(@conn, group) do %>
               <%= link "已加入",
-                to: group_member_path(@conn, :delete, group, next: group_path(@conn, :index, tab: "rank")),
-                class: "button is-success",
-                method: :delete
+                to: "javascript:void(0);",
+                class: "button is-success is-disabled"
               %>
             <%= else %>
               <%= link "加入",
