@@ -48,7 +48,7 @@ defmodule Zizhixi.GroupCommentController do
         )
 
         watch_users = GroupPostWatch
-        |> where([i], i.user_id != ^post.user_id)
+        |> where([i], i.user_id != ^post.user_id and i.user_id != ^group_comment.user_id)
         |> where(post_id: ^post.id)
         |> preload([:user])
         |> Repo.all

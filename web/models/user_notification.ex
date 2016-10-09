@@ -1,7 +1,7 @@
 defmodule Zizhixi.UserNotification do
   use Zizhixi.Web, :model
 
-  alias Zizhixi.{Repo, User, Group, GroupPost, GroupComment}
+  alias Zizhixi.{Repo, User, Group, GroupPost, GroupComment, AskAnswer}
 
   import Zizhixi.Ecto.Helpers, only: [increment: 2]
   import Zizhixi.Router.Helpers
@@ -94,5 +94,13 @@ defmodule Zizhixi.UserNotification do
 
   def format_what(_conn, %User{}) do
     "你"
+  end
+
+  def format_what(conn, %AskAnswer{} = answer) do
+    answer = Repo.preload(answer, :question)
+
+    answer.question.title
+    |> link(to: ask_question_path(conn, :show, answer.question_id) <> "#answer-" <> answer.id)
+    |> safe_to_string
   end
 end

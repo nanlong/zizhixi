@@ -1,7 +1,7 @@
 defmodule Zizhixi.AskAnswerController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.AskUser
+  alias Zizhixi.{AskUser, AskQuestionWatch, UserNotification}
   alias Zizhixi.AskQuestion, as: Question
   alias Zizhixi.AskAnswer, as: Answer
 
@@ -12,7 +12,7 @@ defmodule Zizhixi.AskAnswerController do
 
   def create(conn, %{"ask_question_id" => question_id, "ask_answer" => answer_params}) do
     current_user = current_resource(conn)
-    question = Repo.get!(Question, question_id)
+    question = Question |> preload([:user]) |> Repo.get!(question_id)
     params = answer_params
     |> Map.put_new("question_id", question_id)
     |> Map.put_new("user_id", current_user.id)
@@ -27,6 +27,31 @@ defmodule Zizhixi.AskAnswerController do
         |> update_field(:latest_inserted_at, answer.inserted_at)
 
         AskUser.get(current_user) |> increment(:answer_count)
+
+        UserNotification.create(conn,
+          user: question.user,
+          who: current_user,
+          where: nil,
+          action: "回答了问题",
+          what: answer
+        )
+
+        watch_users = AskQuestionWatch
+        |> where([i], i.user_id != ^question.user_id and i.user_id != ^answer.user_id)
+        |> where(question_id: ^answer.question_id)
+        |> preload([:user])
+        |> Repo.all
+
+        Enum.map(watch_users, fn watch_user ->
+          UserNotification.create(conn,
+            user: watch_user.user,
+            who: current_user,
+            where: nil,
+            action: "回答了问题",
+            what: answer
+          )
+        end)
+
         conn |> put_flash(:info, "创建回答成功.")
       {:error, _changeset} ->
         conn |> put_flash(:error, "创建回答失败.")
