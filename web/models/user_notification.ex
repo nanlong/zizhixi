@@ -1,7 +1,7 @@
 defmodule Zizhixi.UserNotification do
   use Zizhixi.Web, :model
 
-  alias Zizhixi.{Repo, User, Group, GroupPost, GroupComment, AskAnswer}
+  alias Zizhixi.{Repo, User, Group, GroupPost, GroupComment, AskAnswer, ArticleComment}
 
   import Zizhixi.Ecto.Helpers, only: [increment: 2]
   import Zizhixi.Router.Helpers
@@ -88,7 +88,7 @@ defmodule Zizhixi.UserNotification do
 
   def format_what(conn, %GroupComment{post: post, index: index}) do
     post.title
-    |> link(to: group_post_path(conn, :show, post.id) <> "#reply" <> Integer.to_string(index))
+    |> link(to: group_post_path(conn, :show, post.id) <> "#reply" <> to_string(index))
     |> safe_to_string
   end
 
@@ -101,6 +101,14 @@ defmodule Zizhixi.UserNotification do
 
     answer.question.title
     |> link(to: ask_question_path(conn, :show, answer.question_id) <> "#answer-" <> answer.id)
+    |> safe_to_string
+  end
+
+  def format_what(conn, %ArticleComment{} = comment) do
+    comment = Repo.preload(comment, :article)
+
+    comment.article.title
+    |> link(to: article_path(conn, :show, comment.article_id) <> "#reply" <> to_string(comment.index))
     |> safe_to_string
   end
 end

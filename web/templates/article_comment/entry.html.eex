@@ -29,7 +29,7 @@
   </div>
   <div class="media-right">
       <%= if logged_in?(@conn) and current_user(@conn).id == @comment.user_id do %>
-        <%= link to: article_comment_path(@conn, :edit, @comment), class: "button is-link is-small btn-edit is-hidden" do %>
+        <%= link to: article_comment_path(@conn, :edit, @comment.article_id, @comment), class: "button is-link is-small btn-edit" do %>
           <span class="icon is-small"><i class="fa fa-pencil"></i></span><span>编辑</span>
         <%= end %>
       <%= else %>

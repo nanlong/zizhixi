@@ -1,7 +1,7 @@
 defmodule Zizhixi.ArticleCommentController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{Article, ArticleUser, ArticleComment}
+  alias Zizhixi.{Article, ArticleUser, ArticleComment, UserNotification}
 
   import Guardian.Plug, only: [current_resource: 1]
   import Zizhixi.Ecto.Helpers, only: [update_field: 3, increment: 2]
@@ -10,7 +10,7 @@ defmodule Zizhixi.ArticleCommentController do
 
   def create(conn, %{"article_id" => article_id, "article_comment" => article_comment_params}) do
     current_user = current_resource(conn)
-    article = Repo.get!(Article, article_id)
+    article = Article |> preload([:user]) |> Repo.get!(article_id)
 
     params = article_comment_params
     |> Map.put_new("article_id", article_id)
@@ -26,6 +26,14 @@ defmodule Zizhixi.ArticleCommentController do
         article |> increment(:comment_count)
 
         ArticleUser.get(current_user) |> increment(:comment_count)
+
+        UserNotification.create(conn,
+          user: article.user,
+          who: current_user,
+          where: nil,
+          action: "评论了你的教程",
+          what: article_comment
+        )
 
         conn |> put_flash(:info, "评论成功.")
       {:error, _changeset} ->
