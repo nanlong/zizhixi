@@ -1,7 +1,8 @@
 defmodule Zizhixi.UserNotification do
   use Zizhixi.Web, :model
 
-  alias Zizhixi.{Repo, User, Group, GroupPost, GroupComment, AskAnswer, ArticleComment}
+  alias Zizhixi.{Repo, User, Group, GroupPost, GroupComment, AskAnswer, Article,
+    ArticleComment}
 
   import Zizhixi.Ecto.Helpers, only: [increment: 2]
   import Zizhixi.Router.Helpers
@@ -101,6 +102,12 @@ defmodule Zizhixi.UserNotification do
 
     answer.question.title
     |> link(to: ask_question_path(conn, :show, answer.question_id) <> "#answer-" <> answer.id)
+    |> safe_to_string
+  end
+
+  def format_what(conn, %Article{} = article) do
+    article.title
+    |> link(to: article_path(conn, :show, article))
     |> safe_to_string
   end
 
