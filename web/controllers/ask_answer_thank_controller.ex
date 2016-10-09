@@ -1,7 +1,7 @@
 defmodule Zizhixi.AskAnswerThankController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.AskUser
+  alias Zizhixi.{AskUser, UserNotification}
   alias Zizhixi.AskAnswer, as: Answer
   alias Zizhixi.AskAnswerThank, as: AnswerThank
 
@@ -13,7 +13,7 @@ defmodule Zizhixi.AskAnswerThankController do
 
   def create(conn, %{"ask_answer_id" => answer_id}) do
     current_user = current_resource(conn)
-    answer = Repo.get!(Answer, answer_id)
+    answer = Answer |> preload([:user]) |> Repo.get!(answer_id)
     params = %{
       answer_id: answer_id,
       user_id: current_user.id
@@ -24,6 +24,15 @@ defmodule Zizhixi.AskAnswerThankController do
       {:ok, _answer_thank} ->
         answer |> increment(:thank_count)
         AskUser.get(current_user) |> increment(:thank_count)
+
+        UserNotification.create(conn,
+          user: answer.user,
+          who: current_user,
+          where: nil,
+          action: "感谢了你的答案",
+          what: answer
+        )
+
         conn
       {:error, _changeset} ->
         conn |> put_flash(:error, "感谢失败.")
