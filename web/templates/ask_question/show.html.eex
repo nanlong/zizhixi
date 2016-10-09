@@ -126,30 +126,50 @@
     <%= end %>
 
     <%= if logged_in?(@conn) do %>
-    <div class="panel is-blank question-answer-form">
-      <div class="panel-block">
-        <div class="is-clearfix" style="padding-bottom: 10px;">
-          <%= link to: ask_user_path(@conn, :show, current_user(@conn).username), class: "is-pulled-left" do %>
-            <%= current_user(@conn).username %>
-          <%= end %>
-          <figure class="image is-24x24 is-pulled-right">
-            <%= link to: ask_user_path(@conn, :show, current_user(@conn).username) do %>
-              <img src="<%= current_user(@conn).avatar %>">
-            <%= end %>
-          </figure>
+      <%= if not Zizhixi.AskAnswerView.answer?(@conn, @question) do %>
+        <div class="panel is-blank question-answer-form">
+          <div class="panel-block">
+            <div class="is-clearfix" style="padding-bottom: 10px;">
+              <%= link to: ask_user_path(@conn, :show, current_user(@conn).username), class: "is-pulled-left" do %>
+                <%= current_user(@conn).username %>
+              <%= end %>
+              <figure class="image is-24x24 is-pulled-right">
+                <%= link to: ask_user_path(@conn, :show, current_user(@conn).username) do %>
+                  <img src="<%= current_user(@conn).avatar %>">
+                <%= end %>
+              </figure>
+            </div>
+            <div class="">
+              <%= form_for @changeset, ask_question_answer_path(@conn, :create, @question), fn f -> %>
+                <p class="control">
+                  <%= textarea f, :content, class: "textarea simditor-comment-textarea" %>
+                  <%= error_tag f, :content %>
+                </p>
+                <p class="control is-clearfix">
+                  <%= submit "发布回答", class: "button is-info is-pulled-right" %>
+                </p>
+              <% end %>
+            </div>
+          </div>
         </div>
-        <div class="">
-          <%= form_for @changeset, ask_question_answer_path(@conn, :create, @question), fn f -> %>
-            <p class="control">
-              <%= textarea f, :content, class: "textarea simditor-comment-textarea" %>
-              <%= error_tag f, :content %>
-            </p>
-            <p class="control is-clearfix">
-              <%= submit "发布回答", class: "button is-info is-pulled-right" %>
-            </p>
-          <% end %>
-        </div>
+      <%= else %>
+      <div class="has-text-centered">
+        一个问题你只能回答一次，但你可以对
+        <%= link "现有的回答", to: ask_question_path(@conn, :show, @question) <> "#answer-" <> Zizhixi.AskAnswerView.current_answer(@conn, @question).id %>
+        进行修改
       </div>
+      <%= end %>
+    <%= else %>
+    <div class="box" style="line-height: 24px;">
+      需要
+      <%= link to: session_path(@conn, :create), class: "button is-small is-info" do %>
+        登录
+      <%= end %>
+      后放可回答，如果你还没有帐号请点击
+      <%= link to: user_path(@conn, :create), class: "button is-small is-danger" do %>
+        注册
+      <%= end %>
+      。
     </div>
     <%= end %>
   </div>
