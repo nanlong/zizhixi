@@ -1,7 +1,7 @@
 defmodule Zizhixi.ArticleCommentPraiseController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{ArticleComment, ArticleCommentPraise}
+  alias Zizhixi.{ArticleComment, ArticleCommentPraise, UserNotification}
 
   import Guardian.Plug, only: [current_resource: 1]
   import Zizhixi.Ecto.Helpers, only: [increment: 2, decrement: 2]
@@ -10,7 +10,7 @@ defmodule Zizhixi.ArticleCommentPraiseController do
 
   def create(conn, %{"article_comment_id" => article_comment_id}) do
     current_user = current_resource(conn)
-    article_comment = Repo.get!(ArticleComment, article_comment_id)
+    article_comment = ArticleComment |> preload([:user]) |> Repo.get!(article_comment_id)
     params = %{
       comment_id: article_comment_id,
       user_id: current_user.id
@@ -20,6 +20,15 @@ defmodule Zizhixi.ArticleCommentPraiseController do
     conn = case Repo.insert(changeset) do
       {:ok, _article_comment_praise} ->
         article_comment |> increment(:praise_count)
+
+        UserNotification.create(conn,
+          user: article_comment.user,
+          who: current_user,
+          where: nil,
+          action: "赞了你的评论",
+          what: article_comment
+        )
+
         conn |> put_flash(:info, "点赞成功.")
       {:error, _changeset} ->
         conn |> put_flash(:error, "点赞失败.")
