@@ -37,63 +37,66 @@
     <section class="hero is-medium" >
       <div class="hero-head">
         <nav class="nav">
-          <div class="nav-left">
-            <%= link to: page_path(@conn, :index), class: "nav-item" do %>
-              <img src="https://odf91nqvz.qnssl.com/logo.png?imageView2/2/h/48" alt="自制系" height="24" />
-            <%= end %>
-
-            <%= for {controllers, name, path} <- navigation(@conn) do %>
-              <%= if controller_module(@conn) in controllers do %>
-                <%= link name, to: path, class: "nav-item is-tab is-active" %>
-              <%= else %>
-                <%= link name, to: path, class: "nav-item" %>
+          <div class="container">
+            <div class="nav-left">
+              <%= link to: page_path(@conn, :index), class: "nav-item" do %>
+                <img src="https://odf91nqvz.qnssl.com/logo.png?imageView2/2/h/48" alt="自制系" height="24" />
               <%= end %>
-            <%= end %>
 
-          </div>
-
-          <%= if @conn.assigns[:title] do %>
-          <div class="nav-center">
-            <h1 class="nav-item title is-5"><%= @conn.assigns[:title] %></h1>
-          </div>
-          <%= end %>
-
-          <span class="nav-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-
-          <div class="nav-right nav-menu">
-            <%= if logged_in?(@conn) do %>
-            <%= link to: user_notification_path(@conn, :show), class: "nav-item" do %>
-              <span class="icon is-small">
-                <i class="fa fa-bell"></i>
-              </span>
-
-              <%= if current_user(@conn).noread_notification_count > 0 do %>
-              <span class="tag is-danger is-small">
-                <%= current_user(@conn).noread_notification_count %>
-              </span>
+              <%= for {controllers, name, path} <- navigation(@conn) do %>
+                <%= if controller_module(@conn) in controllers do %>
+                  <%= link name, to: path, class: "nav-item is-tab is-active" %>
+                <%= else %>
+                  <%= link name, to: path, class: "nav-item" %>
+                <%= end %>
               <%= end %>
+
+            </div>
+
+            <%= if @conn.assigns[:title] do %>
+            <div class="nav-center">
+              <h1 class="nav-item title is-5"><%= @conn.assigns[:title] %></h1>
+            </div>
             <%= end %>
 
-            <%= link to: user_path(@conn, :show, current_user(@conn).username), class: "nav-item" do %>
-              <figure>
-                <img src="<%= current_user(@conn).avatar %>" alt="<%= current_user(@conn).username %>" />
-              </figure>
-              <span style="margin-left: 5px;"><%= current_user(@conn).username %></span>
-            <%= end %>
-            <%= link "退出", to: session_path(@conn, :delete), class: "nav-item" %>
-            <%= else %>
-            <span class="nav-item">
-              <%= link "注册", to: user_path(@conn, :new), class: "button" %>
-              <%= link "登录", to: session_path(@conn, :new), class: "button is-info" %>
+            <span class="nav-toggle">
+              <span></span>
+              <span></span>
+              <span></span>
             </span>
-            <%= end %>
+
+            <div class="nav-right nav-menu">
+              <%= if logged_in?(@conn) do %>
+              <%= link to: user_notification_path(@conn, :show), class: "nav-item" do %>
+                <span class="icon is-small">
+                  <i class="fa fa-bell"></i>
+                </span>
+
+                <%= if current_user(@conn).noread_notification_count > 0 do %>
+                <span class="tag is-danger is-small">
+                  <%= current_user(@conn).noread_notification_count %>
+                </span>
+                <%= end %>
+              <%= end %>
+
+              <%= link to: user_path(@conn, :show, current_user(@conn).username), class: "nav-item" do %>
+                <figure>
+                  <img src="<%= current_user(@conn).avatar %>" alt="<%= current_user(@conn).username %>" />
+                </figure>
+                <span style="margin-left: 5px;"><%= current_user(@conn).username %></span>
+              <%= end %>
+              <%= link "退出", to: session_path(@conn, :delete), class: "nav-item" %>
+              <%= else %>
+              <span class="nav-item">
+                <%= link "注册", to: user_path(@conn, :new), class: "button" %>
+                <%= link "登录", to: session_path(@conn, :new), class: "button is-info" %>
+              </span>
+              <%= end %>
+            </div>
           </div>
         </nav>
       </div>
+
     </section>
 
     <div style="padding: 20px 0 20px;">
