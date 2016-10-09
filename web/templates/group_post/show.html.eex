@@ -1,3 +1,6 @@
+<style media="screen">
+  #header .title {display: none;}
+</style>
 <div class="columns">
   <div class="column">
     <div class="box">
@@ -15,9 +18,7 @@
 
               <%= if logged_in?(@conn) do %>
                 <%= if not group_own?(@conn, @group) do %>
-                  <%= if group_member?(@conn, @group) do %>
-                    <%= link "已加入 | 退出", to: group_member_path(@conn, :delete, @group), method: :delete, class: "button is-small is-pulled-left" %>
-                  <%= else %>
+                  <%= if not group_member?(@conn, @group) do %>
                     <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
                   <%= end %>
                 <%= end %>
@@ -34,44 +35,38 @@
     <div class="panel is-blank">
       <div class="panel-heading" style="padding: 10px;">
         <a class="is-pulled-right" href="<%= group_user_path(@conn, :show, @group_post.user.username) %>">
-          <figure class="image is-24x24">
+          <figure class="image is-48x48">
             <img src="<%= @group_post.user.avatar %>" alt="<%= @group_post.user.username %>" />
           </figure>
         </a>
         <h1 class="title is-4 is-marginless">
+          <%= @group_post.title %>
+        </h1>
+        <div style="margin-top: 5px;">
           <%= if @group_post.is_elite do %>
             <span class="icon is-danger" title="精华"><i class="fa fa-diamond"></i></span>
           <%= end %>
           <%= if @group_post.is_top do %>
             <span class="icon" title="置顶"><i class="fa fa-thumb-tack"></i></span>
           <%= end %>
-        </h1>
 
-        <small>
-          <%= link @group_post.user.username, to: group_user_path(@conn, :show, @group_post.user.username) %>
-          于 <small class="phoenix-moment" data-timestamp="<%= @group_post.inserted_at %>" data-refresh="10000"></small> 发布
-          <%= if @group_post.latest_user_id do %>
-          · 最后由 <%= link @group_post.latest_user.username, to: group_user_path(@conn, :show, @group_post.latest_user.username) %>
-          于 <small class="phoenix-moment" data-timestamp="<%= @group_post.latest_inserted_at %>" data-refresh="10000"></small> 回复
-          <%= end %>
-          · <%= @group_post.pv %>次阅读
-        </small>
+          <small>
+            <%= link @group_post.user.username, to: group_user_path(@conn, :show, @group_post.user.username) %>
+            于 <small class="phoenix-moment" data-timestamp="<%= @group_post.inserted_at %>" data-refresh="10000"></small> 发布
+            <%= if @group_post.latest_user_id do %>
+            · 最后由 <%= link @group_post.latest_user.username, to: group_user_path(@conn, :show, @group_post.latest_user.username) %>
+            于 <small class="phoenix-moment" data-timestamp="<%= @group_post.latest_inserted_at %>" data-refresh="10000"></small> 回复
+            <%= end %>
+            · <%= @group_post.pv %>次阅读
+          </small>
+        </div>
       </div>
       <div class="panel-block">
         <div class="content" style="padding: 10px 0;">
           <%= raw @group_post.content %>
         </div>
       </div>
-      <%= if group_post_own?(@conn, @group_post) do %>
-      <div class="panel-block control is-grouped is-pulled-right">
-        <p class="control">
-          <%= link to: group_post_path(@conn, :edit, @group_post), class: "button is-success is-small" do %>
-            <span class="icon is-small"><i class="fa fa-pencil"></i></span>
-            <span>编辑</span>
-          <%= end %>
-        </p>
-      </div>
-      <%= end %>
+
       <nav class="level" style="margin-top: 10px;">
         <div class="level-left">
           <div class="level-item">
@@ -133,6 +128,14 @@
           </div>
           <%= end %>
         </div>
+        <%= if group_post_own?(@conn, @group_post) do %>
+        <div class="level-right">
+          <%= link to: group_post_path(@conn, :edit, @group_post), class: "button is-success is-small level-item" do %>
+            <span class="icon is-small"><i class="fa fa-pencil"></i></span>
+            <span>编辑</span>
+          <%= end %>
+        </div>
+        <%= end %>
       </nav>
     </div>
     <%= if length(@comments) > 0 do %>

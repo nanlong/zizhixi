@@ -12,9 +12,10 @@
             <%= link "发新帖", to: group_post_path(@conn, :new, @group), class: "button is-info is-pulled-right" %>
             <div class="is-clearfix">
               <strong class="title is-4 is-pulled-left" style="margin-right: 10px;"><%= @group.name %></strong>
+
               <%= if logged_in?(@conn) do %>
                 <%= if group_member?(@conn, @group) do %>
-                  <%= link "已加入 | 退出", to: group_member_path(@conn, :delete, @group), method: :delete, class: "button is-small is-pulled-left" %>
+                  <%= link "已加入 | 退出", to: group_member_path(@conn, :delete, @group), method: :delete, class: "button is-small is-pulled-left is-hidden" %>
                 <%= else %>
                   <%= link "加入小组", to: group_member_path(@conn, :create, @group), method: :post, class: "button is-small is-pulled-left" %>
                 <%= end %>

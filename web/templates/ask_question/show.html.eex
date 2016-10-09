@@ -1,10 +1,13 @@
+<style media="screen">
+  #header .title {display: none;}
+</style>
 <div class="columns">
   <div class="column">
     <div class="content" style="margin-left: 50px;">
+      <h1 class="title is-4"><%= @question.title  %></h1>
       <%= raw @question.content %>
       <hr>
     </div>
-
 
     <a name="answer"></a>
     <%= if @question.answer_count > 0 do %>

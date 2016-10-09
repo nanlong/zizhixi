@@ -1,15 +1,18 @@
+<style media="screen">
+  #header .title {display: none;}
+</style>
 <div class="columns">
   <div class="column">
     <a name="#"></a>
     <div class="panel is-blank">
       <div class="panel-heading" style="padding: 10px;">
         <a class="is-pulled-right" href="<%= article_user_path(@conn, :show, @article.user.username) %>">
-          <figure class="image is-24x24">
+          <figure class="image is-48x48">
             <img src="<%= @article.user.avatar %>" alt="<%= @article.user.username %>" />
           </figure>
         </a>
-
-        <div>
+        <h1 class="title is-4 is-marginless"><%= @article.title %></h1>
+        <div style="margin-top: 5px;">
           <small>
             <%= link @article.user.username, to: article_user_path(@conn, :show, @article.user.username) %>
             于 <small class="phoenix-moment" data-timestamp="<%= @article.inserted_at %>" data-refresh="10000"></small> 发布
