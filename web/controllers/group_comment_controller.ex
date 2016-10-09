@@ -1,8 +1,8 @@
 defmodule Zizhixi.GroupCommentController do
   use Zizhixi.Web, :controller
 
-  alias Zizhixi.{GroupUser, GroupMember, GroupPost, GroupComment, UserTimeline,
-    UserNotification}
+  alias Zizhixi.{GroupUser, GroupMember, GroupPost, GroupPostWatch, GroupComment,
+    UserTimeline, UserNotification}
 
   import Zizhixi.Ecto.Helpers, only: [update_field: 3, increment: 2]
 
@@ -46,6 +46,22 @@ defmodule Zizhixi.GroupCommentController do
           action: "回复了",
           what: group_comment
         )
+
+        watch_users = GroupPostWatch
+        |> where([i], i.user_id != ^post.user_id)
+        |> where(post_id: ^post.id)
+        |> preload([:user])
+        |> Repo.all
+
+        Enum.map(watch_users, fn watch_user ->
+          UserNotification.create(conn,
+            user: watch_user.user,
+            who: current_user,
+            where: post.group,
+            action: "回复了",
+            what: group_comment
+          )
+        end)
 
         GroupComment.at_user(conn, group_comment)
 
